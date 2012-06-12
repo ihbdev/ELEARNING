@@ -246,6 +246,9 @@ font-size:11px;
 line-height:normal;
 padding-bottom:7px;
 }
+.table table label {
+	width:auto;
+}
 .folder-header {
 background:url(../images/folder_header_bg.gif) repeat-x bottom;
 border-top:1px solid #ccc;
