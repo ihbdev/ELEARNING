@@ -39,6 +39,7 @@ class LanguageSkillController extends Controller
 	public function accessRules()
 	{
 		return array(
+			/*
 			array('allow',  
 				'actions'=>array('index'),
 				'roles'=>array('language_index'),
@@ -81,7 +82,12 @@ class LanguageSkillController extends Controller
 			),
 			array('deny', 
 				'users'=>array('*'),
-			),			
+			),	
+			*/
+			array(
+				'allow',
+				'users'=>array('*')
+			)		
 		);
 	}
 	
@@ -91,6 +97,8 @@ class LanguageSkillController extends Controller
 	 */
 	public function actionCreate()
 	{
+		$this->render('create',array(			
+		));
 	}
 	/**
 	 * Copy a new model
