@@ -97,8 +97,7 @@ class LanguageSkillController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$this->render('create',array(			
-		));
+
 	}
 	/**
 	 * Copy a new model
@@ -192,6 +191,12 @@ class LanguageSkillController extends Controller
 	 */
 	protected function performAjaxValidation($model)
 	{
-		
+		if(Yii::app()->getRequest()->getIsAjaxRequest() )
+		{
+			if( !isset($_GET['ajax'] )){
+				echo CActiveForm::validate($model);
+				Yii::app()->end();
+			}
+		}
 	}
 }

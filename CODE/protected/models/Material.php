@@ -14,6 +14,10 @@
  */
 class Material extends CActiveRecord
 {
+	const TYPE_LANGUAGE=1;
+	const TYPE_KNOWLEDGE=2;
+	const TYPE_MARKINGUP=3;
+	const TYPE_CODING=4;
 	/**
 	 * @var array config list other attributes of the banner
 	 * this attribute no need to search	 
