@@ -25,7 +25,7 @@
 							echo '<a id="'.$id.'" class="'.$class.'" href="'.$menu->url.'">'.$menu->name.'</a>';
 							echo '</li>';
 						}
-						if($item['level_close']) {
+						if(isset($item['level_close']) && $item['level_close']) {
 							for ($i=0;$i<$item['level_close'];$i++) {
 									echo '</ul>';
 									echo '</li>';

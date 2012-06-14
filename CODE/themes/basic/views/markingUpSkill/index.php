@@ -35,7 +35,7 @@
                          	<?php $this->widget('CAutoComplete', array(
                          	'model'=>$model,
                          	'attribute'=>'title',
-							'url'=>array('test/suggestTitle'),
+							'url'=>array('markingUpSkill/suggestTitle'),
 							'htmlOptions'=>array(
 								'style'=>'width:230px;',
 								),
@@ -108,7 +108,7 @@
     						(
             					'label'=>'Đổi trạng thái bài viết',
             					'imageUrl'=>'$data->imageStatus',
-            					'url'=>'Yii::app()->createUrl("test/reverseStatus", array("id"=>$data->id))',
+            					'url'=>'Yii::app()->createUrl("markingUpSkill/reverseStatus", array("id"=>$data->id))',
     							'click'=>'function(){
 									var th=this;									
 									jQuery.ajax({
@@ -147,7 +147,7 @@
     						(
             					'label'=>'Copy bài viết',
             					'imageUrl'=>Yii::app()->theme->baseUrl.'/images/copy.gif',
-            					'url'=>'Yii::app()->createUrl("test/copy", array("id"=>$data->id))',
+            					'url'=>'Yii::app()->createUrl("markingUpSkill/copy", array("id"=>$data->id))',
         					),
         					'view'=>array(
     							'url'=>'$data->url',
@@ -164,8 +164,8 @@
 						'action'=>'delete',
 						'label'=>'Xóa',
 						'imageUrl' => Yii::app()->theme->baseUrl.'/images/delete.png',
-						'url'=>'test/checkbox'
-					),
+						'url'=>'markingUpSkill/checkbox'
+		markingUpSkill/
 				),
  	 			)); ?>
 		</div>
