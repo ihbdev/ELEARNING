@@ -25,17 +25,11 @@
                 </div><!--testpost-box-->
                 <div class="testpost-box">
 					<h2>Choise Level</h2>
-                    <div class="level-outer">
-                    	<input name="ITest[level]" type="radio" value="1" checked="checked" /><label>Level 1</label>
-                        <input name="ITest[level]" type="radio" value="2" /><label>Level 2</label>
-                        <input name="ITest[level]" type="radio" value="3" /><label>Level 3</label>
-                        <input name="ITest[level]" type="radio" value="4" /><label>Level 4</label>
-                        <input name="ITest[level]" type="radio" value="5" /><label>Level 5</label>
-                        <br>
-                        <input name="ITest[level]" type="radio" value="6" /><label>Level 6</label>
-                        <input name="ITest[level]" type="radio" value="7" /><label>Level 7</label>
-                        <input name="ITest[level]" type="radio" value="8" /><label>Level 8</label>
-                        <input name="ITest[level]" type="radio" value="9" /><label>Level 9</label>
+                     <div class="level-outer">
+                    	<?php for($i=1;$i<ITest::MARKINGUP_MAX_LEVEL;$i++):?>
+                    		<input name="ITest[level]" type="radio" value="1" <?php if($test->level==$i) echo 'checked="checked"';?> /><label>Level <?php echo $i?></label>
+                    		<?php if($i == round(ITest::MARKINGUP_MAX_LEVEL/2)) echo '</br>';?>
+                        <?php endfor;?>
                         <?php echo $form->error($test, 'level'); ?>
                     </div>
                 </div><!--testpost-box-->
@@ -98,6 +92,9 @@
 												
 												$(data.view).insertBefore($('.q-post'));
 												}
+											else{
+												jAlert(data.message);
+											}
 										},
 										});
 								return false;
