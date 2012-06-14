@@ -41,6 +41,7 @@ class MarkingUpSkillController extends Controller
 	public function accessRules()
 	{
 		return array(
+			/*
 			array('allow',  
 				'actions'=>array('index'),
 				'roles'=>array('language_index'),
@@ -83,7 +84,11 @@ class MarkingUpSkillController extends Controller
 			),
 			array('deny', 
 				'users'=>array('*'),
-			),			
+			),
+			*/			
+			array('allow', 
+				'users'=>array('*'),
+			),
 		);
 	}
 	
@@ -93,13 +98,56 @@ class MarkingUpSkillController extends Controller
 	 */
 	public function actionCreate()
 	{
+		$test=new ITest();
+		if(isset($_POST['ITest']))
+		{
+			$test->attributes=$_POST['ITest'];
+			$test->type=ITest::TYPE_LANGUAGE;			
+			$list_questions = array_diff ( explode ( ',', $_POST['ITest']['questions'] ), array ('') );
+			$test->content=$list_questions;
+			if($test->save())
+			{
+				Yii::app()->user->setFlash('success', Language::t('Đã tạo bài test thành công'));
+			}	
+		}
+		$this->render ( 'create',array('test'=>$test));
+	}
+	/**
+	 * Add a new question
+	 */
+	public function actionAddQuestion() {
+		if(isset($_POST ['Question'])){
+			$question = new Question();
+			$question->attributes = $_POST['Question'];
+			$answer=array();
+			foreach ($question->content as $index=>$option){
+				if(in_array($index, $question->answer))
+					$answer[$index]=1;
+				else 
+					$answer[$index]=0;
+			}
+			$question->answer=$answer;
+			$question->type = Question::TYPE_LANGUAGE;
+			if(!isset($question->material_id) && isset($material->id))
+				$question->material_id=$material->id;
+			else
+				$question->material_id=0;
+			if ($question->save ()) {
+				$question=Question::model()->findByPk($question->id);
+				$view=$this->renderPartial('add_question',array(
+						'question'=>$question,			
+					),true);
+				$result=array('success'=>true,'id'=>$question->id,'view'=>$view);
+				echo json_encode($result);
+			}
+		}
 	}
 	/**
 	 * Copy a new model
 	 * @param integer $id the ID of model to be copied
 	 */
 	public function actionCopy($id)
-	{
+	{		
 	}
 	/**
 	 * Updates a particular model.
@@ -108,7 +156,20 @@ class MarkingUpSkillController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-	
+		$test=ITest::model()->findByPk($id);
+		if(isset($_POST['ITest']))
+		{
+			$test->attributes=$_POST['ITest'];
+			$test->type=ITest::TYPE_LANGUAGE;			
+			$list_questions = array_diff ( explode ( ',', $_POST['ITest']['questions'] ), array ('') );
+			$test->content=$list_questions;
+			if($test->save())
+			{
+				$test=ITest::model()->findByPk($id);
+				Yii::app()->user->setFlash('success', Language::t('Đã tạo bài test thành công'));
+			}	
+		}
+		$this->render ( 'update',array('test'=>$test));
 	}
 
 	/**
@@ -174,7 +235,7 @@ class MarkingUpSkillController extends Controller
 	 */
 	public function loadModel($id)
 	{
-		$model=LanguageSkill::model()->findByPk($id);
+		$model=MarkingUpSkill::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;

@@ -14,20 +14,50 @@
  */
 class Question extends CActiveRecord
 {
+	const TYPE_LANGUAGE=1;
+	const TYPE_KNOWLEDGE=2;
+	const TYPE_MARKINGUP=3;
+	const TYPE_CODING=4;
 	/**
 	 * @var array config list other attributes of the banner
 	 * this attribute no need to search	 
 	 */	
-	private $config_other_attributes=array('modified');	
+	private $config_other_attributes=array('supplement','modified');	
 	private $list_other_attributes;
-	public $header;
-	public $options;
 	
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
 	}
+	/**
+	 * PHP setter magic method for other attributes
+	 * @param $name the attribute name
+	 * @param $value the attribute value
+	 * set value into particular attribute
+	 */
+	public function __set($name,$value)
+	{
+		if(in_array($name,$this->config_other_attributes))
+			$this->list_other_attributes[$name]=$value;
+		else 
+			parent::__set($name,$value);
+	}
 	
+	/**
+	 * PHP getter magic method for other attributes
+	 * @param $name the attribute name
+	 * @return value of {$name} attribute
+	 */
+	public function __get($name)
+	{
+		if(in_array($name,$this->config_other_attributes))
+			if(isset($this->list_other_attributes[$name])) 
+				return $this->list_other_attributes[$name];
+			else 
+		 		return null;
+		else
+			return parent::__get($name);
+	}
 	/**
 	 * @return string the associated database table name
 	 */
@@ -41,7 +71,8 @@ class Question extends CActiveRecord
 	public function rules()
 	{
 		return array(
-			array('cat_id,content','required'),
+			array('content,answer,title','required'),
+			array('supplement','safe')
 		);
 	}
 	/**
@@ -74,6 +105,10 @@ class Question extends CActiveRecord
 	 */
 	public function afterFind()
 	{
+		//Decode content
+		$this->content=(array)json_decode($this->content);
+		//Decode answer
+		$this->answer=(array)json_decode($this->answer);
 		//Decode attribute other to set other attributes
 		$this->list_other_attributes=(array)json_decode($this->other);	
 			
@@ -107,7 +142,10 @@ class Question extends CActiveRecord
 				$modified[time()]=Yii::app()->user->id;
 				$this->modified=json_encode($modified);				
 			}
-			
+			//Encode content
+			$this->content=json_encode($this->content);
+			//Encode answer
+			$this->answer=json_encode($this->answer);
 			$this->other=json_encode($this->list_other_attributes);
 			return true;
 		}

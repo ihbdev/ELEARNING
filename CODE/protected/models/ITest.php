@@ -1,7 +1,7 @@
 <?php
 /**
  * 
- * Exam class file 
+ * Test class file 
  * @author ihbvietnam <hotro@ihbvietnam.com>
  * @link http://iphoenix.vn
  * @copyright Copyright &copy; 2012 IHB Vietnam
@@ -10,28 +10,60 @@
  */
 
 /**
- * Exam includes attributes and methods of Exam class  
+ * Test includes attributes and methods of Test class  
  */
-class Test extends CActiveRecord
+class ITest extends CActiveRecord
 {
+	const TYPE_LANGUAGE=1;
+	const TYPE_KNOWLEDGE=2;
+	const TYPE_MARKINGUP=3;
+	const TYPE_CODING=4;
 	/**
 	 * @var array config list other attributes of the banner
 	 * this attribute no need to search	 
 	 */	
-	private $config_other_attributes=array('modified,description');	
+	private $config_other_attributes=array('modified','description','content');	
 	private $list_other_attributes;
 	
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
 	}
+	/**
+	 * PHP setter magic method for other attributes
+	 * @param $name the attribute name
+	 * @param $value the attribute value
+	 * set value into particular attribute
+	 */
+	public function __set($name,$value)
+	{
+		if(in_array($name,$this->config_other_attributes))
+			$this->list_other_attributes[$name]=$value;
+		else 
+			parent::__set($name,$value);
+	}
 	
+	/**
+	 * PHP getter magic method for other attributes
+	 * @param $name the attribute name
+	 * @return value of {$name} attribute
+	 */
+	public function __get($name)
+	{
+		if(in_array($name,$this->config_other_attributes))
+			if(isset($this->list_other_attributes[$name])) 
+				return $this->list_other_attributes[$name];
+			else 
+		 		return null;
+		else
+			return parent::__get($name);
+	}
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'tbl_exam';
+		return 'tbl_test';
 	}
 	/**
 	 * @return array validation rules for model attributes.
@@ -39,8 +71,14 @@ class Test extends CActiveRecord
 	public function rules()
 	{
 		return array(
-			array('catid,content','required'),
+			array('title,level,content','required'),
+			array('type', 'numerical'),
 		);
+	}
+	public function validatorContent($attributes,$params){
+		if(sizeof($this->content)==0){
+			$this->addError('content', 'Chưa có câu hỏi');
+		}
 	}
 	/**
 	 * @return array customized attribute labels (name=>label)
@@ -51,6 +89,8 @@ class Test extends CActiveRecord
 			'type' => 'Dạng câu hỏi',
 			'level' => 'Mức độ khó',
 			'catid'=>'Nhóm',
+			'title'=>'Tiêu đề',
+			'content'=>'Danh sách câu hỏi',
 			'created_by' => 'Người tạo',
 			'created_date' => 'Ngày tạo',
 		);
@@ -63,7 +103,6 @@ class Test extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'material'=>array(self::BELONGS_TO,'Material','material_id'),
 		);
 	}
 	/**
@@ -79,6 +118,12 @@ class Test extends CActiveRecord
 			$this->list_other_attributes['modified']=(array)json_decode($this->list_other_attributes['modified']);
 		else 
 			$this->list_other_attributes['modified']=array();
+			
+		//Decode content
+		if(isset($this->list_other_attributes['content']))
+			$this->list_other_attributes['content']=(array)json_decode($this->list_other_attributes['content']);
+		else 
+			$this->list_other_attributes['content']=array();
 		return parent::afterFind();
 	}
 		
@@ -105,6 +150,9 @@ class Test extends CActiveRecord
 				$modified[time()]=Yii::app()->user->id;
 				$this->modified=json_encode($modified);				
 			}
+			//Encode content
+			$content=$this->content;
+			$this->content=json_encode($this->content);
 			
 			$this->other=json_encode($this->list_other_attributes);
 			return true;

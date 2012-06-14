@@ -1,7 +1,7 @@
 <?php
 /**
  * 
- * Test class file 
+ * Exam class file 
  * @author ihbvietnam <hotro@ihbvietnam.com>
  * @link http://iphoenix.vn
  * @copyright Copyright &copy; 2012 IHB Vietnam
@@ -10,7 +10,7 @@
  */
 
 /**
- * Test includes attributes and methods of Test class  
+ * Exam includes attributes and methods of Exam class  
  */
 class Exam extends CActiveRecord
 {
