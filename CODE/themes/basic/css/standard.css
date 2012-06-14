@@ -406,6 +406,29 @@ padding:3px 10px;
 border-radius:3px;
 cursor:pointer;
 }*/
+.folder-content .big-button, #adminBox .big-button {
+background:#ddd url(images/big-button.png) repeat-x scroll 0 0;
+background-position:0 -3px;
+border:1px solid #ccc;
+padding:18px 10px;
+*padding:18px 0px;
+-moz-border-radius:3px;
+-webkit-border-radius:3px;
+border-radius:3px;
+cursor:pointer;
+}
+.folder-content .big-button:hover, #adminBox .big-button:hover {
+background:#fff url(images/big-button.png) repeat-x scroll 0 0;
+background-position:0 -59px;
+border:1px solid #333;
+color:#fff;
+padding:18px 10px;
+*padding:18px 0px;
+-moz-border-radius:3px;
+-webkit-border-radius:3px;
+border-radius:3px;
+cursor:pointer;
+}
 .folder-content .button, #adminBox .button 
 {
     -moz-border-bottom-colors: none;
@@ -1243,7 +1266,7 @@ div.form span.required
 	width:635px;
 }
 .intro-banner{
-	background:url(../images/intro-banner.png) no-repeat;
+	background:url(images/intro-banner.png) no-repeat;
 	width:635px;
 	height:93px;
 }

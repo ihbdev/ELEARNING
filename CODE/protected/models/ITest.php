@@ -121,13 +121,13 @@ class ITest extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'type' => 'Dạng câu hỏi',
-			'level' => 'Mức độ khó',
-			'catid'=>'Nhóm',
-			'title'=>'Tiêu đề',
-			'content'=>'Danh sách câu hỏi',
-			'created_by' => 'Người tạo',
-			'created_date' => 'Ngày tạo',
+			'type' => 'Type',
+			'level' => 'Level',
+			'catid'=>'Group',
+			'title'=>'Title',
+			'content'=>'List questions',
+			'created_by' => 'Author',
+			'created_date' => 'Created Time',
 		);
 	}
 	/**
@@ -179,7 +179,8 @@ class ITest extends CActiveRecord
 			if($this->isNewRecord)
 			{
 				$this->created_date=time();
-				$this->created_by=Yii::app()->user->id;				
+				$this->created_by=Yii::app()->user->id;		
+				$this->status=ITest::STATUS_ACTIVE;		
 			}
 			else {
 				$modified=$this->modified;

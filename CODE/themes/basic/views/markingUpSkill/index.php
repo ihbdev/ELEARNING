@@ -2,17 +2,17 @@
 	<div class="folder top">
 		<!--begin title-->
 		<div class="folder-header">
-			<h1>List test Marking-up</h1>
+			<h1><?php echo Language::t('List test Marking-up')?></h1>
 			<div class="header-menu">
 				<ul>
-					<li class="ex-show"><a class="activities-icon" href=""><span>List test Marking-up</span></a></li>
+					<li class="ex-show"><a class="activities-icon" href=""><span><?php echo Language::t('List test Marking-up')?></span></a></li>
 				</ul>
 			</div>
 		</div>
 		<!--end title-->
 		<div class="folder-content">
             <div>
-            	<input type="button" class="button" value="Add new test marking-up" style="width:180px;" onClick="parent.location='<?php echo Yii::app()->createUrl('markingUpSkill/create')?>'"/>
+            	<input type="button" class="button" value="<?php echo Language::t('Add new test marking-up')?>" style="width:180px;" onClick="parent.location='<?php echo Yii::app()->createUrl('markingUpSkill/create')?>'"/>
                 <div class="line top bottom"></div>	
             </div>
              <!--begin box search-->
@@ -44,7 +44,7 @@
                                         
                         <li>
                         <?php 
-							echo CHtml::submitButton('Lọc kết quả',
+							echo CHtml::submitButton('Search',
     						array(
     							'class'=>'button',
     							'style'=>'margin-left:153px; width:95px;',
@@ -59,7 +59,7 @@
                 <div class="fl" style="width:480px;">
                     <ul>
                     <?php 
-					$list=array(''=>'Tất cả các nhóm','0'=>'');
+					$list=array(''=>'All','0'=>'Final','1'=>'Level');
 					?>
 					<li>
 						<?php echo $form->labelEx($model,'group_level'); ?>
@@ -99,14 +99,14 @@
 						'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),		
 					), 		
 					array(
-						'header'=>'Trạng thái',
+						'header'=>Language::t('Status'),
 						'class'=>'iPhoenixButtonColumn',
     					'template'=>'{reverse}',
     					'buttons'=>array
     					(
         					'reverse' => array
     						(
-            					'label'=>'Đổi trạng thái bài viết',
+            					'label'=>Language::t('Change status'),
             					'imageUrl'=>'$data->imageStatus',
             					'url'=>'Yii::app()->createUrl("markingUpSkill/reverseStatus", array("id"=>$data->id))',
     							'click'=>'function(){
@@ -130,22 +130,22 @@
 						'headerHtmlOptions'=>array('width'=>'5%','class'=>'table-title'),
 					),    											   	   
 					array(
-						'header'=>'Công cụ',
+						'header'=>Language::t('Tools'),
 						'class'=>'CButtonColumn',
     					'template'=>'{update}{delete}{view}',
-						'deleteConfirmation'=>'Bạn muốn xóa bài viết này?',
-						'afterDelete'=>'function(link,success,data){ if(success) jAlert("Bạn đã xóa thành công"); }',
+						'deleteConfirmation'=>Language::t('Are you sure that you want to delete the test?'),
+						'afterDelete'=>'function(link,success,data){ if(success) jAlert("'.Language::t("Delete succcessfully").'"); }',
     					'buttons'=>array
     					(
     						'update' => array(
-    							'label'=>'Chỉnh sửa bài viết',
+    							'label'=>Language::t('Edit'),
     						),
         					'delete' => array(
-    							'label'=>'Xóa bài viết',
+    							'label'=>Language::t('Delete'),
     						),
     						'copy' => array
     						(
-            					'label'=>'Copy bài viết',
+            					'label'=>Language::t('Copy'),
             					'imageUrl'=>Yii::app()->theme->baseUrl.'/images/copy.gif',
             					'url'=>'Yii::app()->createUrl("markingUpSkill/copy", array("id"=>$data->id))',
         					),
@@ -157,15 +157,15 @@
 					),    				
  	 			),
  	 			'template'=>'{displaybox}{checkbox}{summary}{items}{pager}',
-  				'summaryText'=>'Có {count} tin',
+  				'summaryText'=>'{count} '.Language::t('tests'),
  	 			'pager'=>array('class'=>'CLinkPager','header'=>'','prevPageLabel'=>'< Trước','nextPageLabel'=>'Sau >','htmlOptions'=>array('class'=>'pages fr')),
 				'actions'=>array(
 					'delete'=>array(
 						'action'=>'delete',
-						'label'=>'Xóa',
+						'label'=>Language::t('Delete'),
 						'imageUrl' => Yii::app()->theme->baseUrl.'/images/delete.png',
 						'url'=>'markingUpSkill/checkbox'
-		markingUpSkill/
+					),
 				),
  	 			)); ?>
 		</div>

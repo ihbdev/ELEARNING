@@ -54,7 +54,7 @@ class iPhoenixGridView extends CGridView
 		
 		if (sizeof ( $this->actions ) > 0) {
 			echo '<div class="' . $this->checkboxCssClass . '">';
-			echo 'Công cụ: ';
+			echo Language::T('Tools').': ';
 			foreach ( $this->actions as $action ) {
 				$this->renderAction ( $action );
 				echo " ";
