@@ -26,25 +26,33 @@
                 <div class="testpost-box">
 					<h2>Choise Level</h2>
                     <div class="level-outer">
-                    	<input name="ITest[level]" type="radio" value="1" checked="checked" /><label>Level 1</label>
-                        <input name="ITest[level]" type="radio" value="2" /><label>Level 2</label>
-                        <input name="ITest[level]" type="radio" value="3" /><label>Level 3</label>
-                        <input name="ITest[level]" type="radio" value="4" /><label>Level 4</label>
-                        <input name="ITest[level]" type="radio" value="5" /><label>Level 5</label>
-                        <br>
-                        <input name="ITest[level]" type="radio" value="6" /><label>Level 6</label>
-                        <input name="ITest[level]" type="radio" value="7" /><label>Level 7</label>
-                        <input name="ITest[level]" type="radio" value="8" /><label>Level 8</label>
-                        <input name="ITest[level]" type="radio" value="9" /><label>Level 9</label>
+                    	<?php for($i=1;$i<ITest::MARKINGUP_MAX_LEVEL;$i++):?>
+                    		<input name="ITest[level]" type="radio" value="<?php echo $i?>" <?php if($test->level==$i) echo 'checked="checked"';?> /><label>Level <?php echo $i?></label>
+                    		<?php if($i == round(ITest::MARKINGUP_MAX_LEVEL/2)) echo '</br>';?>
+                        <?php endfor;?>
                         <?php echo $form->error($test, 'level'); ?>
                     </div>
                 </div><!--testpost-box-->
                 <div class="testpost-box">
 					<h2>Post Q&A Level</h2>
+					<?php foreach ($test->content as $question_id):?>
+                    	<?php $question=Question::model()->findByPk($question_id);?>
+                         <div class="text-question">
+                            <div class="text-title"><?php echo $question->title?></div>
+                            <div class="text-check">
+                            	<?php 
+                            	$list_answer=$question->answer;
+                            	?>
+                            	<?php foreach ($question->content as $index=>$option):?>
+                            	<div class="<?php if($list_answer[$index]) echo 'active'?>"><label><?php echo ($index+1)?>) <?php echo $option?></label></div>
+                            	<?php endforeach;?>
+                            </div>
+                        </div><!--text-question-->
+                        <?php endforeach;?>
                     <div class="markingup-question">                               
                     	<div class="q-post">
                         	<div class="row"><h3>Question</h3></div>
-                        	<input id="list_questions" name="ITest[questions]" type="hidden" value=""/>
+                        	<input id="list_questions" name="ITest[questions]" type="hidden" value="<?php echo implode(',', $test->content)?>"/>
                         	<?php echo $form->error($test, 'content'); ?>
                         	<div class="row"><label style="width:70px;">Title:</label><textarea name="Question[title]" style="width:600px; height:80px;"></textarea></div>
                             <div class="row"><label style="width:70px;">Input file:</label><input type="text" name ="Question[supplement]" style="width: 600px;"></div>
@@ -82,7 +90,10 @@
 												$('.q-post').find('input[type=checkbox]').removeAttr('checked');
 												
 												$(data.view).insertBefore($('.q-post'));
-												}
+											}
+											else{
+												jAlert(data.message);
+											}
 										},
 										});
 								return false;

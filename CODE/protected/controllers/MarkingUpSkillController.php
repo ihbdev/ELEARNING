@@ -102,12 +102,12 @@ class MarkingUpSkillController extends Controller
 		if(isset($_POST['ITest']))
 		{
 			$test->attributes=$_POST['ITest'];
-			$test->type=ITest::TYPE_LANGUAGE;			
+			$test->type=ITest::TYPE_MARKINGUP;			
 			$list_questions = array_diff ( explode ( ',', $_POST['ITest']['questions'] ), array ('') );
 			$test->content=$list_questions;
 			if($test->save())
 			{
-				Yii::app()->user->setFlash('success', Language::t('Đã tạo bài test thành công'));
+				$this->redirect(array('update','id'=>$test->id));
 			}	
 		}
 		$this->render ( 'create',array('test'=>$test));
@@ -116,29 +116,32 @@ class MarkingUpSkillController extends Controller
 	 * Add a new question
 	 */
 	public function actionAddQuestion() {
-		if(isset($_POST ['Question'])){
-			$question = new Question();
-			$question->attributes = $_POST['Question'];
-			$answer=array();
-			foreach ($question->content as $index=>$option){
-				if(in_array($index, $question->answer))
-					$answer[$index]=1;
-				else 
-					$answer[$index]=0;
-			}
-			$question->answer=$answer;
-			$question->type = Question::TYPE_LANGUAGE;
-			if(!isset($question->material_id) && isset($material->id))
-				$question->material_id=$material->id;
-			else
-				$question->material_id=0;
-			if ($question->save ()) {
-				$question=Question::model()->findByPk($question->id);
-				$view=$this->renderPartial('add_question',array(
-						'question'=>$question,			
-					),true);
-				$result=array('success'=>true,'id'=>$question->id,'view'=>$view);
-				echo json_encode($result);
+		if (isset ( $_POST ['Question'] )) {
+			$question = new Question ();
+			$question->attributes = $_POST ['Question'];
+			if (! isset ( $question->answer )) {
+				$result = array ('success' => false, 'message' => 'Select answer' );
+				echo json_encode ( $result );
+			} else {
+				$answer = array ();
+				foreach ( $question->content as $index => $option ) {
+					if (in_array ( $index, $question->answer ))
+						$answer [$index] = 1;
+					else
+						$answer [$index] = 0;
+				}
+				$question->answer = $answer;
+				$question->type = Question::TYPE_MARKINGUP;
+				if (! isset ( $question->material_id ) && isset ( $material->id ))
+					$question->material_id = $material->id;
+				else
+					$question->material_id = 0;
+				if ($question->save ()) {
+					$question = Question::model ()->findByPk ( $question->id );
+					$view = $this->renderPartial ( 'add_question', array ('question' => $question ), true );
+					$result = array ('success' => true, 'id' => $question->id, 'view' => $view );
+					echo json_encode ( $result );
+				}
 			}
 		}
 	}
@@ -166,7 +169,7 @@ class MarkingUpSkillController extends Controller
 			if($test->save())
 			{
 				$test=ITest::model()->findByPk($id);
-				Yii::app()->user->setFlash('success', Language::t('Đã tạo bài test thành công'));
+				Yii::app()->user->setFlash('success', Language::t('Update success'));
 			}	
 		}
 		$this->render ( 'update',array('test'=>$test));
@@ -179,7 +182,17 @@ class MarkingUpSkillController extends Controller
 	 */
 	public function actionDelete($id)
 	{
-		
+		if(Yii::app()->request->isPostRequest)
+		{
+			// we only allow deletion via POST request
+			$this->loadModel($id)->delete();
+
+			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+			if(!isset($_GET['ajax']))
+				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+		}
+		else
+			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
 	}
 
 	/**
@@ -189,14 +202,52 @@ class MarkingUpSkillController extends Controller
 	 */
 	public function actionCheckbox($action)
 	{
-		
+		$this->initCheckbox('checked-test-list');
+		$list_checked = Yii::app()->session["checked-test-list"];
+		switch ($action) {
+			case 'delete' :
+				if (Yii::app ()->user->checkAccess ( 'test_delete')) {
+					foreach ( $list_checked as $id ) {
+						$item = News::model ()->findByPk ( (int)$id );
+						if (isset ( $item ))
+							if (! $item->delete ()) {
+								echo 'false';
+								Yii::app ()->end ();
+							}
+					}
+					Yii::app ()->session ["checked-test-list"] = array ();
+				} else {
+					echo 'false';
+					Yii::app ()->end ();
+				}
+				break;
+		}
+		echo 'true';
+		Yii::app()->end();
 	}
 	/**
 	 * Lists all models.
 	 */
 	public function actionIndex()
 	{
-	
+		$this->initCheckbox('checked-test-list');
+		$criteria = new CDbCriteria ();
+		$criteria->compare ( 'type', ITest::TYPE_MARKINGUP );
+		$list_tests= new CActiveDataProvider ( 'ITest', array (
+			'criteria' => $criteria, 
+			'pagination' => array ('pageSize' => Yii::app ()->user->getState ( 'pageSize', Setting::s('DEFAULT_PAGE_SIZE','System')  ) ), 
+			'sort' => array ('defaultOrder' => 'id DESC' )    		
+		));
+		
+		$model=new ITest('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['ITest']))
+			$model->attributes=$_GET['ITest'];
+				
+		$this->render('index',array(
+			'list_tests'=>$list_tests,
+			'model'=>$model
+		));
 	}
 	/**
 	 * Reverse status of language
@@ -204,6 +255,11 @@ class MarkingUpSkillController extends Controller
 	 */
 	public function actionReverseStatus($id)
 	{
+		$src=ITest::reverseStatus($id);
+		if($src) 
+			echo json_encode(array('success'=>true,'src'=>$src));
+		else 
+			echo json_encode(array('success'=>false));		
 	}
 	
 	/**
@@ -211,7 +267,12 @@ class MarkingUpSkillController extends Controller
 	 */
 	public function actionSuggestTitle()
 	{
-	
+		if(isset($_GET['q']) && ($keyword=trim($_GET['q']))!=='')
+		{
+			$titles=ITest::model()->suggestTitle($keyword);
+			if($titles!==array())
+				echo implode("\n",$titles);
+		}
 	}
 	
 	/**
@@ -219,15 +280,65 @@ class MarkingUpSkillController extends Controller
 	 * @param string $name_params, name of section to work	 
 	 */
 	public function initCheckbox($name_params){
-	
+		if (! isset ( Yii::app ()->session [$name_params] ))
+			Yii::app ()->session [$name_params] = array ();
+		if (! Yii::app ()->getRequest ()->getIsAjaxRequest () && $name_params != 'checked-suggest-list')
+		{
+				Yii::app ()->session [$name_params] = array ();
+		}
+		else {
+			if (isset ( $_POST ['list-checked'] )) {
+				$list_new = array_diff ( explode ( ',', $_POST ['list-checked'] ), array ('' ) );
+				$list_old = Yii::app ()->session [$name_params];
+				$list = $list_old;
+				foreach ( $list_new as $id ) {
+					if (! in_array ( $id, $list_old ))
+						$list [] = $id;
+				}
+				Yii::app ()->session [$name_params] = $list;
+			}
+			if (isset ( $_POST ['list-unchecked'] )) {
+				$list_unchecked = array_diff ( explode ( ',', $_POST ['list-unchecked'] ), array ('' ) );
+				$list_old = Yii::app ()->session [$name_params];
+				$list = array ();
+				foreach ( $list_old as $id ) {
+					if (! in_array ( $id, $list_unchecked )) {
+						$list [] = $id;
+					}
+				}
+				Yii::app ()->session [$name_params] = $list;
+			}
+		}if (! isset ( Yii::app ()->session [$name_params] ))
+			Yii::app ()->session [$name_params] = array ();
+		if (! Yii::app ()->getRequest ()->getIsAjaxRequest () && $name_params != 'checked-suggest-list')
+		{
+				Yii::app ()->session [$name_params] = array ();
+		}
+		else {
+			if (isset ( $_POST ['list-checked'] )) {
+				$list_new = array_diff ( explode ( ',', $_POST ['list-checked'] ), array ('' ) );
+				$list_old = Yii::app ()->session [$name_params];
+				$list = $list_old;
+				foreach ( $list_new as $id ) {
+					if (! in_array ( $id, $list_old ))
+						$list [] = $id;
+				}
+				Yii::app ()->session [$name_params] = $list;
+			}
+			if (isset ( $_POST ['list-unchecked'] )) {
+				$list_unchecked = array_diff ( explode ( ',', $_POST ['list-unchecked'] ), array ('' ) );
+				$list_old = Yii::app ()->session [$name_params];
+				$list = array ();
+				foreach ( $list_old as $id ) {
+					if (! in_array ( $id, $list_unchecked )) {
+						$list [] = $id;
+					}
+				}
+				Yii::app ()->session [$name_params] = $list;
+			}
+		}
 	}
-	/*
-	 * List language suggest 
-	 */
-	public function actionUpdateSuggest()
-	{
-		
-	}
+
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
@@ -235,7 +346,7 @@ class MarkingUpSkillController extends Controller
 	 */
 	public function loadModel($id)
 	{
-		$model=MarkingUpSkill::model()->findByPk($id);
+		$model=Test::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
