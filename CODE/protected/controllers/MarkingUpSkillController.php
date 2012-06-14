@@ -110,7 +110,7 @@ class MarkingUpSkillController extends Controller
 				$this->redirect(array('update','id'=>$test->id));
 			}	
 		}
-		$this->render ( 'create',array('test'=>$test));
+		$this->render ('create',array('test'=>$test));
 	}
 	/**
 	 * Add a new question

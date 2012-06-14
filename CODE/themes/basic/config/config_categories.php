@@ -7,7 +7,7 @@ return array(
 			'class'=>'News',
 			'label'=>'Danh mục tin tức-sự kiện',
 		),
-		Category::TYPE_ITEST=>array(
+		Category::TYPE_ITEST_LANG=>array(
 			'form'=>'_form',
 			'max_rank'=>1,
 			'code'=>'itest',

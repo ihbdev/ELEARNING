@@ -97,7 +97,19 @@ class LanguageSkillController extends Controller
 	 */
 	public function actionCreate()
 	{
-
+		$test=new ITest();
+		if(isset($_POST['ITest']))
+		{
+			$test->attributes=$_POST['ITest'];
+			$test->type=ITest::TYPE_LANGUAGE;			
+			$list_questions = array_diff ( explode ( ',', $_POST['ITest']['questions'] ), array ('') );
+			$test->content=$list_questions;
+			if($test->save())
+			{
+				$this->redirect(array('update','id'=>$test->id));
+			}	
+		}
+		$this->render('create',array('test'=>$test));
 	}
 	/**
 	 * Copy a new model
@@ -140,7 +152,7 @@ class LanguageSkillController extends Controller
 	 */
 	public function actionIndex()
 	{
-	
+		$this->render('index');
 	}
 	/**
 	 * Reverse status of language
