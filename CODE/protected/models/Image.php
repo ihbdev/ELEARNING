@@ -150,8 +150,6 @@ class Image extends CActiveRecord
 		$size_type=$config_thumb_size[$category][$type]['w'].'x'.$config_thumb_size[$category][$type]['h'];
 		$url=Yii::getPathOfAlias('webroot').'/'.$this->src.'/'.$size_type.'/'.$this->filename.'.'.$this->extension;
 		if(!file_exists($url)){
-			var_dump(Yii::getPathOfAlias('webroot').'/'.$this->src.'/'.$size_type);
-			exit;
 			if(!file_exists(Yii::getPathOfAlias('webroot').'/'.$this->src.'/'.$size_type)){
 				mkdir(Yii::getPathOfAlias('webroot').'/'.$this->src.'/'.$size_type);
 			}
@@ -301,7 +299,8 @@ class Image extends CActiveRecord
 				}
 				*/
  				$class=$this->category;
- 				$parent = $class::model()->findByPk($this->parent_id);
+				$object=new $class;
+ 				$parent = $object->findByPk($this->parent_id);
 				return $parent;
  			}
 			else {
@@ -487,7 +486,8 @@ class Image extends CActiveRecord
 				}
 			*/
 			$class=$this->category;
- 			$parent = $class::model()->findByPk($this->parent_id);
+			$object= new $class;
+ 			$parent = $object->findByPk($this->parent_id);
  			$parent->scenario = 'upload-image';
 			$attribute=$this->parent_attribute;
 			$old_attributes = array_diff ( explode ( ',', $parent->$attribute ), array ('' ) );
@@ -552,7 +552,8 @@ class Image extends CActiveRecord
 				}
 				*/
 				$class=$this->category;
- 				$parent = $class::model()->findByPk($this->parent_id);
+				$object=new $class;
+ 				$parent = $object->findByPk($this->parent_id);
  				
 				$attribute = $this->parent_attribute;
 				$old_attributes = array_diff ( explode ( ',', $parent->$attribute ), array ('' ) );

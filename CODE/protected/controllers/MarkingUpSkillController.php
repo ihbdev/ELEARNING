@@ -99,6 +99,7 @@ class MarkingUpSkillController extends Controller
 	public function actionCreate()
 	{
 		$test=new ITest();
+		$test->content=array();
 		if(isset($_POST['ITest']))
 		{
 			$test->attributes=$_POST['ITest'];
@@ -163,13 +164,13 @@ class MarkingUpSkillController extends Controller
 		if(isset($_POST['ITest']))
 		{
 			$test->attributes=$_POST['ITest'];
-			$test->type=ITest::TYPE_LANGUAGE;			
+			$test->type=ITest::TYPE_MARKINGUP;			
 			$list_questions = array_diff ( explode ( ',', $_POST['ITest']['questions'] ), array ('') );
 			$test->content=$list_questions;
 			if($test->save())
 			{
 				$test=ITest::model()->findByPk($id);
-				Yii::app()->user->setFlash('success', Language::t('Update success'));
+				Yii::app()->user->setFlash('success', Language::t('Update successfully'));
 			}	
 		}
 		$this->render ( 'update',array('test'=>$test));
@@ -206,9 +207,10 @@ class MarkingUpSkillController extends Controller
 		$list_checked = Yii::app()->session["checked-test-list"];
 		switch ($action) {
 			case 'delete' :
-				if (Yii::app ()->user->checkAccess ( 'test_delete')) {
+				//if (Yii::app ()->user->checkAccess ( 'test_delete')) {
+				if(true){
 					foreach ( $list_checked as $id ) {
-						$item = News::model ()->findByPk ( (int)$id );
+						$item = ITest::model ()->findByPk ( (int)$id );
 						if (isset ( $item ))
 							if (! $item->delete ()) {
 								echo 'false';
@@ -231,18 +233,26 @@ class MarkingUpSkillController extends Controller
 	public function actionIndex()
 	{
 		$this->initCheckbox('checked-test-list');
-		$criteria = new CDbCriteria ();
-		$criteria->compare ( 'type', ITest::TYPE_MARKINGUP );
-		$list_tests= new CActiveDataProvider ( 'ITest', array (
-			'criteria' => $criteria, 
-			'pagination' => array ('pageSize' => Yii::app ()->user->getState ( 'pageSize', Setting::s('DEFAULT_PAGE_SIZE','System')  ) ), 
-			'sort' => array ('defaultOrder' => 'id DESC' )    		
-		));
 		
 		$model=new ITest('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['ITest']))
 			$model->attributes=$_GET['ITest'];
+			
+		$criteria = new CDbCriteria ();
+		$criteria->compare ( 'type', ITest::TYPE_MARKINGUP );
+		if($model->title != '')
+			$criteria->compare ( 'title', $model->title, true );
+		if($model->group_level === '0')
+			$criteria->compare ( 'level',0);
+		if($model->group_level === '1')
+			$criteria->addCondition( 'level <> 0');	
+			
+		$list_tests= new CActiveDataProvider ( 'ITest', array (
+			'criteria' => $criteria, 
+			'pagination' => array ('pageSize' => Yii::app ()->user->getState ( 'pageSize', Setting::s('DEFAULT_PAGE_SIZE','System')  ) ), 
+			'sort' => array ('defaultOrder' => 'id DESC' )    		
+		));
 				
 		$this->render('index',array(
 			'list_tests'=>$list_tests,
@@ -346,7 +356,7 @@ class MarkingUpSkillController extends Controller
 	 */
 	public function loadModel($id)
 	{
-		$model=Test::model()->findByPk($id);
+		$model=ITest::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
