@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 13, 2012 at 04:19 PM
+-- Generation Time: Jun 14, 2012 at 11:25 AM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.1
 
@@ -681,14 +681,17 @@ CREATE TABLE IF NOT EXISTS `tbl_language` (
   `controller` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `action` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `tbl_language`
 --
 
 INSERT INTO `tbl_language` (`id`, `lang`, `origin`, `translation`, `category`, `module`, `controller`, `action`) VALUES
-(1, 'vi', 'Trang thông báo lỗi', '', 'layout', '', '', '');
+(1, 'vi', 'Trang thông báo lỗi', '', 'layout', '', '', ''),
+(2, 'vi', 'Đã tạo bài test thành công', '', '', '', 'markingUpSkill', 'create'),
+(3, 'vi', 'Đã tạo bài test thành công', '', '', '', 'markingUpSkill', 'update'),
+(4, 'vi', 'Update success', '', '', '', 'markingUpSkill', 'update');
 
 -- --------------------------------------------------------
 
@@ -805,25 +808,45 @@ CREATE TABLE IF NOT EXISTS `tbl_question` (
   `title` varchar(512) COLLATE utf8_unicode_ci NOT NULL,
   `content` varchar(1024) COLLATE utf8_unicode_ci NOT NULL,
   `answer` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `other` int(11) NOT NULL,
+  `other` varchar(1024) COLLATE utf8_unicode_ci NOT NULL,
   `created_by` int(11) NOT NULL,
   `created_date` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=29 ;
 
 --
 -- Dumping data for table `tbl_question`
 --
 
 INSERT INTO `tbl_question` (`id`, `status`, `type`, `material_id`, `level`, `title`, `content`, `answer`, `other`, `created_by`, `created_date`) VALUES
-(1, 0, 1, 0, 0, 'Title', '["A","B","C","D","E"]', '[0,1,0,1,0]', 0, 1, 1339571416),
-(2, 0, 1, 0, 0, 'Title', '["A","B","C","D","E"]', '[0,1,0,1,1]', 0, 1, 1339571462),
-(3, 0, 1, 0, 0, 'Title', '["A","B","C","D","E"]', '[1,0,1,0,0]', 0, 1, 1339571882),
-(4, 0, 1, 0, 0, 'Title', '["A","B","C","D","E"]', '[0,1,1,0,1]', 0, 1, 1339571996),
-(5, 0, 1, 0, 0, 'Title', '["A","B","C","D","E"]', '[1,0,1,0,0]', 0, 1, 1339572259),
-(6, 0, 1, 0, 0, 'Title', '["A","B","C","D","E"]', '[1,0,1,0,0]', 0, 1, 1339572586),
-(7, 0, 1, 0, 0, 'Title', '["A","B","C","D","E"]', '[0,0,1,0,1]', 0, 1, 1339572650),
-(8, 0, 1, 0, 0, 'Title', '["A","B","C","D","E"]', '[1,0,1,0,1]', 0, 1, 1339573557);
+(1, 0, 1, 0, 0, 'Title', '["A","B","C","D","E"]', '[0,1,0,1,0]', '0', 1, 1339571416),
+(2, 0, 1, 0, 0, 'Title', '["A","B","C","D","E"]', '[0,1,0,1,1]', '0', 1, 1339571462),
+(3, 0, 1, 0, 0, 'Title', '["A","B","C","D","E"]', '[1,0,1,0,0]', '0', 1, 1339571882),
+(4, 0, 1, 0, 0, 'Title', '["A","B","C","D","E"]', '[0,1,1,0,1]', '0', 1, 1339571996),
+(5, 0, 1, 0, 0, 'Title', '["A","B","C","D","E"]', '[1,0,1,0,0]', '0', 1, 1339572259),
+(6, 0, 1, 0, 0, 'Title', '["A","B","C","D","E"]', '[1,0,1,0,0]', '0', 1, 1339572586),
+(7, 0, 1, 0, 0, 'Title', '["A","B","C","D","E"]', '[0,0,1,0,1]', '0', 1, 1339572650),
+(8, 0, 1, 0, 0, 'Title', '["A","B","C","D","E"]', '[1,0,1,0,1]', '0', 1, 1339573557),
+(9, 0, 1, 0, 0, 'Title', '["A","B","C","D","E"]', '[1,0,1,1,0]', '0', 1, 1339575781),
+(10, 0, 1, 0, 0, 'Title', '["A","B","C","D","E"]', '[0,1,0,1,0]', '0', 1, 1339575852),
+(11, 0, 1, 0, 0, 'Title', '["A","B","C","D","E"]', '[1,0,0,0,1]', '0', 1, 1339576644),
+(12, 0, 1, 0, 0, 'Title', '["A","B","C","D","E"]', '[1,0,0,1,0]', '0', 1, 1339576689),
+(13, 0, 1, 0, 0, 'Title', '["A","B","C","D","E"]', '[1,1,1,0,0]', '0', 1, 1339576812),
+(14, 0, 1, 0, 0, 'Title', '["A","B","C","D","E"]', '[1,0,1,0,0]', '0', 1, 1339579619),
+(15, 0, 1, 0, 0, 'Title', '["A","B","C","D","E"]', '[1,0,0,0,1]', '0', 1, 1339579639),
+(16, 0, 1, 0, 0, 'Title', '["A","B","C","D","E"]', '[1,0,0,1,0]', '0', 1, 1339580691),
+(17, 0, 1, 0, 0, 'Title', '["A","B","C","D","E"]', '[1,1,1,0,0]', '0', 1, 1339581917),
+(18, 0, 1, 0, 0, 'Title', '["A","B","C","D","E"]', '[1,1,0,1,0]', '{"supplement":"link"}', 1, 1339582015),
+(19, 0, 1, 0, 0, 'Title', '["A","B","C","D","E"]', '[0,1,0,1,0]', '{"supplement":"link"}', 1, 1339582789),
+(20, 0, 1, 0, 0, 'Title', '["A","B","C","D","E"]', '[1,0,1,1,0]', '{"supplement":"link"}', 1, 1339583370),
+(21, 0, 1, 0, 0, 'Title', '["A","B","C","D","E"]', '[1,0,0,1,0]', '{"supplement":"link"}', 1, 1339584973),
+(22, 0, 1, 0, 0, 'Title 4', '["A","B","C","D","E"]', '[1,0,0,1,0]', '{"supplement":"link4"}', 1, 1339584998),
+(23, 0, 1, 0, 0, 'Title', '["A","B","C","D","E"]', '[1,0,0,1,1]', '{"supplement":"link"}', 0, 1339636724),
+(24, 0, 1, 0, 0, 'Title', '["A","B","C","D","E"]', '[0,1,0,1,0]', '{"supplement":"link"}', 0, 1339636740),
+(25, 0, 3, 0, 0, 'Title', '["A","B","C","D","E"]', '[1,0,0,0,1]', '{"supplement":"link"}', 1, 1339642479),
+(26, 0, 3, 0, 0, 'Title', '["A","B","C","D","E"]', '[1,0,0,0,1]', '{"supplement":"link"}', 1, 1339642496),
+(27, 0, 3, 0, 0, 'Title', '["A","B","C","D","E"]', '[1,0,0,0,1]', '{"supplement":"link"}', 1, 1339643070),
+(28, 0, 3, 0, 0, 'Title', '["A","B","C","D","E"]', '[0,0,1,1,0]', '{"supplement":"link"}', 1, 1339643086);
 
 -- --------------------------------------------------------
 
@@ -1165,17 +1188,22 @@ CREATE TABLE IF NOT EXISTS `tbl_test` (
   `catid` int(11) NOT NULL,
   `level` smallint(6) NOT NULL,
   `title` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `content` varchar(1024) COLLATE utf8_unicode_ci NOT NULL,
   `other` varchar(1024) COLLATE utf8_unicode_ci NOT NULL,
   `created_by` int(11) NOT NULL,
   `created_date` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=15 ;
 
 --
 -- Dumping data for table `tbl_test`
 --
 
+INSERT INTO `tbl_test` (`id`, `type`, `status`, `catid`, `level`, `title`, `other`, `created_by`, `created_date`) VALUES
+(10, 3, 0, 0, 1, 'Marking-up Level title', '{"modified":"{\\"1339583504\\":\\"1\\",\\"1339583602\\":\\"1\\",\\"1339583686\\":\\"1\\",\\"1339583727\\":\\"1\\",\\"1339583789\\":\\"1\\",\\"1339583871\\":\\"1\\",\\"1339583935\\":\\"1\\",\\"1339584021\\":\\"1\\",\\"1339584149\\":\\"1\\",\\"1339584182\\":\\"1\\",\\"1339584418\\":\\"1\\",\\"1339584546\\":\\"1\\",\\"1339584550\\":\\"1\\",\\"1339584593\\":\\"1\\",\\"1339584620\\":\\"1\\",\\"1339584724\\":\\"1\\",\\"1339584850\\":\\"1\\",\\"1339584855\\":\\"1\\",\\"1339584881\\":\\"1\\",\\"1339584948\\":\\"1\\",\\"1339584975\\":\\"1\\",\\"1339585001\\":\\"1\\"}","content":"[\\"18\\",\\"20\\",\\"21\\",\\"22\\"]"}', 1, 1339582034),
+(11, 3, 0, 0, 8, 'Marking-up Level title', '{"content":"[\\"23\\",\\"24\\"]"}', 1, 1339636745),
+(12, 3, 0, 0, 7, 'Marking-up Level title', '{"content":"[\\"25\\",\\"26\\"]"}', 1, 1339642497),
+(13, 3, 0, 0, 1, 'Marking-up Level title', '{"content":"[\\"27\\",\\"28\\"]"}', 1, 1339643249),
+(14, 1, 0, 0, 8, 'Marking-up Level title', '{"content":"[\\"27\\",\\"28\\"]","modified":"{\\"1339643520\\":\\"1\\",\\"1339643534\\":\\"1\\",\\"1339643939\\":\\"1\\",\\"1339643947\\":\\"1\\",\\"1339643990\\":\\"1\\",\\"1339644273\\":\\"1\\"}"}', 1, 1339643249);
 
 -- --------------------------------------------------------
 

@@ -27,7 +27,7 @@
 					<h2>Choise Level</h2>
                      <div class="level-outer">
                     	<?php for($i=1;$i<ITest::MARKINGUP_MAX_LEVEL;$i++):?>
-                    		<input name="ITest[level]" type="radio" value="1" <?php if($test->level==$i) echo 'checked="checked"';?> /><label>Level <?php echo $i?></label>
+                    		<input name="ITest[level]" type="radio" value="<?php echo $i?>" <?php if($test->level==$i) echo 'checked="checked"';?> /><label>Level <?php echo $i?></label>
                     		<?php if($i == round(ITest::MARKINGUP_MAX_LEVEL/2)) echo '</br>';?>
                         <?php endfor;?>
                         <?php echo $form->error($test, 'level'); ?>
