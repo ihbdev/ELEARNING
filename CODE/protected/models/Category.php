@@ -30,7 +30,6 @@ class Category extends CActiveRecord
 
 	const TYPE_NEWS=2;
 	const TYPE_KEYWORD=7;
-
 	const TYPE_ITEST=12;
 
 	/**
