@@ -27,9 +27,17 @@ class Category extends CActiveRecord
 	/**
 	 * Config code (id) of the main category groups which have parent_id=0
 	 */
-	const TYPE_ITEST=1;
+	const TYPE_STATICPAGE=1;
 	const TYPE_NEWS=2;
-	const TYPE_KEYWORD=3;
+	const TYPE_PRODUCT=3;
+	const TYPE_MANUFACTURER=4;
+	const TYPE_ALBUM=5;
+	const TYPE_GALLERYVIDEO=6;
+	const TYPE_KEYWORD=7;
+	const TYPE_QA=8;
+	const TYPE_SUPPORT=9;
+	const TYPE_RECRUITMENT=10;
+	const TYPE_APP=11;
 
 	/**
 	 * Config special
