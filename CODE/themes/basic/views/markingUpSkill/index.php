@@ -12,7 +12,8 @@
 		<!--end title-->
 		<div class="folder-content">
             <div>
-            	<input type="button" class="button" value="<?php echo Language::t('Add new test marking-up')?>" style="width:180px;" onClick="parent.location='<?php echo Yii::app()->createUrl('markingUpSkill/create')?>'"/>
+            	<input type="button" class="button" value="<?php echo Language::t('Add new test marking-up final')?>" style="width:180px;" onClick="parent.location='<?php echo Yii::app()->createUrl('markingUpSkill/create',array('group_level'=>0))?>'"/>
+                <input type="button" class="button" value="<?php echo Language::t('Add new test marking-up level')?>" style="width:180px;" onClick="parent.location='<?php echo Yii::app()->createUrl('markingUpSkill/create',array('group_level'=>1))?>'"/>
                 <div class="line top bottom"></div>	
             </div>
              <!--begin box search-->
@@ -86,7 +87,12 @@
     				),			
     				array(
 						'name'=>'title',
-						'headerHtmlOptions'=>array('width'=>'20%','class'=>'table-title'),		
+						'headerHtmlOptions'=>array('width'=>'15%','class'=>'table-title'),		
+					),
+					array(
+						'name'=>'group_level',
+						'value'=>'$data->level==0?"Final":"Level"',
+						'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),		
 					),
 					array(
 						'name'=>'author',

@@ -15,6 +15,15 @@
 class Exam extends CActiveRecord
 {
 	/**
+	 * Config status of news
+	 */
+	const STATUS_PENDING=0;
+	const STATUS_ACTIVE=1;
+	const TYPE_LANGUAGE=1;
+	const TYPE_KNOWLEDGE=2;
+	const TYPE_MARKINGUP=3;
+	const TYPE_CODING=4;
+	/**
 	 * @var array config list other attributes of the banner
 	 * this attribute no need to search	 
 	 */	
@@ -31,7 +40,7 @@ class Exam extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'tbl_test';
+		return 'tbl_exam';
 	}
 	/**
 	 * @return array validation rules for model attributes.

@@ -1,7 +1,7 @@
 <?php
 /**
  * 
- * MarkingUpSkillController class file 
+ * ExamController class file 
  * @author ihbvietnam <hotro@ihbvietnam.com>
  * @link http://iphoenix.vn
  * @copyright Copyright &copy; 2012 IHB Vietnam
@@ -10,18 +10,18 @@
  */
 
 /**
- * MarkingUpSkillController includes actions relevant to MarkingUpSkill model:
- *** create MarkingUpSkill
- *** copy MarkingUpSkill
+ * ExamController includes actions relevant to Exam model:
+ *** create Exam
+ *** copy Exam
  *** update
- *** delete MarkingUpSkill
- *** index MarkingUpSkill
- *** reverse status MarkingUpSkill
- *** suggest title MarkingUpSkill
+ *** delete Exam
+ *** index Exam
+ *** reverse status Exam
+ *** suggest title Exam
  *** update suggest
  *** load model  
  */
-class MarkingUpSkillController extends Controller
+class ExamController extends Controller
 {
 	/**
 	 * @return array action filters
@@ -96,55 +96,116 @@ class MarkingUpSkillController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionCreate($group_level)
+	public function actionCreate()
 	{
-		$test=new ITest();
-		$test->content=array();
-		if(isset($_POST['ITest']))
+		$model=new Exam();
+		if(isset($_POST['Exam']))
 		{
-			$test->attributes=$_POST['ITest'];
-			$test->type=ITest::TYPE_MARKINGUP;			
-			$list_questions = array_diff ( explode ( ',', $_POST['ITest']['questions'] ), array ('') );
-			$test->content=$list_questions;
-			if($test->save())
+			$exam->attributes=$_POST['ITest'];
+			$exam->type=Exam::TYPE_MARKINGUP;			
+			if($exam->save())
 			{
-				$this->redirect(array('update','id'=>$test->id));
+				$this->redirect(array('update','id'=>$exam->id));
 			}	
 		}
-		$this->render ( 'create',array('test'=>$test,'group_level'=>$group_level));
+		//Group categories that contains news
+		$group=new Category();		
+		$group->type=Category::TYPE_EXAM;
+		$list_category=$group->list_nodes;
+		
+		//Get form search user
+		$this->initCheckbox('checked-user-list');
+		if(!isset(Yii::app()->session["list-choicing-user"]))
+			Yii::app()->session["list-choicing-user"]=array();
+		$user=new User('search');
+		$user->unsetAttributes();  // clear any default values
+		if(isset($_GET['User']))
+			$user->attributes=$_GET['User'];
+			
+		//Search list user	
+		$criteria=new CDbCriteria;
+		$criteria->compare('email',$user->email,true);
+		$criteria->addNotInCondition('id',Yii::app()->session["list-choicing-user"]);
+		if(isset($_GET['pageSize']))
+				Yii::app()->user->setState('pageSize',$_GET['pageSize']);
+		$list_user=new CActiveDataProvider('User', array(
+			'criteria'=>$criteria,
+    		'pagination'=>array(
+				'pageSize'=>Yii::app()->user->getState('pageSize',Setting::s('DEFAULT_PAGE_SIZE','System')),
+    		),
+    		'sort' => array ('defaultOrder' => 'id DESC')
+		));
+			
+		//Search list choising user
+		$criteria=new CDbCriteria;
+		$criteria->addInCondition('id',Yii::app()->session["list-choicing-user"]);
+		if(isset($_GET['pageSize']))
+				Yii::app()->user->setState('pageSize',$_GET['pageSize']);		
+		$list_choicing_user=new CActiveDataProvider('User', array(
+			'criteria'=>$criteria,
+    		'pagination'=>array(
+				'pageSize'=>Yii::app()->user->getState('pageSize',Setting::s('DEFAULT_PAGE_SIZE','System')),
+    		),
+    		'sort' => array ('defaultOrder' => 'id DESC')
+		));
+				
+		$this->render ( 'create',array(
+			'model'=>$model,
+			'list_category'=>$list_category,
+			'user'=>$user,
+			'list_user'=>$list_user,
+			'list_choicing_user'=>$list_choicing_user
+		) );
 	}
 	/**
-	 * Add a new question
+	 * Add a user
 	 */
-	public function actionAddQuestion() {
-		if (isset ( $_POST ['Question'] )) {
-			$question = new Question ();
-			$question->attributes = $_POST ['Question'];
-			if (! isset ( $question->answer )) {
-				$result = array ('success' => false, 'message' => 'Select answer' );
-				echo json_encode ( $result );
-			} else {
-				$answer = array ();
-				foreach ( $question->content as $index => $option ) {
-					if (in_array ( $index, $question->answer ))
-						$answer [$index] = 1;
-					else
-						$answer [$index] = 0;
-				}
-				$question->answer = $answer;
-				$question->type = Question::TYPE_MARKINGUP;
-				if (! isset ( $question->material_id ) && isset ( $material->id ))
-					$question->material_id = $material->id;
-				else
-					$question->material_id = 0;
-				if ($question->save ()) {
-					$question = Question::model ()->findByPk ( $question->id );
-					$view = $this->renderPartial ( 'add_question', array ('question' => $question ), true );
-					$result = array ('success' => true, 'id' => $question->id, 'view' => $view );
-					echo json_encode ( $result );
-				}
-			}
-		}
+	public function actionAddUser($user_id) {
+		if(!isset(Yii::app()->session["list-choicing-user"]))
+			Yii::app()->session["list-choicing-user"]=array();
+		if(!in_array($user_id, Yii::app()->session["list-choicing-user"])){
+			$list_choicing_user=Yii::app()->session["list-choicing-user"];
+			$list_choicing_user[]=$user_id;
+			Yii::app()->session["list-choicing-user"]=$list_choicing_user;
+		}			
+		echo json_encode(array('success'=>true));		
+	}
+	/**
+	 * Remove a user
+	 */
+	public function actionRemoveUser($user_id) {
+		$old_list_choicing_user=Yii::app()->session["list-choicing-user"];
+		$new_list_choicing_user=array();
+		foreach ($old_list_choicing_user as $index=>$choicing_user){
+			if($choicing_user != $user_id)
+				$new_list_choicing_user[]=$user_id;				
+		}	
+		Yii::app()->session["list-choicing-user"]=$new_list_choicing_user;	
+		echo json_encode(array('success'=>true));		
+	}
+	/**
+	 * Suggests a list of existing email matching the specified keyword.
+	 * @param string the keyword to be matched
+	 * @param integer maximum number of tags to be returned
+	 * @return array list of matching username names
+	 */
+	public function actionSuggestEmail()
+	{
+		if(isset($_GET['q']) && ($keyword=trim($_GET['q']))!=='')
+		{
+			$criteria=new CDbCriteria;
+			$criteria->compare('email',$keyword,true);
+			$criteria->addNotInCondition('id', Yii::app()->session["list-choicing-user"]);
+			$criteria->limit=10;
+			$criteria->order='email DESC';
+			$users=User::model()->findAll($criteria);
+			$emails=array();
+			foreach($users as $user)
+				$emails[]=$user->email;
+			if($emails!==array())
+				echo implode("\n",$emails);
+		}	
+		
 	}
 	/**
 	 * Copy a new model
@@ -159,21 +220,7 @@ class MarkingUpSkillController extends Controller
 	 * @param integer $id the ID of the model to be updated
 	 */
 	public function actionUpdate($id)
-	{
-		$test=ITest::model()->findByPk($id);
-		if(isset($_POST['ITest']))
-		{
-			$test->attributes=$_POST['ITest'];
-			$test->type=ITest::TYPE_MARKINGUP;			
-			$list_questions = array_diff ( explode ( ',', $_POST['ITest']['questions'] ), array ('') );
-			$test->content=$list_questions;
-			if($test->save())
-			{
-				$test=ITest::model()->findByPk($id);
-				Yii::app()->user->setFlash('success', Language::t('Update successfully'));
-			}	
-		}
-		$this->render ( 'update',array('test'=>$test,'group_level'=>$group_level));
+	{		
 	}
 
 	/**

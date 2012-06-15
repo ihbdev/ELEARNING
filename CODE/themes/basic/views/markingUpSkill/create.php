@@ -12,6 +12,11 @@
 		<!--end title-->
 		<div class="folder-content">
 		<div>
+				<?php if($group_level != 0):?>
+				<input type="button" class="button" value="<?php echo Language::t('Add new test marking-up final')?>" style="width:180px;" onClick="parent.location='<?php echo Yii::app()->createUrl('markingUpSkill/create',array('group_level'=>0))?>'"/>
+				<?php else:?>
+				<input type="button" class="button" value="<?php echo Language::t('Add new test marking-up level')?>" style="width:180px;" onClick="parent.location='<?php echo Yii::app()->createUrl('markingUpSkill/create',array('group_level'=>1))?>'"/>
+				<?php endif;?>
             	<input type="button" class="button" value="<?php echo Language::t('List tests')?>" style="width:180px;" onClick="parent.location='<?php echo Yii::app()->createUrl('markingUpSkill/index')?>'"/>
                 <div class="line top bottom"></div>	
         </div>
@@ -27,6 +32,7 @@
 					 <?php echo $form->textField($test,'title',array('style'=>'width:600px')); ?>
                    	 <?php echo $form->error($test, 'title'); ?>	
                 </div><!--testpost-box-->
+                <?php if($group_level != 0):?>
                 <div class="testpost-box">
 					<h2><?php echo Language::t('Choise level')?></h2>
                     <div class="level-outer">
@@ -37,6 +43,9 @@
                         <?php echo $form->error($test, 'level'); ?>
                     </div>
                 </div><!--testpost-box-->
+                <?php else:?>
+                	<input name="ITest[level]" type="hidden" value="0"/>
+                <?php endif;?>
                 <div class="testpost-box">
 					<h2><?php echo Language::t('List questions')?></h2>
 					<?php foreach ($test->content as $question_id):?>
