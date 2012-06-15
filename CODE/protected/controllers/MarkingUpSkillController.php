@@ -113,6 +113,7 @@ class MarkingUpSkillController extends Controller
 		}
 		$this->render ('create',array('test'=>$test));
 	}
+
 	/**
 	 * Add a new question
 	 */
@@ -233,7 +234,6 @@ class MarkingUpSkillController extends Controller
 	public function actionIndex()
 	{
 		$this->initCheckbox('checked-test-list');
-		
 		$model=new ITest('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['ITest']))
@@ -253,7 +253,6 @@ class MarkingUpSkillController extends Controller
 			'pagination' => array ('pageSize' => Yii::app ()->user->getState ( 'pageSize', Setting::s('DEFAULT_PAGE_SIZE','System')  ) ), 
 			'sort' => array ('defaultOrder' => 'id DESC' )    		
 		));
-				
 		$this->render('index',array(
 			'list_tests'=>$list_tests,
 			'model'=>$model

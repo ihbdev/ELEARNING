@@ -105,7 +105,7 @@
 						?>
                     </div><!--markingup-question-->
                 </div><!--testpost-box-->
-                <div class="testpost-button"><label style="width:140px;">Click here to finish:</label><input type="submit" class="big-button" value="Finish" style="width:100px;" /></div>		
+                <div class="testpost-button"><label style="width:140px;">Click here to update:</label><input type="submit" class="big-button" value="Update" style="width:100px;" /></div>		
 			</div>
 			<!--end content testpost outer-->
 			<div class="clear"></div>

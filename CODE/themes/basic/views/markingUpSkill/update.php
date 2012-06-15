@@ -14,7 +14,7 @@
 		<div>
             	<input type="button" class="button" value="<?php echo Language::t('List tests')?>" style="width:180px;" onClick="parent.location='<?php echo Yii::app()->createUrl('markingUpSkill/index')?>'"/>
             	<input type="button" class="button" value="<?php echo Language::t('Add new test marking-up')?>" style="width:180px;" onClick="parent.location='<?php echo Yii::app()->createUrl('markingUpSkill/create')?>'"/>
-                <div class="line top bottom"></div>	
+                <div class="line top bottom"></div>
         </div>
 		<?php $form=$this->beginWidget('CActiveForm', array('method'=>'post','enableAjaxValidation'=>true, 'id'=>'add_test')); ?>	
             <div class="testpost-outer">

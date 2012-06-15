@@ -68,7 +68,7 @@
                             <br />
                             <div class="row"><label style="width:70px;">&nbsp;</label><input id="add_question" type="submit" class="button" value="<?php echo Language::t('Add question')?>" style="width:100px;" /></div>
                         </div><!--q-post-->
-                         <?php 
+                        <?php 
 						Yii::app()->clientScript->registerScript('add_question', "
 							$('#add_question').click(function(){
 								jQuery.ajax({
@@ -104,7 +104,7 @@
 								});
 							");
 						?>
-                    </div><!--markingup-question-->	
+                    </div><!--markingup-question-->
                 </div><!--testpost-box-->
                 <div class="testpost-button"><input type="submit" class="big-button" value="<?php echo Language::t('Create')?>" style="width:100px;" /></div>		
 			</div>
