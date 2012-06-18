@@ -91,7 +91,61 @@ class ExamController extends Controller
 			),
 		);
 	}
-	
+	public function actionView($id)
+	{		
+		$model=Exam::model()->findByPk($id);
+		$test=ITest::model()->findByPk($model->test_id);
+		if(in_array(Yii::app()->user->id,$model->list_users)){
+			if(time() > $model->start_time && time() < $model->finish_time)	{		
+				switch($model->type){
+					case Exam::TYPE_LANGUAGE:
+						$form='view_language';
+						break;
+					case Exam::TYPE_KNOWLEDGE:
+						$form='view_knowledge';
+						break;
+					case Exam::TYPE_MARKINGUP:
+						if($test->level > 0)
+							$form='view_marking_up_level';
+						else 
+							$form='view_marking_up_final';
+						break;
+					case Exam::TYPE_CODING:
+						$form='view_coding';
+						break;
+				}
+
+				if(isset($_POST['Result']))
+				{
+					$result=new Result();	
+					$result->exam_id=$id;
+					$result->user_id=Yii::app()->user->id;
+					$list_answer=array();
+					foreach ($_POST['Result'] as $question_id=>$content){
+						$question=Question::model()->findByPk($question_id);
+						$tmp=array();
+						foreach ($question->answer as $index=>$item){
+							if(in_array($index,$content))
+								$tmp[$index]=1;
+							else 
+								$tmp[$index]=0;
+						}
+						$list_answer[$question_id]=$tmp;
+					}	
+					$result->answer=$list_answer;
+					if($result->save())
+					{
+						Yii::app()->user->setFlash('success', Language::t('Finish'));
+					}	
+				}
+				
+				$this->render ( $form, array(
+					'model'=>$model,
+					'test'=>$test
+				) );
+			}
+		}
+	}
 	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
@@ -99,24 +153,59 @@ class ExamController extends Controller
 	public function actionCreate()
 	{
 		$model=new Exam();
+		
+		if(!isset(Yii::app()->session["test_id"]) || ! Yii::app ()->getRequest ()->getIsAjaxRequest ())
+			Yii::app()->session["test_id"]=0;
+		if(!isset(Yii::app()->session["list-choicing-user"]) || ! Yii::app ()->getRequest ()->getIsAjaxRequest ())		
+			Yii::app()->session["list-choicing-user"]=array();
+		
+		//$model->start_time=date('m/d/Y H:i',$model->start_time);
+		//$model->finish_time=date('m/d/Y H:i',$model->finish_time);
 		if(isset($_POST['Exam']))
 		{
-			$exam->attributes=$_POST['ITest'];
-			$exam->type=Exam::TYPE_MARKINGUP;			
-			if($exam->save())
+			$model->attributes=$_POST['Exam'];	
+			
+			$model->start_time=strtotime($model->start_time);
+			$model->finish_time=strtotime($model->finish_time);
+			$model->list_users=array_diff(explode(',',$_POST[Exam][users]),array(''));
+			
+			$test=ITest::model()->findByPk($model->test_id);
+			$model->type=$test->type;		
+			if($model->save())
 			{
-				$this->redirect(array('update','id'=>$exam->id));
+				$this->redirect(array('update','id'=>$model->id));
 			}	
 		}
 		//Group categories that contains news
 		$group=new Category();		
 		$group->type=Category::TYPE_EXAM;
-		$list_category=$group->list_nodes;
+		$list_office=$group->list_nodes;
+		
+		//Get form search test
+		$this->initCheckbox('checked-test-list');
+		$test=new ITest('search');
+		$test->unsetAttributes();  // clear any default values
+		$test->type=ITest::TYPE_LANGUAGE;
+		if(isset($_GET['ITest']))
+			$test->attributes=$_GET['ITest'];
+			
+		//Search list test		
+		$criteria=new CDbCriteria;
+		$criteria->compare('title',$test->title,true);
+		$criteria->compare('type',$test->type,true);
+		$criteria->addCondition('id <> '.Yii::app()->session["test_id"]);
+		if(isset($_GET['pageSize']))
+				Yii::app()->user->setState('pageSize',$_GET['pageSize']);
+		$list_test=new CActiveDataProvider('ITest', array(
+			'criteria'=>$criteria,
+    		'pagination'=>array(
+				'pageSize'=>Yii::app()->user->getState('pageSize',Setting::s('DEFAULT_PAGE_SIZE','System')),
+    		),
+    		'sort' => array ('defaultOrder' => 'id DESC')
+		));
 		
 		//Get form search user
 		$this->initCheckbox('checked-user-list');
-		if(!isset(Yii::app()->session["list-choicing-user"]))
-			Yii::app()->session["list-choicing-user"]=array();
 		$user=new User('search');
 		$user->unsetAttributes();  // clear any default values
 		if(isset($_GET['User']))
@@ -151,12 +240,14 @@ class ExamController extends Controller
 				
 		$this->render ( 'create',array(
 			'model'=>$model,
-			'list_category'=>$list_category,
+			'list_office'=>$list_office,
 			'user'=>$user,
 			'list_user'=>$list_user,
+			'test'=>$test,
+			'list_test'=>$list_test,
 			'list_choicing_user'=>$list_choicing_user
 		) );
-	}
+	}	
 	/**
 	 * Add a user
 	 */
@@ -168,7 +259,7 @@ class ExamController extends Controller
 			$list_choicing_user[]=$user_id;
 			Yii::app()->session["list-choicing-user"]=$list_choicing_user;
 		}			
-		echo json_encode(array('success'=>true));		
+		echo json_encode(array('success'=>true,'value'=>implode(',',Yii::app()->session["list-choicing-user"])));		
 	}
 	/**
 	 * Remove a user
@@ -181,7 +272,7 @@ class ExamController extends Controller
 				$new_list_choicing_user[]=$user_id;				
 		}	
 		Yii::app()->session["list-choicing-user"]=$new_list_choicing_user;	
-		echo json_encode(array('success'=>true));		
+		echo json_encode(array('success'=>true,'value'=>implode(',',Yii::app()->session["list-choicing-user"])));				
 	}
 	/**
 	 * Suggests a list of existing email matching the specified keyword.
@@ -208,11 +299,34 @@ class ExamController extends Controller
 		
 	}
 	/**
-	 * Copy a new model
-	 * @param integer $id the ID of model to be copied
+	 * Suggests a list of existing test matching the specified keyword.
+	 * @param string the keyword to be matched
+	 * @param integer maximum number of tags to be returned
+	 * @return array list of matching tilte
 	 */
-	public function actionCopy($id)
-	{		
+	public function actionSuggestTitleTest()
+	{
+		if(isset($_GET['q']) && ($keyword=trim($_GET['q']))!=='')
+		{
+			$criteria=new CDbCriteria;
+			$criteria->compare('title',$keyword,true);
+			$criteria->limit=10;
+			$criteria->order='title DESC';
+			$tests=ITest::model()->findAll($criteria);
+			$titles=array();
+			foreach($tests as $test)
+				$titles[]=$test->title;
+			if($titles!==array())
+				echo implode("\n",$titles);
+		}	
+		
+	}
+	/**
+	 * Select test
+	 */
+	public function actionSelectTest($test_id) {
+		Yii::app()->session["test_id"]=$test_id;		
+		echo json_encode(array('success'=>true,'id'=>$test_id));		
 	}
 	/**
 	 * Updates a particular model.
@@ -221,6 +335,104 @@ class ExamController extends Controller
 	 */
 	public function actionUpdate($id)
 	{		
+		$model=Exam::model()->findByPk($id);
+		
+		if(!isset(Yii::app()->session["test_id"]) || ! Yii::app ()->getRequest ()->getIsAjaxRequest ())
+			Yii::app()->session["test_id"]=$model->test_id;
+		if(!isset(Yii::app()->session["list-choicing-user"]) || ! Yii::app ()->getRequest ()->getIsAjaxRequest ())		
+			Yii::app()->session["list-choicing-user"]=$model->list_users;
+		
+		//$model->start_time=date('m/d/Y H:i',$model->start_time);
+		//$model->finish_time=date('m/d/Y H:i',$model->finish_time);
+		if(isset($_POST['Exam']))
+		{
+			$model->attributes=$_POST['Exam'];	
+			
+			$model->start_time=strtotime($model->start_time);
+			$model->finish_time=strtotime($model->finish_time);
+			$model->list_users=array_diff(explode(',',$_POST[Exam][users]),array(''));
+			
+			$test=ITest::model()->findByPk($model->test_id);
+			$model->type=$test->type;		
+			if($model->save())
+			{
+				$model=Exam::model()->findByPk($id);
+				Yii::app()->session["test_id"]=$model->test_id;
+				Yii::app()->session["list-choicing-user"]=$model->list_users;
+				Yii::app()->user->setFlash('success', Language::t('Update successfully'));
+			}	
+		}
+		//Group categories that contains news
+		$group=new Category();		
+		$group->type=Category::TYPE_EXAM;
+		$list_office=$group->list_nodes;
+		
+		//Get form search test
+		$this->initCheckbox('checked-test-list');
+		$test=new ITest('search');
+		$test->unsetAttributes();  // clear any default values
+		$test->type=$model->type;
+		if(isset($_GET['ITest']))
+			$test->attributes=$_GET['ITest'];
+			
+		//Search list test		
+		$criteria=new CDbCriteria;
+		$criteria->compare('title',$test->title,true);
+		$criteria->compare('type',$test->type,true);
+		$criteria->addCondition('id <> '.Yii::app()->session["test_id"]);
+		if(isset($_GET['pageSize']))
+				Yii::app()->user->setState('pageSize',$_GET['pageSize']);
+		$list_test=new CActiveDataProvider('ITest', array(
+			'criteria'=>$criteria,
+    		'pagination'=>array(
+				'pageSize'=>Yii::app()->user->getState('pageSize',Setting::s('DEFAULT_PAGE_SIZE','System')),
+    		),
+    		'sort' => array ('defaultOrder' => 'id DESC')
+		));
+		
+		//Get form search user
+		$this->initCheckbox('checked-user-list');
+		$user=new User('search');
+		$user->unsetAttributes();  // clear any default values
+		if(isset($_GET['User']))
+			$user->attributes=$_GET['User'];
+			
+		//Search list user	
+		$criteria=new CDbCriteria;
+		$criteria->compare('email',$user->email,true);
+		$criteria->addNotInCondition('id',Yii::app()->session["list-choicing-user"]);
+		if(isset($_GET['pageSize']))
+				Yii::app()->user->setState('pageSize',$_GET['pageSize']);
+		$list_user=new CActiveDataProvider('User', array(
+			'criteria'=>$criteria,
+    		'pagination'=>array(
+				'pageSize'=>Yii::app()->user->getState('pageSize',Setting::s('DEFAULT_PAGE_SIZE','System')),
+    		),
+    		'sort' => array ('defaultOrder' => 'id DESC')
+		));
+			
+		//Search list choising user
+		$criteria=new CDbCriteria;
+		$criteria->addInCondition('id',Yii::app()->session["list-choicing-user"]);
+		if(isset($_GET['pageSize']))
+				Yii::app()->user->setState('pageSize',$_GET['pageSize']);		
+		$list_choicing_user=new CActiveDataProvider('User', array(
+			'criteria'=>$criteria,
+    		'pagination'=>array(
+				'pageSize'=>Yii::app()->user->getState('pageSize',Setting::s('DEFAULT_PAGE_SIZE','System')),
+    		),
+    		'sort' => array ('defaultOrder' => 'id DESC')
+		));
+				
+		$this->render ( 'update',array(
+			'model'=>$model,
+			'list_office'=>$list_office,
+			'user'=>$user,
+			'list_user'=>$list_user,
+			'test'=>$test,
+			'list_test'=>$list_test,
+			'list_choicing_user'=>$list_choicing_user
+		) );
 	}
 
 	/**
@@ -257,7 +469,7 @@ class ExamController extends Controller
 				//if (Yii::app ()->user->checkAccess ( 'test_delete')) {
 				if(true){
 					foreach ( $list_checked as $id ) {
-						$item = ITest::model ()->findByPk ( (int)$id );
+						$item = Exam::model ()->findByPk ( (int)$id );
 						if (isset ( $item ))
 							if (! $item->delete ()) {
 								echo 'false';
@@ -279,31 +491,21 @@ class ExamController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$this->initCheckbox('checked-test-list');
+		$this->initCheckbox('checked-exam-list');
 		
-		$model=new ITest('search');
+		$model=new Exam('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['ITest']))
-			$model->attributes=$_GET['ITest'];
+		if(isset($_GET['Exam']))
+			$model->attributes=$_GET['Exam'];
 			
-		$criteria = new CDbCriteria ();
-		$criteria->compare ( 'type', ITest::TYPE_MARKINGUP );
-		if($model->title != '')
-			$criteria->compare ( 'title', $model->title, true );
-		if($model->group_level === '0')
-			$criteria->compare ( 'level',0);
-		if($model->group_level === '1')
-			$criteria->addCondition( 'level <> 0');	
-			
-		$list_tests= new CActiveDataProvider ( 'ITest', array (
-			'criteria' => $criteria, 
-			'pagination' => array ('pageSize' => Yii::app ()->user->getState ( 'pageSize', Setting::s('DEFAULT_PAGE_SIZE','System')  ) ), 
-			'sort' => array ('defaultOrder' => 'id DESC' )    		
-		));
-				
+		//Group categories that contains news
+		$group=new Category();		
+		$group->type=Category::TYPE_EXAM;
+		$list_office=$group->list_nodes;
+		
 		$this->render('index',array(
-			'list_tests'=>$list_tests,
-			'model'=>$model
+			'model'=>$model,
+			'list_office'=>$list_office
 		));
 	}
 	/**
@@ -312,24 +514,11 @@ class ExamController extends Controller
 	 */
 	public function actionReverseStatus($id)
 	{
-		$src=ITest::reverseStatus($id);
+		$src=Exam::reverseStatus($id);
 		if($src) 
 			echo json_encode(array('success'=>true,'src'=>$src));
 		else 
 			echo json_encode(array('success'=>false));		
-	}
-	
-	/**
-	 * Suggests title of language.
-	 */
-	public function actionSuggestTitle()
-	{
-		if(isset($_GET['q']) && ($keyword=trim($_GET['q']))!=='')
-		{
-			$titles=ITest::model()->suggestTitle($keyword);
-			if($titles!==array())
-				echo implode("\n",$titles);
-		}
 	}
 	
 	/**
@@ -403,19 +592,10 @@ class ExamController extends Controller
 	 */
 	public function loadModel($id)
 	{
-		$model=ITest::model()->findByPk($id);
+		$model=Exam::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
-	}
-
-	/**
-	 * Performs the AJAX validation.
-	 * @param CModel the model to be validated
-	 */
-	protected function performAjaxValidation($model)
-	{
-		
 	}
 }
 

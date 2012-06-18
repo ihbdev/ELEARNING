@@ -13,11 +13,17 @@
 		<div class="folder-content">
 		<div>
             	<input type="button" class="button" value="<?php echo Language::t('List exams')?>" style="width:180px;" onClick="parent.location='<?php echo Yii::app()->createUrl('exam/index')?>'"/>
+            	<input type="button" class="button" value="<?php echo Language::t('Add new exam')?>" style="width:180px;" onClick="parent.location='<?php echo Yii::app()->createUrl('exam/create')?>'"/>
                 <div class="line top bottom"></div>	
         </div>
+		<?php
+    			foreach(Yii::app()->user->getFlashes() as $key => $message) {
+        			echo '<div class="flash-' . $key . '">' . $message . "</div>\n";
+    			}
+			?>
 		<?php $form=$this->beginWidget('CActiveForm', array('method'=>'post','enableAjaxValidation'=>true, 'id'=>'add_exam')); ?>
-            <input value="" name="Exam[test_id]" id="Exam_test_id" type="hidden">
-            <input value="" id="Exam_users" name="Exam[users]" type="hidden">
+            <input value="<?php echo $model->test_id?>" name="Exam[test_id]" id="Exam_test_id" type="hidden">
+            <input value="<?php echo implode(',',$model->list_users)?>" id="Exam_users" name="Exam[users]" type="hidden">
             <div class="testpost-outer">
             	<div class="testpost-box">
 					<h2>Choose Office</h2>
@@ -76,7 +82,7 @@
     							//'value' => date('m/d/Y',$model->finish_time),
     						), // HTML options
     					));
-						?>  
+						?>
 						<?php echo $form->error($model, 'start_time'); ?>                       
                     </div>
                 </div><!--testpost-box-->
@@ -97,7 +103,7 @@
 						<label style="width:70px;">ID Test:</label>
 						<input value="<?php echo $model->test_id?>" id="test_id" readonly="readonly">
                     </div>
-                    <?php echo $form->error($model, 'test_id'); ?>   
+                    <?php echo $form->error($model, 'test_id'); ?> 
                     <div class="row"><h4>Search:</h4></div>
                     <div class="row">
                         <label style="width:70px;">Type:</label>
@@ -301,7 +307,7 @@
                     </div>                  
                     <div class="row">
                         <h4>List choising user:</h4>  
-                        <?php echo $form->error($model, 'list_users'); ?>                       
+                        <?php echo $form->error($model, 'list_users'); ?>                        
                         <?php 
 					$this->widget('iPhoenixGridView', array(
   					'id'=>'choicing-user-list',
@@ -368,7 +374,7 @@
                 </div><!--testpost-box-->
                 <div class="clear"></div>
                 <br />
-                <div class="testpost-button"><label style="width:140px; vertical-align:middle;">Click here to finish:</label><input type="submit" class="big-button" value="Create" style="width:100px;" onClick='$("#add_exam").submit(); return false;'/></div>		
+                <div class="testpost-button"><label style="width:140px; vertical-align:middle;">Click here to finish:</label><input type="submit" class="big-button" value="Update" style="width:100px;" onClick='$("#add_exam").submit(); return false;'/></div>		
 			</div>
 			<!--end content testpost outer-->
 			<div class="clear"></div>

@@ -43,7 +43,6 @@ class CJuiDateTimePicker extends CJuiDatePicker
 		$options=CJavaScript::encode($this->options);
 
 		$js = "jQuery('#{$id}').{$this->mode}picker($options);";
-
 		if (isset($this->language)){
 			$this->registerScriptFile($this->i18nScriptFile);
 			$js = "jQuery('#{$id}').{$this->mode}picker(jQuery.extend({showMonthAfterYear:false}, jQuery.datepicker.regional['{$this->language}'], {$options}));";
