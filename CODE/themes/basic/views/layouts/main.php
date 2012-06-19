@@ -3,12 +3,15 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link href="<?php echo Yii::app()->theme->baseUrl?>/css/standard.css" rel="stylesheet" type="text/css" media="screen, projection" />
+<link href="<?php echo Yii::app()->theme->baseUrl?>/css/sprite.css" rel="stylesheet" type="text/css" media="screen, projection" />
 <link href="<?php echo Yii::app()->theme->baseUrl?>/css/ja.cssmenu.css" rel="stylesheet" type="text/css" media="screen, projection" />
 <script src="<?php echo Yii::app()->theme->baseUrl?>/js/mootools.v1.11.js" language="javascript" type="text/javascript"></script>
 <script src="<?php echo Yii::app()->theme->baseUrl?>/js/ja.moomenu.js" language="javascript" type="text/javascript"></script>
 <script src="<?php echo Yii::app()->theme->baseUrl?>/js/iphoenix.js" language="javascript" type="text/javascript"></script>
 <script src="<?php echo Yii::app()->theme->baseUrl?>/js/csspopup.js" type="text/javascript" ></script>
 <script src="<?php echo Yii::app()->theme->baseUrl?>/js/popup.js" type="text/javascript" ></script>
+<script src="<?php echo Yii::app()->theme->baseUrl?>/js/jquery-1.7.1.min.js" type="text/javascript" ></script>
+<script src="<?php echo Yii::app()->theme->baseUrl?>/js/style.js" type="text/javascript" ></script>
 <?php 
 $cs = Yii::app()->getClientScript(); 
 $cs->registerScriptFile(Yii::app()->theme->baseUrl.'/js/jquery.alerts.js');

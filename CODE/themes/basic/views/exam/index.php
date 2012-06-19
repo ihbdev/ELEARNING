@@ -2,47 +2,41 @@
 	<div class="folder top">
 		<!--begin title-->
 		<div class="folder-header">
-			<h1><?php echo Language::t('List test Marking-up')?></h1>
+			<h1><?php echo Language::t('List results')?></h1>
 			<div class="header-menu">
 				<ul>
-					<li class="ex-show"><a class="activities-icon" href=""><span><?php echo Language::t('List test Marking-up')?></span></a></li>
+					<li class="ex-show"><a class="activities-icon" href=""><span><?php echo Language::t('List results')?></span></a></li>
 				</ul>
 			</div>
 		</div>
 		<!--end title-->
 		<div class="folder-content">
             <div>
-            	<input type="button" class="button" value="<?php echo Language::t('Add new test marking-up final')?>" style="width:180px;" onClick="parent.location='<?php echo Yii::app()->createUrl('markingUpSkill/create',array('group_level'=>0))?>'"/>
-                <input type="button" class="button" value="<?php echo Language::t('Add new test marking-up level')?>" style="width:180px;" onClick="parent.location='<?php echo Yii::app()->createUrl('markingUpSkill/create',array('group_level'=>1))?>'"/>
+            	<input type="button" class="button" value="<?php echo Language::t('Add new result')?>" style="width:180px;" onClick="parent.location='<?php echo Yii::app()->createUrl('result/create')?>'"/>
                 <div class="line top bottom"></div>	
             </div>
              <!--begin box search-->
          <?php 
 			Yii::app()->clientScript->registerScript('search', "
-				$('#test-search').submit(function(){
-				$.fn.yiiGridView.update('test-list', {
+				$('#result-search').submit(function(){
+				$.fn.yiiGridView.update('result-list', {
 					data: $(this).serialize()});
 					return false;
 				});");
 		?>
             <div class="box-search">            
-                <h2>Tìm kiếm</h2>
-                <?php $form=$this->beginWidget('CActiveForm', array('method'=>'get','id'=>'test-search')); ?>
+                <h2><?php echo Language::t("Search")?></h2>
+                <?php $form=$this->beginWidget('CActiveForm', array('method'=>'get','id'=>'result-search')); ?>
                 <!--begin left content-->
                 <div class="fl" style="width:480px;">
-                    <ul>
-                        <li>
-                         	<?php echo $form->labelEx($model,'title'); ?>
-                         	<?php $this->widget('CAutoComplete', array(
-                         	'model'=>$model,
-                         	'attribute'=>'title',
-							'url'=>array('markingUpSkill/suggestTitle'),
-							'htmlOptions'=>array(
-								'style'=>'width:230px;',
-								),
-						)); ?>	
-						</li>				
-                                        
+                    <ul>			
+                    <?php 
+					$list=array(''=>'All')+Exam::$list_type;
+					?>
+					<li>
+						<?php echo $form->labelEx($model,'type'); ?>
+						<?php echo $form->dropDownList($model,'type',$list,array('style'=>'width:200px')); ?>
+					</li>	               
                         <li>
                         <?php 
 							echo CHtml::submitButton('Search',
@@ -58,14 +52,22 @@
                 <!--end left content-->
                 <!--begin right content-->
                 <div class="fl" style="width:480px;">
-                    <ul>
-                    <?php 
-					$list=array(''=>'All','0'=>'Final','1'=>'Level');
-					?>
+                    <ul>                   	
+					<?php 
+					$list=array(''=>'All');
+						foreach ($list_office as $id=>$level){
+							$cat=Category::model()->findByPk($id);
+							$view = "";
+							for($i=1;$i<$level;$i++){
+								$view .="---";
+							}
+							$list[$id]=$view." ".$cat->name." ".$view;
+						}
+						?>
 					<li>
-						<?php echo $form->labelEx($model,'group_level'); ?>
-						<?php echo $form->dropDownList($model,'group_level',$list,array('style'=>'width:200px')); ?>
-					</li>				
+						<?php echo $form->labelEx($model,'office_id'); ?>
+						<?php echo $form->dropDownList($model,'office_id',$list,array('style'=>'width:200px')); ?>
+					</li>		
                     </ul>
                 </div>
                 <!--end right content-->
@@ -76,24 +78,40 @@
             <!--end box search-->		
            <?php 
 			$this->widget('iPhoenixGridView', array(
-  				'id'=>'test-list',
+  				'id'=>'result-list',
   				'dataProvider'=>$model->search(),		
   				'columns'=>array(
 					array(
       					'class'=>'CCheckBoxColumn',
 						'selectableRows'=>2,
 						'headerHtmlOptions'=>array('width'=>'2%','class'=>'table-title'),
-						'checked'=>'in_array($data->id,Yii::app()->session["checked-test-list"])'
+						'checked'=>'in_array($data->id,Yii::app()->session["checked-result-list"])'
     				),			
     				array(
-						'name'=>'title',
-						'headerHtmlOptions'=>array('width'=>'15%','class'=>'table-title'),		
-					),
-					array(
-						'name'=>'group_level',
-						'value'=>'$data->level==0?"Final":"Level"',
+						'name'=>'catid',
+    					'value'=>'$data->office->name',
 						'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),		
 					),
+					array(
+						'name'=>'type',
+    					'value'=>'Exam::$list_type[$data->type]',
+						'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),			
+					),
+					array(
+						'name'=>'list_users',
+    					'value'=>'sizeof($data->list_users)." users"',
+						'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),			
+					),
+					array(
+						'name'=>'start_time',
+						'value'=>'date("m/d/Y H:i",$data->start_time)',
+						'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),		
+					), 
+					array(
+						'name'=>'finish_time',
+						'value'=>'date("m/d/Y H:i",$data->finish_time)',
+						'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),		
+					), 
 					array(
 						'name'=>'author',
 						'value'=>'$data->author->username',
@@ -114,7 +132,7 @@
     						(
             					'label'=>Language::t('Change status'),
             					'imageUrl'=>'$data->imageStatus',
-            					'url'=>'Yii::app()->createUrl("markingUpSkill/reverseStatus", array("id"=>$data->id))',
+            					'url'=>'Yii::app()->createUrl("result/reverseStatus", array("id"=>$data->id))',
     							'click'=>'function(){
 									var th=this;									
 									jQuery.ajax({
@@ -139,7 +157,7 @@
 						'header'=>Language::t('Tools'),
 						'class'=>'CButtonColumn',
     					'template'=>'{update}{delete}{view}',
-						'deleteConfirmation'=>Language::t('Are you sure that you want to delete the test?'),
+						'deleteConfirmation'=>Language::t('Are you sure that you want to delete the result?'),
 						'afterDelete'=>'function(link,success,data){ if(success) jAlert("'.Language::t("Delete succcessfully").'"); }',
     					'buttons'=>array
     					(
@@ -153,7 +171,7 @@
     						(
             					'label'=>Language::t('Copy'),
             					'imageUrl'=>Yii::app()->theme->baseUrl.'/images/copy.gif',
-            					'url'=>'Yii::app()->createUrl("markingUpSkill/copy", array("id"=>$data->id))',
+            					'url'=>'Yii::app()->createUrl("result/copy", array("id"=>$data->id))',
         					),
         					'view'=>array(
     							'url'=>'$data->url',
@@ -163,14 +181,14 @@
 					),    				
  	 			),
  	 			'template'=>'{displaybox}{checkbox}{summary}{items}{pager}',
-  				'summaryText'=>'{count} '.Language::t('tests'),
+  				'summaryText'=>'{count} '.Language::t('results'),
  	 			'pager'=>array('class'=>'CLinkPager','header'=>'','prevPageLabel'=>'< Trước','nextPageLabel'=>'Sau >','htmlOptions'=>array('class'=>'pages fr')),
 				'actions'=>array(
 					'delete'=>array(
 						'action'=>'delete',
 						'label'=>Language::t('Delete'),
 						'imageUrl' => Yii::app()->theme->baseUrl.'/images/delete.png',
-						'url'=>'markingUpSkill/checkbox'
+						'url'=>'result/checkbox'
 					),
 				),
  	 			)); ?>

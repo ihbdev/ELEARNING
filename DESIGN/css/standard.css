@@ -1013,6 +1013,13 @@ div.slider-image:hover .close{
 .text-question .text-check div.active label{
 	color:#C00;	
 }
+.text-question .text-check div .i16, .text-question .text-title .i16{
+	margin:0 0 0 5px;
+	display:none;
+}
+.text-question .text-check div:hover .i16, .text-question div.text-title:hover .i16, .text-question .i16-checkblue, .text-question .i16-removered{
+	display: inline-block !important;
+}
 .employee-ul{
 	padding:0;
 	border-bottom:1px dotted #ccc;
@@ -1142,5 +1149,16 @@ a.text-item:hover{
 }
 .testpost-outer{
 	padding:10px 0;
+}
+.testpost-box .testpost-content{
+	width:870px;
+	display:inline-block;
+}
+.testpost-box .testpost-content .i16{
+	margin:0 0 0 5px;
+	display:none;
+}
+.testpost-box div.testpost-content:hover .i16{
+	display: inline-block !important;
 }
 /*testpost*/

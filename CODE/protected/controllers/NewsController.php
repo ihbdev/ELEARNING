@@ -110,6 +110,7 @@ class NewsController extends Controller
 		$group=new Category();		
 		$group->type=Category::TYPE_NEWS;
 		$list_category=$group->list_nodes;
+		
 		if (! Yii::app ()->getRequest ()->getIsAjaxRequest ())
 				Yii::app ()->session ['checked-suggest-list'] = array();
 		//Handler list suggest news		

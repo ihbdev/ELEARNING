@@ -21,6 +21,36 @@ class Result extends CActiveRecord
 	private $config_other_attributes=array('modified,description');	
 	private $list_other_attributes;
 	
+/**
+	 * PHP setter magic method for other attributes
+	 * @param $name the attribute name
+	 * @param $value the attribute value
+	 * set value into particular attribute
+	 */
+	public function __set($name,$value)
+	{
+		if(in_array($name,$this->config_other_attributes))
+			$this->list_other_attributes[$name]=$value;
+		else 
+			parent::__set($name,$value);
+	}
+	
+	/**
+	 * PHP getter magic method for other attributes
+	 * @param $name the attribute name
+	 * @return value of {$name} attribute
+	 */
+	public function __get($name)
+	{
+		if(in_array($name,$this->config_other_attributes))
+			if(isset($this->list_other_attributes[$name])) 
+				return $this->list_other_attributes[$name];
+			else 
+		 		return null;
+		else
+			return parent::__get($name);
+	}
+	
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -31,7 +61,7 @@ class Result extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'tbl_exam';
+		return 'tbl_result';
 	}
 	/**
 	 * @return array validation rules for model attributes.
@@ -39,7 +69,8 @@ class Result extends CActiveRecord
 	public function rules()
 	{
 		return array(
-			array('catid,content','required'),
+			array('exam_id,user_id','required'),
+			array('answer','safe')
 		);
 	}
 	/**
@@ -48,11 +79,8 @@ class Result extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'type' => 'Dạng câu hỏi',
-			'level' => 'Mức độ khó',
-			'catid'=>'Nhóm',
-			'created_by' => 'Người tạo',
-			'created_date' => 'Ngày tạo',
+			'exam_id'=>'Đề thi',
+			'user_id'=>'Thí sinh'
 		);
 	}
 	/**
@@ -63,7 +91,9 @@ class Result extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'material'=>array(self::BELONGS_TO,'Material','material_id'),
+			'exam'=>array(self::BELONGS_TO,'Exam','exam_id'),
+			'user_id'=>array(self::BELONGS_TO,'User','user_id'),
+			'office'=>array(self::BELONGS_TO,'Category','office_id'),
 		);
 	}
 	/**
@@ -74,11 +104,8 @@ class Result extends CActiveRecord
 	{
 		//Decode attribute other to set other attributes
 		$this->list_other_attributes=(array)json_decode($this->other);	
-			
-		if(isset($this->list_other_attributes['modified']))
-			$this->list_other_attributes['modified']=(array)json_decode($this->list_other_attributes['modified']);
-		else 
-			$this->list_other_attributes['modified']=array();
+		//Decode answer
+		$this->answer=(array)json_decode($this->answer);				
 		return parent::afterFind();
 	}
 		
@@ -95,33 +122,27 @@ class Result extends CActiveRecord
 	{
 		if(parent::beforeSave())
 		{
-			if($this->isNewRecord)
-			{
-				$this->created_date=time();
-				$this->created_by=Yii::app()->user->id;				
-			}
-			else {
-				$modified=$this->modified;
-				$modified[time()]=Yii::app()->user->id;
-				$this->modified=json_encode($modified);				
-			}
-			
 			$this->other=json_encode($this->list_other_attributes);
+			$this->answer=json_encode($this->answer);
 			return true;
 		}
 		else
 			return false;
 	}
-	/*
-	 * Encode content
+	/**
+	 * Retrieves a list of models based on the current search/filter conditions.
+	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
 	 */
-	public function encode(){
-	
-	}
-	/*
-	 * Decode content
-	 */
-	public function decode(){
-	
+	public function search() {
+		$criteria = new CDbCriteria ();
+		if($this->office_id != '')
+			$criteria->compare ( 'office_id',$this->office_id);
+			
+		$list_results= new CActiveDataProvider ( 'Result', array (
+			'criteria' => $criteria, 
+			'pagination' => array ('pageSize' => Yii::app ()->user->getState ( 'pageSize', Setting::s('DEFAULT_PAGE_SIZE','System')  ) ), 
+			'sort' => array ('defaultOrder' => 'id DESC' )    		
+		));
+		return $list_results;
 	}
 }

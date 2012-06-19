@@ -1,7 +1,7 @@
 <?php
 /**
  * 
- * MarkingUpSkillController class file 
+ * ResultController class file 
  * @author ihbvietnam <hotro@ihbvietnam.com>
  * @link http://iphoenix.vn
  * @copyright Copyright &copy; 2012 IHB Vietnam
@@ -10,18 +10,18 @@
  */
 
 /**
- * MarkingUpSkillController includes actions relevant to MarkingUpSkill model:
- *** create MarkingUpSkill
- *** copy MarkingUpSkill
+ * ResultController includes actions relevant to Result model:
+ *** create Result
+ *** copy Result
  *** update
- *** delete MarkingUpSkill
- *** index MarkingUpSkill
- *** reverse status MarkingUpSkill
- *** suggest title MarkingUpSkill
+ *** delete Result
+ *** index Result
+ *** reverse status Result
+ *** suggest title Result
  *** update suggest
  *** load model  
  */
-class MarkingUpSkillController extends Controller
+class ResultController extends Controller
 {
 	/**
 	 * @return array action filters
@@ -91,110 +91,108 @@ class MarkingUpSkillController extends Controller
 			),
 		);
 	}
-	
-	/**
-	 * Creates a new model.
-	 * If creation is successful, the browser will be redirected to the 'view' page.
+/**
+	 * Lists all models.
 	 */
-	public function actionCreate($group_level)
+	public function actionIndex()
 	{
-		$test=new ITest();
-		$test->content=array();
-		if(isset($_POST['ITest']))
-		{
-			$test->attributes=$_POST['ITest'];
-			$test->type=ITest::TYPE_MARKINGUP;			
-			$list_questions = array_diff ( explode ( ',', $_POST['ITest']['questions'] ), array ('') );
-			$test->content=$list_questions;
-			if($test->save())
-			{
-				$this->redirect(array('update','id'=>$test->id));
-			}	
-		}
-		$this->render ( 'create',array('test'=>$test,'group_level'=>$group_level));
+		$this->initCheckbox('checked-result-list');
+		
+		$model=new Result('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['Result']))
+			$model->attributes=$_GET['Result'];
+			
+		//Group categories that contains news
+		$group=new Category();		
+		$group->type=Category::TYPE_EXAM;
+		$list_office=$group->list_nodes;
+		
+		$this->render('index',array(
+			'model'=>$model,
+			'list_office'=>$list_office
+		));
 	}
+	
+	public function actionView($id)
+	{		
+		$model=Result::model()->findByPk($id);
+		$test=ITest::model()->findByPk($model->test_id);
+		if(in_array(Yii::app()->user->id,$model->list_users)){
+			if(time() > $model->start_time && time() < $model->finish_time)	{		
+				switch($model->type){
+					case Result::TYPE_LANGUAGE:
+						$form='view_language';
+						break;
+					case Result::TYPE_KNOWLEDGE:
+						$form='view_knowledge';
+						break;
+					case Result::TYPE_MARKINGUP:
+						if($test->level > 0)
+							$form='view_marking_up_level';
+						else 
+							$form='view_marking_up_final';
+						break;
+					case Result::TYPE_CODING:
+						$form='view_coding';
+						break;
+				}
 
-	/**
-	 * Add a new question
-	 */
-	public function actionAddQuestion() {
-		if (isset ( $_POST ['Question'] )) {
-			$question = new Question ();
-			$question->attributes = $_POST ['Question'];
-			if (! isset ( $question->answer )) {
-				$result = array ('success' => false, 'message' => 'Select answer' );
-				echo json_encode ( $result );
-			} else {
-				$answer = array ();
-				foreach ( $question->content as $index => $option ) {
-					if (in_array ( $index, $question->answer ))
-						$answer [$index] = 1;
-					else
-						$answer [$index] = 0;
+				if(isset($_POST['Result']))
+				{
+					$result=new Result();	
+					$result->result_id=$id;
+					$result->user_id=Yii::app()->user->id;
+					$list_answer=array();
+					foreach ($_POST['Result'] as $question_id=>$content){
+						$question=Question::model()->findByPk($question_id);
+						$tmp=array();
+						foreach ($question->answer as $index=>$item){
+							if(in_array($index,$content))
+								$tmp[$index]=1;
+							else 
+								$tmp[$index]=0;
+						}
+						$list_answer[$question_id]=$tmp;
+					}	
+					$result->answer=$list_answer;
+					if($result->save())
+					{
+						Yii::app()->user->setFlash('success', Language::t('Finish'));
+					}	
 				}
-				$question->answer = $answer;
-				$question->type = Question::TYPE_MARKINGUP;
-				if (! isset ( $question->material_id ) && isset ( $material->id ))
-					$question->material_id = $material->id;
-				else
-					$question->material_id = 0;
-				if ($question->save ()) {
-					$question = Question::model ()->findByPk ( $question->id );
-					$view = $this->renderPartial ( 'add_question', array ('question' => $question ), true );
-					$result = array ('success' => true, 'id' => $question->id, 'view' => $view );
-					echo json_encode ( $result );
-				}
+				
+				$this->render ( $form, array(
+					'model'=>$model,
+					'test'=>$test
+				) );
 			}
 		}
 	}
+	
 	/**
-	 * Copy a new model
-	 * @param integer $id the ID of model to be copied
+	 * Suggests a list of existing email matching the specified keyword.
+	 * @param string the keyword to be matched
+	 * @param integer maximum number of tags to be returned
+	 * @return array list of matching username names
 	 */
-	public function actionCopy($id)
-	{		
-	}
-	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 * @param integer $id the ID of the model to be updated
-	 */
-	public function actionUpdate($id)
+	public function actionSuggestEmail()
 	{
-		$test=ITest::model()->findByPk($id);
-		if(isset($_POST['ITest']))
+		if(isset($_GET['q']) && ($keyword=trim($_GET['q']))!=='')
 		{
-			$test->attributes=$_POST['ITest'];
-			$test->type=ITest::TYPE_MARKINGUP;			
-			$list_questions = array_diff ( explode ( ',', $_POST['ITest']['questions'] ), array ('') );
-			$test->content=$list_questions;
-			if($test->save())
-			{
-				$test=ITest::model()->findByPk($id);
-				Yii::app()->user->setFlash('success', Language::t('Update successfully'));
-			}	
-		}
-		$this->render ( 'update',array('test'=>$test,'group_level'=>$group_level));
-	}
-
-	/**
-	 * Deletes a particular model.
-	 * If deletion is successful, the browser will be redirected to the 'admin' page.
-	 * @param integer $id the ID of the model to be deleted
-	 */
-	public function actionDelete($id)
-	{
-		if(Yii::app()->request->isPostRequest)
-		{
-			// we only allow deletion via POST request
-			$this->loadModel($id)->delete();
-
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-		}
-		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+			$criteria=new CDbCriteria;
+			$criteria->compare('email',$keyword,true);
+			$criteria->addNotInCondition('id', Yii::app()->session["list-choicing-user"]);
+			$criteria->limit=10;
+			$criteria->order='email DESC';
+			$users=User::model()->findAll($criteria);
+			$emails=array();
+			foreach($users as $user)
+				$emails[]=$user->email;
+			if($emails!==array())
+				echo implode("\n",$emails);
+		}	
+		
 	}
 
 	/**
@@ -211,7 +209,7 @@ class MarkingUpSkillController extends Controller
 				//if (Yii::app ()->user->checkAccess ( 'test_delete')) {
 				if(true){
 					foreach ( $list_checked as $id ) {
-						$item = ITest::model ()->findByPk ( (int)$id );
+						$item = Result::model ()->findByPk ( (int)$id );
 						if (isset ( $item ))
 							if (! $item->delete ()) {
 								echo 'false';
@@ -227,45 +225,6 @@ class MarkingUpSkillController extends Controller
 		}
 		echo 'true';
 		Yii::app()->end();
-	}
-	/**
-	 * Lists all models.
-	 */
-	public function actionIndex()
-	{
-		$this->initCheckbox('checked-test-list');
-		$model=new ITest('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['ITest']))
-			$model->attributes=$_GET['ITest'];
-		$this->render('index',array(
-			'model'=>$model
-		));
-	}
-	/**
-	 * Reverse status of language
-	 * @param integer $id, the ID of language to be reversed
-	 */
-	public function actionReverseStatus($id)
-	{
-		$src=ITest::reverseStatus($id);
-		if($src) 
-			echo json_encode(array('success'=>true,'src'=>$src));
-		else 
-			echo json_encode(array('success'=>false));		
-	}
-	
-	/**
-	 * Suggests title of language.
-	 */
-	public function actionSuggestTitle()
-	{
-		if(isset($_GET['q']) && ($keyword=trim($_GET['q']))!=='')
-		{
-			$titles=ITest::model()->suggestTitle($keyword);
-			if($titles!==array())
-				echo implode("\n",$titles);
-		}
 	}
 	
 	/**
@@ -339,7 +298,7 @@ class MarkingUpSkillController extends Controller
 	 */
 	public function loadModel($id)
 	{
-		$model=ITest::model()->findByPk($id);
+		$model=Result::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;

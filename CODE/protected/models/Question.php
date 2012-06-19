@@ -161,7 +161,13 @@ class Question extends CActiveRecord
 	/*
 	 * Interchange list options
 	 */
-	public function interChange($origin){
-		return shuffle($origin);		
+	static function interChange($origin){
+		$list_keys=array_keys($origin);
+		shuffle($list_keys);
+		$result=array();	
+		foreach ($list_keys as $key) {
+			$result[$key]=$origin[$key];
+		}
+		return $result;	
 	}
 }

@@ -1,11 +1,18 @@
 <?php 
 return array(
+		Category::TYPE_ITEST=>array(
+			'form'=>'_form',
+			'max_rank'=>1,
+			'code'=>'itest',
+			'class'=>'ITest',
+			'label'=>'Language'	
+		),
 		Category::TYPE_NEWS=>array(
 			'form'=>'_form',
 			'max_rank'=>3,
 			'code'=>'news',
 			'class'=>'News',
-			'label'=>'Danh mục tin tức-sự kiện',
+			'label'=>'News',
 		),
 		Category::TYPE_ITEST_LANG=>array(
 			'form'=>'_form',
@@ -13,5 +20,12 @@ return array(
 			'code'=>'itest',
 			'class'=>'ITest',
 			'label'=>'List Language',
+		),
+		Category::TYPE_EXAM=>array(
+			'form'=>'_form',
+			'max_rank'=>1,
+			'code'=>'exam',
+			'class'=>'Exam',
+			'label'=>'Office'
 		),
 	);

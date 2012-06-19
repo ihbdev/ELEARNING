@@ -16,7 +16,7 @@
                         	<?php echo $form->textField($model,'name',array('style'=>'width:300px;','maxlength'=>'256')); ?>
                    			<?php echo $form->error($model, 'name'); ?>
                     	</li>
-                    </div>                                                
+                    </div> 
                     <div class="row">
                     <li>
                         <?php echo $form->labelEx($model,'parent_id'); ?>
@@ -34,7 +34,7 @@
                         ?>
                   		<?php echo $form->error($model, 'parent_id'); ?>
 					</li>
-                    </div>
+                    </div>                                                                
                     <?php if(!$model->isNewRecord):?>
                     <div class="row">
                     <li>
@@ -51,13 +51,6 @@
 					</li>  
 					</div>
 					<?php endif;?>  
-					<div class="row">
-							<li>
-								<?php echo $form->labelEx($model,'introimage'); ?>
-								<?php echo $this->renderPartial('/image/_signupload', array('model'=>$model,'attribute'=>'introimage','type_image'=>'introimage')); ?>		
-								<?php echo $form->error($model, 'introimage'); ?>
-							</li>
-						</div>  
                    <div class="row">
 						<li>
                        		<?php echo $form->labelEx($model,'description'); ?>

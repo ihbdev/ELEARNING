@@ -24,6 +24,13 @@ class ITest extends CActiveRecord
 	const TYPE_MARKINGUP=3;
 	const TYPE_CODING=4;
 	
+	static $list_type=array(
+			ITest::TYPE_LANGUAGE=>'Language Skill',
+			ITest::TYPE_KNOWLEDGE=>'Knowledge Skill',
+			ITest::TYPE_MARKINGUP=>'Marking-up Skill',
+			ITest::TYPE_CODING=>'Coding Skill'
+	);
+	
 	const MARKINGUP_MAX_LEVEL=9;
 	/**
 	 * @var array config list other attributes of the banner
@@ -257,20 +264,21 @@ class ITest extends CActiveRecord
 	/*
 	 * Encode content
 	 */
-	public function encode(){
-	
-	}
-	/*
-	 * Decode content
-	 */
-	public function decode(){
-	
-	}
-	
-	/*
-	 * auto create
-	 */
-	public function autoCreate(){
-	
+	public function search(){
+		$criteria = new CDbCriteria ();
+		$criteria->compare ( 'type', ITest::TYPE_MARKINGUP );
+		if($this->title != '')
+			$criteria->compare ( 'title', $this->title, true );
+		if($this->group_level === '0')
+			$criteria->compare ( 'level',0);
+		if($this->group_level === '1')
+			$criteria->addCondition( 'level <> 0');	
+			
+		$list_tests= new CActiveDataProvider ( 'ITest', array (
+			'criteria' => $criteria, 
+			'pagination' => array ('pageSize' => Yii::app ()->user->getState ( 'pageSize', Setting::s('DEFAULT_PAGE_SIZE','System')  ) ), 
+			'sort' => array ('defaultOrder' => 'id DESC' )    		
+		));
+		return $list_tests;
 	}
 }

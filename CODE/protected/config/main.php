@@ -7,7 +7,7 @@
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'language'=> 'vi',
+	'language'=> 'en',
 	'name'=>'My Web Application',
 	'theme'=>'basic',
 	// preloading 'log' component
