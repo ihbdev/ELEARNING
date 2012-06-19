@@ -85,7 +85,7 @@
       					'class'=>'CCheckBoxColumn',
 						'selectableRows'=>2,
 						'headerHtmlOptions'=>array('width'=>'2%','class'=>'table-title'),
-						'checked'=>'in_array($data->id,Yii::app()->session["checked-result-list"])'
+						'checked'=>'in_array($data->id,Yii::app()->session["checked-exam-list"])'
     				),			
     				array(
 						'name'=>'catid',
