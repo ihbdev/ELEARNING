@@ -167,7 +167,7 @@ class ExamController extends Controller
 			
 			$model->start_time=strtotime($model->start_time);
 			$model->finish_time=strtotime($model->finish_time);
-			$model->list_users=array_diff(explode(',',$_POST[Exam][users]),array(''));
+			$model->list_users=array_diff(explode(',',$_POST['Exam']['users']),array(''));
 			
 			$test=ITest::model()->findByPk($model->test_id);
 			$model->type=$test->type;		
@@ -350,7 +350,7 @@ class ExamController extends Controller
 			
 			$model->start_time=strtotime($model->start_time);
 			$model->finish_time=strtotime($model->finish_time);
-			$model->list_users=array_diff(explode(',',$_POST[Exam][users]),array(''));
+			$model->list_users=array_diff(explode(',',$_POST['Exam']['users']),array(''));
 			
 			$test=ITest::model()->findByPk($model->test_id);
 			$model->type=$test->type;		

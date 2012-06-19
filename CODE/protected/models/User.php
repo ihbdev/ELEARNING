@@ -68,7 +68,7 @@ class User extends CActiveRecord
 		$list = $model->list_nodes;
 		foreach ( $list as $id => $level ) {
 			$role = Role::model()->findByPk($id);
-			$list_roles[$role->name]=$view." ".$role->name." ".$view;
+			$list_roles[$role->name]=$role->name;
 		}
 		return $list_roles;
  	}

@@ -57,7 +57,7 @@
                             	</div>
                             	<div id="<?php echo $css_id.'_form';?>" style="display: none;">
                             		<input type="text" name ="" style="width:600px;" value="<?php echo $question->title;?>">
-                            		<a class="i16 i16-checkblue" href="<?php Yii::app()->createUrl('markingUpSkill',array('id'=>$question_id,'type'=>Question::TYPE_UPDATE_TITLE))?>"></a>
+                            		<a class="i16 i16-checkblue" href="<?php echo Yii::app()->createUrl('markingUpSkill/updateQuestion',array('id'=>$question_id))?>"></a>
                             		<a class="i16 i16-removered"></a>
                             	</div>
                             </div>
@@ -192,22 +192,16 @@ $cs->registerScript(
   'js-update',
   "jQuery(function($) { $('body').on('click','.i16-checkblue',	
   		function(){
-  			var parent=$(this).parent();
-  			alert(parent.serialize());  			  				
+  			var parent=$(this).parent();	
+  			var url=$(this).attr('href');	
+  			alert(url);	  				
   			jQuery.ajax({
-  				'data':{id : $(\"#popup_value\").val(), current_id: $(\"#current_id\").val()},
+  				'data':parent.find('input').serialize(),
   				'dataType':'json',
   				'success':function(data){
-  					if(data.status == true){
-						$(\".folder-content\").html(data.content);
-						$(\".folder-content\").append('<div class=\"clear\"></div>');
-					}
-					else {
-						jAlert(data.content);
-					}
         		},
-        		'type':'GET',
-        		'url':'".$this->createUrl('category/delete')."',
+        		'type':'POST',
+        		'url':url,
         		'cache':false});
        return false;	
        });

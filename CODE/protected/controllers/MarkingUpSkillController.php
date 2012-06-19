@@ -152,16 +152,10 @@ class MarkingUpSkillController extends Controller
 /**
 	 * Add a new question
 	 */
-	public function actionUpdateQuestion($id,$type) {
+	public function actionUpdateQuestion($id) {
 		$question=Question::model()->findByPk($id);
-		switch ($type){
-			case Question::TYPE_UPDATE_TITLE :
-				$question->title=$_POST['title'];
-				break;
-			case Question::TYPE_UPDATE_CHOICE :
-				$question->content[$_POST['choice_index']]=$_POST['choice_content'];
-				break;
-		}
+		var_dump($_POST['Question']);
+		exit;
 	}
 	/**
 	 * Copy a new model
