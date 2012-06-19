@@ -108,7 +108,7 @@ class Exam extends CActiveRecord
 	public function rules()
 	{
 		return array(
-			array('catid,test_id,type,list_users','required'),
+			array('office_id,test_id,type,list_users','required'),
 			array('start_time', 'compare', 'operator'=>'<','compareAttribute'=>'finish_time','message'=>'Start time must be less than Finish time'),
 			array('start_time,finish_time','safe'),
 		);

@@ -3724,3 +3724,19 @@ Stack trace:
 REQUEST_URI=/RELEASE_PROJECT/ELEARNING/CODE/index.php?r=exam/create
 HTTP_REFERER=http://localhost/RELEASE_PROJECT/ELEARNING/CODE/index.php?r=exam/create
 ---
+2012/06/19 11:44:50 [warning] [application] Failed to set unsafe attribute "users" of "Exam".
+in C:\xampp\htdocs\RELEASE_PROJECT\ELEARNING\CODE\protected\models\Exam.php (55)
+in C:\xampp\htdocs\RELEASE_PROJECT\ELEARNING\CODE\protected\controllers\ExamController.php (166)
+in C:\xampp\htdocs\RELEASE_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/19 11:45:32 [warning] [application] Failed to set unsafe attribute "users" of "Exam".
+in C:\xampp\htdocs\RELEASE_PROJECT\ELEARNING\CODE\protected\models\Exam.php (55)
+in C:\xampp\htdocs\RELEASE_PROJECT\ELEARNING\CODE\protected\controllers\ExamController.php (166)
+in C:\xampp\htdocs\RELEASE_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/19 11:45:34 [warning] [application] Failed to set unsafe attribute "users" of "Exam".
+in C:\xampp\htdocs\RELEASE_PROJECT\ELEARNING\CODE\protected\models\Exam.php (55)
+in C:\xampp\htdocs\RELEASE_PROJECT\ELEARNING\CODE\protected\controllers\ExamController.php (166)
+in C:\xampp\htdocs\RELEASE_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/19 11:45:43 [warning] [application] Failed to set unsafe attribute "users" of "Exam".
+in C:\xampp\htdocs\RELEASE_PROJECT\ELEARNING\CODE\protected\models\Exam.php (55)
+in C:\xampp\htdocs\RELEASE_PROJECT\ELEARNING\CODE\protected\controllers\ExamController.php (166)
+in C:\xampp\htdocs\RELEASE_PROJECT\ELEARNING\CODE\index.php (17)
