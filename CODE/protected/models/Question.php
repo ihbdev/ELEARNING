@@ -18,6 +18,9 @@ class Question extends CActiveRecord
 	const TYPE_KNOWLEDGE=2;
 	const TYPE_MARKINGUP=3;
 	const TYPE_CODING=4;
+	
+	const TYPE_UPDATE_TITLE=1;
+	const TYPE_UPDATE_CHOICE=2;
 	/**
 	 * @var array config list other attributes of the banner
 	 * this attribute no need to search	 

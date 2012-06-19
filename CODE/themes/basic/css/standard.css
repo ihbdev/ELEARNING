@@ -1432,6 +1432,13 @@ div.form span.required
 .text-question .text-check div.active label{
 	color:#C00;	
 }
+.text-question .text-check div .i16, .text-question .text-title .i16{
+	margin:0 0 0 5px;
+	display:none;
+}
+.text-question .text-check div:hover .i16, .text-question div.text-title:hover .i16, .text-question .i16-checkblue, .text-question .i16-removered{
+	display: inline-block !important;
+}
 .employee-ul{
 	padding:0;
 	border-bottom:1px dotted #ccc;
