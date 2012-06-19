@@ -120,31 +120,48 @@ class MarkingUpSkillController extends Controller
 	public function actionAddQuestion() {
 		if (isset ( $_POST ['Question'] )) {
 			$question = new Question ();
-			$question->attributes = $_POST ['Question'];
-			if (! isset ( $question->answer )) {
+			$question->attributes=$_POST['Question'];		
+			if (! isset ( $_POST['Question']['answer'] )) {
 				$result = array ('success' => false, 'message' => 'Select answer' );
 				echo json_encode ( $result );
 			} else {
-				$answer = array ();
-				foreach ( $question->content as $index => $option ) {
-					if (in_array ( $index, $question->answer ))
-						$answer [$index] = 1;
-					else
-						$answer [$index] = 0;
-				}
+				$content=array();
+				$answer=array();
+				foreach ($_POST ['Question']['content'] as $index=>$choice){
+					if($choice != '') {
+						$content[]=$choice;
+						if (in_array ( $index, $_POST ['Question']['answer'] ))
+							$answer [] = 1;
+						else
+							$answer [] = 0;
+					}
+				};
+				$question->content = $content;				
 				$question->answer = $answer;
 				$question->type = Question::TYPE_MARKINGUP;
-				if (! isset ( $question->material_id ) && isset ( $material->id ))
-					$question->material_id = $material->id;
-				else
-					$question->material_id = 0;
+				$question->material_id = 0;
+				
 				if ($question->save ()) {
 					$question = Question::model ()->findByPk ( $question->id );
-					$view = $this->renderPartial ( 'add_question', array ('question' => $question ), true );
+					$view = $this->renderPartial ( '_question', array ('question' => $question ), true );
 					$result = array ('success' => true, 'id' => $question->id, 'view' => $view );
 					echo json_encode ( $result );
 				}
 			}
+		}
+	}
+/**
+	 * Add a new question
+	 */
+	public function actionUpdateQuestion($id,$type) {
+		$question=Question::model()->findByPk($id);
+		switch ($type){
+			case Question::TYPE_UPDATE_TITLE :
+				$question->title=$_POST['title'];
+				break;
+			case Question::TYPE_UPDATE_CHOICE :
+				$question->content[$_POST['choice_index']]=$_POST['choice_content'];
+				break;
 		}
 	}
 	/**

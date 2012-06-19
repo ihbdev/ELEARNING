@@ -69,11 +69,26 @@
                         	<?php echo $form->error($test, 'content'); ?>
                         	<div class="row"><label style="width:70px;"><?php echo Language::t('Title')?>:</label><textarea name="Question[title]" style="width:600px; height:80px;"></textarea></div>
                             <div class="row"><label style="width:70px;"><?php echo Language::t('File')?>:</label><input type="text" name ="Question[supplement]" style="width: 600px;"></div>
-                            <div class="row"><label style="width:30px;">A:</label><input name="Question[answer][]" type="checkbox" value="0"/><input type="text" name ="Question[content][0]" style="width: 600px;"></div>
-                            <div class="row"><label style="width:30px;">B:</label><input name="Question[answer][]" type="checkbox" value="1"/><input type="text" name ="Question[content][1]" style="width: 600px;"></div>
-                            <div class="row"><label style="width:30px;">C:</label><input name="Question[answer][]" type="checkbox" value="2"/><input type="text" name ="Question[content][2]" style="width: 600px;"></div>
-                            <div class="row"><label style="width:30px;">D:</label><input name="Question[answer][]" type="checkbox" value="3"/><input type="text" name ="Question[content][3]" style="width: 600px;"></div>
-                            <div class="row"><label style="width:30px;">E:</label><input name="Question[answer][]" type="checkbox" value="4"/><input type="text" name ="Question[content][4]" style="width: 600px;"></div>
+                            <div class="row"><label style="width:30px;">1)</label><input name="Question[answer][]" type="checkbox" value="0"/><input type="text" name ="Question[content][0]" style="width: 600px;"></div>
+                            <div class="row"><label style="width:30px;">2)</label><input name="Question[answer][]" type="checkbox" value="1"/><input type="text" name ="Question[content][1]" style="width: 600px;"></div>
+                            <div class="row"><label style="width:30px;">3)</label><input name="Question[answer][]" type="checkbox" value="2"/><input type="text" name ="Question[content][2]" style="width: 600px;"></div>
+                            <div class="row"><label style="width:30px;">4)</label><input name="Question[answer][]" type="checkbox" value="3"/><input type="text" name ="Question[content][3]" style="width: 600px;"></div>
+                            <div class="row"><a id="add_choice" class="i16 i16-addgreen"></a></div>
+                            <?php 
+							Yii::app()->clientScript->registerScript('add_choice', "
+								$('#add_choice').click(function(){
+									var value=0;
+									var parent=$(this).parent();
+									parent.parent().find('input[type=checkbox]').each(
+										function(){
+											if(value < $(this).val()) 
+												value=$(this).val();
+										}
+									);
+									value++;
+									$('<div class=\"row\"><label style=\"width:30px;\">'+(value+1)+')</label><input name=\"Question[answer][]\" type=\"checkbox\" value=\"'+value+'\"/><input type=\"text\" name =\"Question[content]['+value+']\" style=\"width: 600px;\"></div>').insertBefore(parent);
+								})");
+							?>
                             <br />
                             <div class="row"><label style="width:70px;">&nbsp;</label><input id="add_question" type="submit" class="button" value="<?php echo Language::t('Add question')?>" style="width:100px;" /></div>
                         </div><!--q-post-->
