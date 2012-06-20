@@ -116,7 +116,7 @@ class MarkingUpSkillController extends Controller
 	/**
 	 * Add a new question
 	 */
-	public function actionAddQuestion() {
+	public function actionAddQuestion($test_id=null) {
 		if (isset ( $_POST ['Question'] )) {
 			$question = new Question ();
 			$question->attributes=$_POST['Question'];		
@@ -142,28 +142,136 @@ class MarkingUpSkillController extends Controller
 				
 				if ($question->save ()) {
 					$question = Question::model ()->findByPk ( $question->id );
-					$view = $this->renderPartial ( '_question', array ('question' => $question ), true );
-					$result = array ('success' => true, 'id' => $question->id, 'view' => $view );
-					echo json_encode ( $result );
+					if(isset($test_id) && $test_id>0){
+						$test=ITest::model()->findByPk($test_id);
+						$content=$test->content;
+						$content[]=$question->id;
+						$test->content=$content;
+						if($test->save()){
+							$view = $this->renderPartial ( '_update_question', array ('question' => $question, 'test'=>$test ), true );
+							$result = array ('success' => true, 'id' => $question->id, 'view' => $view );
+							echo json_encode ( $result );
+						}
+					}
+					else {
+						$view = $this->renderPartial ( '_create_question', array ('question' => $question), true );
+						$result = array ('success' => true, 'id' => $question->id, 'view' => $view );
+						echo json_encode ( $result );
+					}
 				}
 			}
 		}
 	}
-/**
+	/**
 	 * Add a new question
 	 */
-	public function actionUpdateQuestion($id) {
+	public function actionUpdateQuestion($id,$test_id=null) {
 		$question=Question::model()->findByPk($id);
-		var_dump($_POST['Question']);
-		exit;
+		$answer=$question->answer;
+		$content=$question->content;
+		$question->attributes=$_POST['UpdateQuestion'];
+		if(isset($_POST['UpdateQuestion']['content'])){
+			foreach ($_POST['UpdateQuestion']['content'] as $index=>$choice){
+				$content[$index]=$choice;
+				if(isset($_POST['UpdateQuestion']['answer']) && in_array($index,$_POST['UpdateQuestion']['answer']))
+					$answer[$index]=1;
+				else 	
+					$answer[$index]=0;
+			}
+		}
+		$review=false;
+		foreach ($answer as $index=>$item){
+			if($item) $review=true;
+		}
+		if($review){
+			$question->answer=$answer;
+			$question->content=$content;
+			if ($question->save ()) {
+				$question = Question::model ()->findByPk ( $question->id );
+				if(isset($test_id) && $test_id>0){
+					$test=ITest::model()->findByPk($test_id);
+					$view = $this->renderPartial ( '_update_question', array ('question' => $question, 'test'=>$test ), true );
+					$result = array ('success' => true, 'view' => $view );
+					echo json_encode ( $result );
+				}
+				else {
+					$view = $this->renderPartial ( '_create_question', array ('question' => $question), true );
+					$result = array ('success' => true, 'view' => $view );
+					echo json_encode ( $result );
+				}
+			}
+		}
+		else{
+				$result = array ('success' => false, 'message' => 'Correct answer not empty' );
+				echo json_encode ( $result );
+			}
 	}
+	
 	/**
-	 * Copy a new model
-	 * @param integer $id the ID of model to be copied
+	 * Remove a question or a choice 
 	 */
-	public function actionCopy($id)
-	{		
+	public function actionRemoveQuestion($question_id,$index_choice=-1,$test_id=null) {
+		$question=Question::model()->findByPk($question_id);
+		if($index_choice == -1){
+			$test=ITest::model()->findByPk($test_id);
+			$content=array();
+			foreach ($test->content as $index=>$item){
+				if($item != $question_id)
+					$content[]=$item;
+			}
+			$test->content=$content;
+			if($test->save()){
+				if($question->delete()){
+					$view='';
+					$result = array ('success' => true, 'view' => $view );
+					echo json_encode ( $result );
+				}
+			}
+		}
+		else {
+			$content=array();
+			$answer=array();
+			foreach ($question->content as $index=>$item){
+				if($index != $index_choice)
+				{
+					$content[]=$item;
+				}
+			}
+			foreach ($question->answer as $index=>$item){
+				if($index != $index_choice)
+				{
+					$answer[]=$item;
+				}
+			}
+			$review=false;
+			foreach ($answer as $index=>$item){
+				if($item) $review=true;
+			}
+			if($review){
+				$question->answer=$answer;
+				$question->content=$content;			
+				if($question->save()){
+					$question=Question::model()->findByPk($question_id);
+					if(isset($test_id) && $test_id>0){
+						$test=ITest::model()->findByPk($test_id);
+						$view = $this->renderPartial ( '_update_question', array ('question' => $question, 'test'=>$test ), true );
+						$result = array ('success' => true, 'view' => $view );
+						echo json_encode ( $result );
+					}
+					else{
+						$view = $this->renderPartial ( '_create_question', array ('question' => $question), true );
+						$result = array ('success' => true, 'view' => $view );
+						echo json_encode ( $result );
+					}
+				}	
+			}
+			else{
+				$result = array ('success' => false, 'message' => 'Correct answer not empty' );
+				echo json_encode ( $result );
+			}
+		}
 	}
+
 	/**
 	 * Updates a particular model.
 	 * If update is successful, the browser will be redirected to the 'view' page.
@@ -184,7 +292,7 @@ class MarkingUpSkillController extends Controller
 				Yii::app()->user->setFlash('success', Language::t('Update successfully'));
 			}	
 		}
-		$this->render ( 'update',array('test'=>$test,'group_level'=>$group_level));
+		$this->render ( 'update',array('test'=>$test));
 	}
 
 	/**
