@@ -3778,3 +3778,32 @@ REQUEST_URI=/DEV_PROJECT/ELEARNING/CODE/index.php?r=news/index
 in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\News.php (165)
 in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\News.php (290)
 in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\themes\basic\views\news\index.php (209)
+2012/06/20 05:55:10 [error] [exception.CException] exception 'CException' with message 'Property "ITest.section_a" is not defined.' in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\base\CComponent.php:131
+Stack trace:
+#0 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\db\ar\CActiveRecord.php(144): CComponent->__get('section_a')
+#1 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\ITest.php(75): CActiveRecord->__get('section_a')
+#2 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\helpers\CHtml.php(2033): ITest->__get('section_a')
+#3 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\helpers\CHtml.php(1258): CHtml::resolveValue(Object(ITest), 'section_a[descr...')
+#4 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\widgets\CActiveForm.php(620): CHtml::activeTextArea(Object(ITest), 'section_a[descr...', Array)
+#5 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\themes\basic\views\knowledgeSkill\create.php(29): CActiveForm->textArea(Object(ITest), 'section_a[descr...', Array)
+#6 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CBaseController.php(127): require('E:\Xampp\htdocs...')
+#7 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CBaseController.php(96): CBaseController->renderInternal('E:\Xampp\htdocs...', Array, true)
+#8 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(870): CBaseController->renderFile('E:\Xampp\htdocs...', Array, true)
+#9 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(783): CController->renderPartial('create', Array, true)
+#10 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php(193): CController->render('create', Array)
+#11 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\actions\CInlineAction.php(50): KnowledgeSkillController->actionCreate()
+#12 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(309): CInlineAction->runWithParams(Array)
+#13 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\filters\CFilterChain.php(134): CController->runAction(Object(CInlineAction))
+#14 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\filters\CFilter.php(41): CFilterChain->run()
+#15 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(1146): CFilter->filter(Object(CFilterChain))
+#16 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\filters\CInlineFilter.php(59): CController->filterAccessControl(Object(CFilterChain))
+#17 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\filters\CFilterChain.php(131): CInlineFilter->filter(Object(CFilterChain))
+#18 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(292): CFilterChain->run()
+#19 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(266): CController->runActionWithFilters(Object(CInlineAction), Array)
+#20 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CWebApplication.php(276): CController->run('create')
+#21 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CWebApplication.php(135): CWebApplication->runController('knowledgeSkill/...')
+#22 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\base\CApplication.php(162): CWebApplication->processRequest()
+#23 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php(17): CApplication->run()
+#24 {main}
+REQUEST_URI=/DEV_PROJECT/ELEARNING/CODE/index.php?r=knowledgeSkill/create
+---
