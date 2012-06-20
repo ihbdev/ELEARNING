@@ -83,7 +83,7 @@
                 <?php $this->endWidget(); ?>
                 
                 <div class="testpost-box">
-                       <?php 
+				<?php 
 				Yii::app()->clientScript->registerScript('search-test', "
 				$('#test-search').submit(function(){
 				$.fn.yiiGridView.update('test-list', {

@@ -96,7 +96,7 @@ class ExamController extends Controller
 		$model=Exam::model()->findByPk($id);
 		$test=ITest::model()->findByPk($model->test_id);
 		if(in_array(Yii::app()->user->id,$model->list_users)){
-			if(time() > $model->start_time && time() < $model->finish_time)	{		
+			if(time() > $model->start_time && time() < $model->finish_time)	{
 				switch($model->type){
 					case Exam::TYPE_LANGUAGE:
 						$form='view_language';
@@ -144,6 +144,7 @@ class ExamController extends Controller
 					'test'=>$test
 				) );
 			}
+			else echo "Đã quá thời gian thi! ^^";
 		}
 	}
 	/**
