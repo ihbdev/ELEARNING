@@ -3836,3 +3836,739 @@ Stack trace:
 #24 {main}
 REQUEST_URI=/DEV_PROJECT/ELEARNING/CODE/index.php?r=knowledgeSkill/create
 ---
+2012/06/20 06:05:41 [error] [exception.CException] exception 'CException' with message 'Property "Exam.type" is not defined.' in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\base\CComponent.php:131
+Stack trace:
+#0 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\db\ar\CActiveRecord.php(144): CComponent->__get('type')
+#1 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Exam.php(71): CActiveRecord->__get('type')
+#2 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\helpers\CHtml.php(2044): Exam->__get('type')
+#3 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\helpers\CHtml.php(1402): CHtml::resolveValue(Object(Exam), 'type')
+#4 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\widgets\CActiveForm.php(681): CHtml::activeDropDownList(Object(Exam), 'type', Array, Array)
+#5 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\themes\basic\views\exam\index.php(38): CActiveForm->dropDownList(Object(Exam), 'type', Array, Array)
+#6 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CBaseController.php(127): require('E:\Xampp\htdocs...')
+#7 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CBaseController.php(96): CBaseController->renderInternal('E:\Xampp\htdocs...', Array, true)
+#8 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(870): CBaseController->renderFile('E:\Xampp\htdocs...', Array, true)
+#9 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(783): CController->renderPartial('index', Array, true)
+#10 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\ExamController.php(509): CController->render('index', Array)
+#11 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\actions\CInlineAction.php(50): ExamController->actionIndex()
+#12 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(309): CInlineAction->runWithParams(Array)
+#13 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\filters\CFilterChain.php(134): CController->runAction(Object(CInlineAction))
+#14 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\filters\CFilter.php(41): CFilterChain->run()
+#15 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(1146): CFilter->filter(Object(CFilterChain))
+#16 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\filters\CInlineFilter.php(59): CController->filterAccessControl(Object(CFilterChain))
+#17 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\filters\CFilterChain.php(131): CInlineFilter->filter(Object(CFilterChain))
+#18 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(292): CFilterChain->run()
+#19 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(266): CController->runActionWithFilters(Object(CInlineAction), Array)
+#20 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CWebApplication.php(276): CController->run('')
+#21 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CWebApplication.php(135): CWebApplication->runController('exam')
+#22 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\base\CApplication.php(162): CWebApplication->processRequest()
+#23 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php(17): CApplication->run()
+#24 {main}
+REQUEST_URI=/DEV_PROJECT/ELEARNING/CODE/index.php?r=exam
+---
+2012/06/20 06:08:05 [error] [exception.CException] exception 'CException' with message 'Property "Exam.office_id" is not defined.' in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\base\CComponent.php:131
+Stack trace:
+#0 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\db\ar\CActiveRecord.php(144): CComponent->__get('office_id')
+#1 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Exam.php(71): CActiveRecord->__get('office_id')
+#2 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\helpers\CHtml.php(2044): Exam->__get('office_id')
+#3 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\helpers\CHtml.php(1402): CHtml::resolveValue(Object(Exam), 'office_id')
+#4 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\widgets\CActiveForm.php(681): CHtml::activeDropDownList(Object(Exam), 'office_id', Array, Array)
+#5 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\themes\basic\views\exam\index.php(69): CActiveForm->dropDownList(Object(Exam), 'office_id', Array, Array)
+#6 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CBaseController.php(127): require('E:\Xampp\htdocs...')
+#7 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CBaseController.php(96): CBaseController->renderInternal('E:\Xampp\htdocs...', Array, true)
+#8 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(870): CBaseController->renderFile('E:\Xampp\htdocs...', Array, true)
+#9 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(783): CController->renderPartial('index', Array, true)
+#10 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\ExamController.php(509): CController->render('index', Array)
+#11 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\actions\CInlineAction.php(50): ExamController->actionIndex()
+#12 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(309): CInlineAction->runWithParams(Array)
+#13 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\filters\CFilterChain.php(134): CController->runAction(Object(CInlineAction))
+#14 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\filters\CFilter.php(41): CFilterChain->run()
+#15 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(1146): CFilter->filter(Object(CFilterChain))
+#16 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\filters\CInlineFilter.php(59): CController->filterAccessControl(Object(CFilterChain))
+#17 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\filters\CFilterChain.php(131): CInlineFilter->filter(Object(CFilterChain))
+#18 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(292): CFilterChain->run()
+#19 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(266): CController->runActionWithFilters(Object(CInlineAction), Array)
+#20 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CWebApplication.php(276): CController->run('')
+#21 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CWebApplication.php(135): CWebApplication->runController('exam')
+#22 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\base\CApplication.php(162): CWebApplication->processRequest()
+#23 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php(17): CApplication->run()
+#24 {main}
+REQUEST_URI=/DEV_PROJECT/ELEARNING/CODE/index.php?r=exam
+---
+2012/06/20 06:16:45 [error] [exception.CException] exception 'CException' with message 'Property "Exam.office_id" is not defined.' in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\base\CComponent.php:131
+Stack trace:
+#0 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\db\ar\CActiveRecord.php(144): CComponent->__get('office_id')
+#1 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Exam.php(71): CActiveRecord->__get('office_id')
+#2 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\helpers\CHtml.php(2044): Exam->__get('office_id')
+#3 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\helpers\CHtml.php(1402): CHtml::resolveValue(Object(Exam), 'office_id')
+#4 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\widgets\CActiveForm.php(681): CHtml::activeDropDownList(Object(Exam), 'office_id', Array, Array)
+#5 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\themes\basic\views\exam\index.php(69): CActiveForm->dropDownList(Object(Exam), 'office_id', Array, Array)
+#6 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CBaseController.php(127): require('E:\Xampp\htdocs...')
+#7 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CBaseController.php(96): CBaseController->renderInternal('E:\Xampp\htdocs...', Array, true)
+#8 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(870): CBaseController->renderFile('E:\Xampp\htdocs...', Array, true)
+#9 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(783): CController->renderPartial('index', Array, true)
+#10 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\ExamController.php(509): CController->render('index', Array)
+#11 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\actions\CInlineAction.php(50): ExamController->actionIndex()
+#12 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(309): CInlineAction->runWithParams(Array)
+#13 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\filters\CFilterChain.php(134): CController->runAction(Object(CInlineAction))
+#14 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\filters\CFilter.php(41): CFilterChain->run()
+#15 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(1146): CFilter->filter(Object(CFilterChain))
+#16 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\filters\CInlineFilter.php(59): CController->filterAccessControl(Object(CFilterChain))
+#17 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\filters\CFilterChain.php(131): CInlineFilter->filter(Object(CFilterChain))
+#18 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(292): CFilterChain->run()
+#19 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(266): CController->runActionWithFilters(Object(CInlineAction), Array)
+#20 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CWebApplication.php(276): CController->run('')
+#21 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CWebApplication.php(135): CWebApplication->runController('exam')
+#22 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\base\CApplication.php(162): CWebApplication->processRequest()
+#23 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php(17): CApplication->run()
+#24 {main}
+REQUEST_URI=/DEV_PROJECT/ELEARNING/CODE/index.php?r=exam
+---
+2012/06/20 06:52:07 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (113)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:52:07 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (113)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:52:07 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (113)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:52:07 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (113)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:52:08 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (113)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:52:08 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (113)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:52:08 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (113)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:52:08 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (113)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:52:08 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (113)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:52:08 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (113)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:52:08 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (113)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:52:08 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (113)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:52:08 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (113)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:52:08 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (113)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:52:08 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (113)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:52:08 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (113)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:52:08 [error] [php] Indirect modification of overloaded property ITest::$content has no effect (E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php:127)
+Stack trace:
+#0 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\filters\CFilterChain.php(134): KnowledgeSkillController->runAction()
+#1 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\filters\CFilter.php(41): CFilterChain->run()
+#2 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(1146): CAccessControlFilter->filter()
+#3 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\filters\CInlineFilter.php(59): KnowledgeSkillController->filterAccessControl()
+#4 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\filters\CFilterChain.php(131): CInlineFilter->filter()
+#5 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(292): CFilterChain->run()
+#6 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(266): KnowledgeSkillController->runActionWithFilters()
+#7 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CWebApplication.php(276): KnowledgeSkillController->run()
+#8 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CWebApplication.php(135): CWebApplication->runController()
+#9 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\base\CApplication.php(162): CWebApplication->processRequest()
+#10 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php(17): CWebApplication->run()
+REQUEST_URI=/DEV_PROJECT/ELEARNING/CODE/index.php?r=knowledgeSkill/create
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (127)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:52:54 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (113)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:52:54 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (113)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:52:55 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (113)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:52:55 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (113)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:52:55 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (113)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:52:55 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (113)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:52:55 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (113)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:52:55 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (113)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:52:55 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (113)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:52:55 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (113)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:52:55 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (113)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:52:55 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (113)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:52:55 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (113)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:52:55 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (113)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:52:55 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (113)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:52:55 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (113)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:52:55 [error] [php] Indirect modification of overloaded property ITest::$content has no effect (E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php:127)
+Stack trace:
+#0 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\filters\CFilterChain.php(134): KnowledgeSkillController->runAction()
+#1 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\filters\CFilter.php(41): CFilterChain->run()
+#2 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(1146): CAccessControlFilter->filter()
+#3 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\filters\CInlineFilter.php(59): KnowledgeSkillController->filterAccessControl()
+#4 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\filters\CFilterChain.php(131): CInlineFilter->filter()
+#5 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(292): CFilterChain->run()
+#6 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(266): KnowledgeSkillController->runActionWithFilters()
+#7 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CWebApplication.php(276): KnowledgeSkillController->run()
+#8 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CWebApplication.php(135): CWebApplication->runController()
+#9 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\base\CApplication.php(162): CWebApplication->processRequest()
+#10 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php(17): CWebApplication->run()
+REQUEST_URI=/DEV_PROJECT/ELEARNING/CODE/index.php?r=knowledgeSkill/create
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (127)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:34 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:34 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:34 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:34 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:34 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:34 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:34 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:34 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:34 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:34 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:34 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:34 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:34 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:34 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:34 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:34 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:34 [error] [exception.CException] exception 'CException' with message 'Property "Material.cat_id" is not defined.' in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\base\CComponent.php:131
+Stack trace:
+#0 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\db\ar\CActiveRecord.php(144): CComponent->__get('cat_id')
+#1 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\validators\CRequiredValidator.php(52): CActiveRecord->__get('cat_id')
+#2 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\validators\CValidator.php(197): CRequiredValidator->validateAttribute(Object(Material), 'cat_id')
+#3 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\base\CModel.php(158): CValidator->validate(Object(Material), NULL)
+#4 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\db\ar\CActiveRecord.php(786): CModel->validate(NULL)
+#5 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php(130): CActiveRecord->save()
+#6 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\actions\CInlineAction.php(50): KnowledgeSkillController->actionCreate()
+#7 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(309): CInlineAction->runWithParams(Array)
+#8 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\filters\CFilterChain.php(134): CController->runAction(Object(CInlineAction))
+#9 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\filters\CFilter.php(41): CFilterChain->run()
+#10 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(1146): CFilter->filter(Object(CFilterChain))
+#11 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\filters\CInlineFilter.php(59): CController->filterAccessControl(Object(CFilterChain))
+#12 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\filters\CFilterChain.php(131): CInlineFilter->filter(Object(CFilterChain))
+#13 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(292): CFilterChain->run()
+#14 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CController.php(266): CController->runActionWithFilters(Object(CInlineAction), Array)
+#15 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CWebApplication.php(276): CController->run('create')
+#16 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\web\CWebApplication.php(135): CWebApplication->runController('knowledgeSkill/...')
+#17 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\framework\base\CApplication.php(162): CWebApplication->processRequest()
+#18 E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php(17): CApplication->run()
+#19 {main}
+REQUEST_URI=/DEV_PROJECT/ELEARNING/CODE/index.php?r=knowledgeSkill/create
+HTTP_REFERER=http://localhost/DEV_PROJECT/ELEARNING/CODE/index.php?r=knowledgeSkill/create
+---
+2012/06/20 06:56:55 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:56 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:56 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:56 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:56 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:56 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:56 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:56 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:56 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:56 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:56 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:56 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:56 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:56 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:56 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:56 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:56 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (134)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:56 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (134)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:56 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (159)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 06:56:56 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (159)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:05:29 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:05:29 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:05:29 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:05:29 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:05:30 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:05:30 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:05:30 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:05:30 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:05:30 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:05:30 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:05:30 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:05:30 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:05:30 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:05:30 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:05:30 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:05:30 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:05:30 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (134)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:05:30 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (134)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:05:30 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (160)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:05:30 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (160)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:10:52 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:10:52 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:10:52 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:10:52 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:10:52 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:10:52 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:10:52 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:10:52 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:10:52 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:10:52 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:10:52 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:10:52 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:10:52 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:10:52 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:10:52 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:10:52 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:10:52 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (134)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:10:52 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (134)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:10:53 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (160)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 07:10:53 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (160)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 08:56:42 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 08:56:42 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 08:56:42 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 08:56:42 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 08:56:42 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 08:56:42 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 08:56:42 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 08:56:42 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 08:56:42 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 08:56:42 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 08:56:42 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 08:56:42 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 08:56:42 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 08:56:42 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 08:56:42 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 08:56:42 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 08:56:43 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (135)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 08:56:43 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (135)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 08:56:43 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (161)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 08:56:43 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (161)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 09:00:58 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 09:00:58 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 09:00:58 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 09:00:58 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 09:00:58 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 09:00:58 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 09:00:58 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 09:00:58 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 09:00:58 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 09:00:58 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 09:00:58 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 09:00:58 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 09:00:58 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 09:00:58 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 09:00:58 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 09:00:58 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (108)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 09:00:59 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (136)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 09:00:59 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (136)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 09:00:59 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (162)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)
+2012/06/20 09:00:59 [warning] [application] Failed to set unsafe attribute "type" of "Question".
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\models\Question.php (49)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\protected\controllers\KnowledgeSkillController.php (162)
+in E:\Xampp\htdocs\DEV_PROJECT\ELEARNING\CODE\index.php (17)

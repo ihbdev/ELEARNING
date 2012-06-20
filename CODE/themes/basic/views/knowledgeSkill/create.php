@@ -26,7 +26,7 @@
 					<h2>Write part</h2>
                     <input type="text" name="" style="width:155px;" value="Section A">
                     <br /><br />
-                    <?php echo $form->textArea($test,'section_a[description]',array('style'=>'width:620px; height:150px;'));?>
+                    <textarea name="section_a[description]" style="width:620px; height:150px;">Section A description</textarea>                    
                 </div><!--testpost-box-->
                 <div class="testpost-box">
 					<h2>Add quetions</h2>
@@ -226,7 +226,7 @@
                                 <!--end table data-->
                             </div><!--text-question-->
                             <div class="text-question">
-                            	<div class="text-title" style="display:none;"><input type="text" name ="section_a[questions][7][type]" value="5"></div>
+                            	<div class="text-title" style="display:none;"><input type="text" name ="section_a[questions][7][type]" value="7"></div>
                             	<div class="text-title">7.&nbsp;&nbsp;<textarea name="section_a[questions][7][title]" style="width:592px; height:35px;">Name all the BRICS member countries (5)</textarea></div>                                
                                 <div class="table">
                                     <table border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -236,7 +236,7 @@
                                                 <td width="50%"><input type="text" name="section_a[questions][7][content][1]" style="width:290px;" value=""></td>                                                
                                             </tr>
                                             <tr align="center">
-                                                <td><input type="text" name="section_a[questions][5][content][2]" style="width:290px;" value="Walmart"></td>
+                                                <td><input type="text" name="section_a[questions][7][content][2]" style="width:290px;" value="Walmart"></td>
                                                 <td><input type="text" name="section_a[questions][7][content][3]" style="width:290px;" value=""></td>
                                             </tr>
                                             <tr align="center">
@@ -252,7 +252,7 @@
                             	<div class="text-title" style="display:none;"><input type="text" name ="section_a[questions][8][type]" value="7"></div>
                             	<div class="text-title">8.&nbsp;&nbsp;<textarea name="section_a[questions][8][title]" style="width:592px; height:35px;">List a few non-political examples of stories that have made headlines recently (e.g. the London Olympics) (6)</textarea></div>                                
                                 <div class="text-check">
-                                    <div><textarea name="section_a[questions][8][content][0]"style="width:590px; height:50px;"></textarea></div>
+                                    <div><textarea name="section_a[questions][8][content]"style="width:590px; height:50px;"></textarea></div>
                                 </div>
                             </div><!--text-question-->
                             <div class="text-question">

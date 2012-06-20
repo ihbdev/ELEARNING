@@ -95,24 +95,23 @@ class KnowledgeSkillController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$test=new ITest();
-		$test->title = 'Knowledskill test';		
-		$temp_section = array('description'=>"",'questions'=>array());
-		if(isset($_POST['ITest']['catid']))
-		{
-			$test->catid = $_POST['ITest']['catid'];
-			$test->content = 'knowledskill';
-		}		
+		$test=new ITest();		
+		$test->title = 'Knowledskill test';
+		$temp_content = array('section_a'=>'','section_b'=>'','section_c'=>'');	
+		$temp_section = array('description'=>"",'questions'=>array());		
 		//var_dump($test->section_a['questions']); //exit;
 		if(isset($_POST['section_a']))
-		{			
+		{		
+			$test->type=ITest::TYPE_KNOWLEDGE;	
 			for($i=1; $i<=17; $i++)
 			{
 				$question = new Question();
 				$question->attributes = $_POST ['section_a']['questions'][$i];
 				if($question->type==Question::TYPE_WRITING)
 				{
-					$question->content = $question->title;					
+					$question->content = $question->title;
+					$question->answer = 'get from trainee';
+					//var_dump($question); exit;						
 				}
 				//var_dump($_POST ['section_a']['questions'][$i]); exit;
 				if($question->save())
@@ -120,9 +119,10 @@ class KnowledgeSkillController extends Controller
 					$temp_section['questions'][$i] = $question->id;					
 				}
 			}
-			$temp_section['description']=$_POST['ITest']['section_a']['description'];			
+			$temp_section['description']=$_POST['section_a']['description'];			
 			$test->section_a = $temp_section;
 			//var_dump($test->section_a);
+			$temp_content['section_a'] = $test->section_a;
 		}
 		$temp_section = array('description'=>"",'questions'=>array());
 		if(isset($_POST['materials']['B']) && isset($_POST['section_b']))
@@ -137,7 +137,8 @@ class KnowledgeSkillController extends Controller
 				$question->attributes = $_POST ['section_b']['questions'][$i];
 				if($question->type==Question::TYPE_WRITING)
 				{
-					$question->content = $question->title;					
+					$question->content = $question->title;
+					$question->answer = $question->title;				
 				}
 				$question->material_id = $material->id;
 				if($question->save())
@@ -147,6 +148,7 @@ class KnowledgeSkillController extends Controller
 			}
 			//var_dump($temp_section);exit;
 			$test->section_b = $temp_section;
+			$temp_content['section_b'] = $test->section_b;
 		}
 		$temp_section = array('description'=>"",'questions'=>array());
 		if(isset($_POST['materials']['C']) && isset($_POST['section_c']))
@@ -170,6 +172,12 @@ class KnowledgeSkillController extends Controller
 				}
 			}
 			$test->section_c = $temp_section;
+			$temp_content['section_c'] = $test->section_c;
+		}						
+		if(isset($_POST['ITest']['catid']))
+		{
+			$test->catid = $_POST['ITest']['catid'];
+			$test->content = $temp_content;
 		}
 		//var_dump($test->save());
 		if($test->save())

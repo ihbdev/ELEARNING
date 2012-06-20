@@ -36,8 +36,11 @@ class ITest extends CActiveRecord
 	 * @var array config list other attributes of the banner
 	 * this attribute no need to search	 
 	 */	
-	private $config_other_attributes=array('modified','description','content','section_a','section_b','section_c');	
+	private $config_other_attributes=array('modified','description','content');	
 	private $list_other_attributes;
+	public $section_a;
+	public $section_b;
+	public $section_c;
 	
 	public $group_level;
 	

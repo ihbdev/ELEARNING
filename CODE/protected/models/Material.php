@@ -43,7 +43,7 @@ class Material extends CActiveRecord
 	public function rules()
 	{
 		return array(
-			array('cat_id,content','required'),
+			array('catid,content','required'),
 		);
 	}
 	/**
