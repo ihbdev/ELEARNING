@@ -1556,14 +1556,14 @@ a.text-item:hover{
 	padding:10px 0;
 	border-top:1px dotted #ccc;
 }
-.q-post{
+.q-post,.q-post_1,.q-post_2,.q-post_3{
 	background:#f9f9f9;
 	padding:7px 15px;
 }
-.q-post h3{
+.q-post h3,.q-post_1 h3,.q-post_2 h3,.q-post_3 h3{
 	font-size:13px;
 }
-.q-post input[type=checkbox]{
+.q-post input[type=checkbox],.q-post_1 input[type=checkbox],.q-post_2 input[type=checkbox],.q-post_3 input[type=checkbox]{
 	margin:0 27px 0 0;
 }
 .testpost-outer{

@@ -115,7 +115,7 @@ class ITest extends CActiveRecord
 			array('title,content','required'),
 			array('type', 'numerical'),
 			array('title,group_level,catid','safe','on'=>'search'),
-			array('catid','safe')
+			array('catid,description','safe')
 		);
 	}
 	public function validatorContent($attributes,$params){
@@ -136,6 +136,7 @@ class ITest extends CActiveRecord
 			'content'=>'List questions',
 			'created_by' => 'Author',
 			'created_date' => 'Created Time',
+			'description' => 'Description',
 		);
 	}
 	/**

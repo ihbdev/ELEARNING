@@ -185,7 +185,7 @@ class MarkingUpSkillController extends Controller
 				Yii::app()->user->setFlash('success', Language::t('Update successfully'));
 			}	
 		}
-		$this->render ( 'update',array('test'=>$test,'group_level'=>$group_level));
+		$this->render ( 'update',array('test'=>$test,));
 	}
 
 	/**
