@@ -1,0 +1,9 @@
+assets/*
+protected/runtime/*
+upload/*
+.settings/*
+.buildpath
+.project
+error_log
+tinymce/*
+protected/extensions/tinymce/*
