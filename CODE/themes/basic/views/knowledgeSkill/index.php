@@ -91,11 +91,7 @@
     				array(
 						'name'=>'title',
 						'headerHtmlOptions'=>array('width'=>'20%','class'=>'table-title'),		
-					),
-					array(
-						'name'=>'lang',
-						'headerHtmlOptions'=>array('width'=>'21%','class'=>'table-title'),		
-					),
+					),					
 					array(
 						'name'=>'author',
 						'value'=>'$data->author->username',

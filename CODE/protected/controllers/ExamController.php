@@ -92,11 +92,12 @@ class ExamController extends Controller
 		);
 	}
 	public function actionView($id)
-	{		
+	{				
 		$model=Exam::model()->findByPk($id);
 		$test=ITest::model()->findByPk($model->test_id);
 		if(in_array(Yii::app()->user->id,$model->list_users)){
-			if(time() > $model->start_time && time() < $model->finish_time)	{		
+			if(time() > $model->start_time && time() < $model->finish_time)	{
+						
 				switch($model->type){
 					case Exam::TYPE_LANGUAGE:
 						$form='view_language';
@@ -114,7 +115,7 @@ class ExamController extends Controller
 						$form='view_coding';
 						break;
 				}
-
+				
 				if(isset($_POST['Result']))
 				{
 					$result=new Result();	
@@ -138,7 +139,11 @@ class ExamController extends Controller
 						Yii::app()->user->setFlash('success', Language::t('Finish'));
 					}	
 				}
+				//$tmp = $test->content;
+				//var_dump($test->content);
 				
+				//var_dump($tmp['section_a']->description);
+				//exit;
 				$this->render ( $form, array(
 					'model'=>$model,
 					'test'=>$test

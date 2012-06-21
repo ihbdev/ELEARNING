@@ -149,10 +149,10 @@
                             	<div class="text-title" style="display:none;"><input type="text" name ="section_a[questions][4][type]" value="5"></div>
                             	<div class="text-title">4.&nbsp;&nbsp;<textarea name="section_a[questions][4][title]" style="width:592px; height:35px;">Name two  SA companies for each of the following: (8)</textarea></div>                                
                                 <div class="text-check">
-                                    <div><input type="text" name="section_a[questions][4][content][0]" style="width:590px;" value="Airlines"><textarea name="section_a[questions][4][answer][0]" style="width:592px; height:35px;"></textarea></div>
-                                    <div><input type="text" name="section_a[questions][4][content][1]" style="width:590px;" value="Mining"><textarea name="section_a[questions][4][answer][1]" style="width:592px; height:35px;"></textarea></div>
-                                    <div><input type="text" name="section_a[questions][4][content][2]" style="width:590px;" value="Telecommunications"><textarea name="section_a[questions][4][answer][2]" style="width:592px; height:35px;"></textarea></div>                                    
-                                    <div><input type="text" name="section_a[questions][4][content][3]" style="width:590px;" value="Retailers"><textarea name="section_a[questions][4][answer][3]" style="width:592px; height:35px;"></textarea></div>                                                                                                            
+                                    <div><input type="text" name="section_a[questions][4][content][1]" style="width:590px;" value="Airlines"><textarea name="section_a[questions][4][answer][0]" style="width:592px; height:35px;"></textarea></div>
+                                    <div><input type="text" name="section_a[questions][4][content][2]" style="width:590px;" value="Mining"><textarea name="section_a[questions][4][answer][1]" style="width:592px; height:35px;"></textarea></div>
+                                    <div><input type="text" name="section_a[questions][4][content][3]" style="width:590px;" value="Telecommunications"><textarea name="section_a[questions][4][answer][2]" style="width:592px; height:35px;"></textarea></div>                                    
+                                    <div><input type="text" name="section_a[questions][4][content][4]" style="width:590px;" value="Retailers"><textarea name="section_a[questions][4][answer][3]" style="width:592px; height:35px;"></textarea></div>                                                                                                            
                                 </div>
                             </div><!--text-question-->
                             <div class="text-question">
@@ -205,20 +205,20 @@
                                     <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                         <tbody>
                                             <tr align="center">
-                                            	<td width="30%"><input type="text" name="section_a[questions][6][content][0]" style="width:155px;" value="De Beers"></td>
-                                                <td width="70%"><input type="text" name="section_a[questions][6][answer][0]" style="width:405px;" value=""></td>                                                
+                                            	<td width="30%"><input type="text" name="section_a[questions][6][content][1]" style="width:155px;" value="De Beers"></td>
+                                                <td width="70%"><input type="text" name="section_a[questions][6][answer][1]" style="width:405px;" value=""></td>                                                
                                             </tr>
                                             <tr align="center">
-                                            	<td><input type="text" name="section_a[questions][5][content][1]" style="width:155px;" value="BP"></td>
-                                                <td><input type="text" name="section_a[questions][5][answer][1]" style="width:405px;" value=""></td>                                                                                           
+                                            	<td><input type="text" name="section_a[questions][6][content][2]" style="width:155px;" value="BP"></td>
+                                                <td><input type="text" name="section_a[questions][6][answer][2]" style="width:405px;" value=""></td>                                                                                           
                                             </tr>
                                             <tr align="center">
-                                                <td><input type="text" name="section_a[questions][5][content][2]" style="width:155px;" value="Tata"></td>
-                                                <td><input type="text" name="section_a[questions][5][answer][2]" style="width:405px;" value=""></td>                                                
+                                                <td><input type="text" name="section_a[questions][6][content][3]" style="width:155px;" value="Tata"></td>
+                                                <td><input type="text" name="section_a[questions][6][answer][3]" style="width:405px;" value=""></td>                                                
                                             </tr>
                                             <tr align="center">
-                                            	<td><input type="text" name="section_a[questions][5][content][3]" style="width:155px;" value="Walmart"></td>
-                                                <td><input type="text" name="section_a[questions][5][answer][3]" style="width:405px;" value=""></td>                                              
+                                            	<td><input type="text" name="section_a[questions][6][content][4]" style="width:155px;" value="Walmart"></td>
+                                                <td><input type="text" name="section_a[questions][6][answer][4]" style="width:405px;" value=""></td>                                              
                                             </tr>
                                         </tbody>
                                     </table>
@@ -262,32 +262,32 @@
                                     <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                         <tbody>
                                             <tr align="center">
-                                                <td width="50%">A.&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][9][content][A]" style="width:90px;" value="United States"></td>
-                                                <td width="50%">1.&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][9][content][1]" style="width:90px;" value="Naira"></td>
+                                                <td width="50%">A.&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][9][content][1][A]" style="width:90px;" value="United States"></td>
+                                                <td width="50%">1.&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][9][content][1][B]" style="width:90px;" value="Naira"></td>
                                             </tr>
                                             <tr align="center">
-                                                <td>B.&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][9][content][B]" style="width:90px;" value="China"></td>
-                                                <td>2.&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][9][content][2]" style="width:90px;" value="Euro"></td>
+                                                <td>B.&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][9][content][2][A]" style="width:90px;" value="China"></td>
+                                                <td>2.&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][9][content][2][B]" style="width:90px;" value="Euro"></td>
                                             </tr>
                                             <tr align="center">
-                                                <td>C.&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][9][content][C]" style="width:90px;" value="Belguim"></td>
-                                                <td>3.&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][9][content][3]" style="width:90px;" value="Dollar"></td>
+                                                <td>C.&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][9][content][3][A]" style="width:90px;" value="Belguim"></td>
+                                                <td>3.&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][9][content][3][B]" style="width:90px;" value="Dollar"></td>
                                             </tr>
                                             <tr align="center">
-                                                <td>D.&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][9][content][D]" style="width:90px;" value="England"></td>
-                                                <td>4.&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][9][content][4]" style="width:90px;" value="Yen"></td>
+                                                <td>D.&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][9][content][4][A]" style="width:90px;" value="England"></td>
+                                                <td>4.&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][9][content][4][B]" style="width:90px;" value="Yen"></td>
                                             </tr>
                                             <tr align="center">
-                                                <td>E.&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][9][content][E]" style="width:90px;" value="Nigeria"></td>
-                                                <td>5.&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][9][content][5]" style="width:90px;" value="Dinar"></td>
+                                                <td>E.&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][9][content][5][A]" style="width:90px;" value="Nigeria"></td>
+                                                <td>5.&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][9][content][5][B]" style="width:90px;" value="Dinar"></td>
                                             </tr>
                                             <tr align="center">
-                                                <td>F.&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][9][content][F]" style="width:90px;" value="Japan"></td>
-                                                <td>6.&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][9][content][6]" style="width:90px;" value="Pound"></td>
+                                                <td>F.&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][9][content][6][A]" style="width:90px;" value="Japan"></td>
+                                                <td>6.&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][9][content][6][B]" style="width:90px;" value="Pound"></td>
                                             </tr>
                                             <tr align="center">
-                                                <td>G.&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][9][content][G]" style="width:90px;" value="Palestine"></td>
-                                                <td>7.&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][9][content][7]" style="width:90px;" value="Yuan"></td>
+                                                <td>G.&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][9][content][7][A]" style="width:90px;" value="Palestine"></td>
+                                                <td>7.&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][9][content][7][B]" style="width:90px;" value="Yuan"></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -321,27 +321,27 @@
                             	<div class="text-title" style="display:none;"><input type="text" name ="section_a[questions][11][type]" value="7"></div>
                             	<div class="text-title">11.&nbsp;&nbsp;<textarea name="section_a[questions][11][title]" style="width:592px; height:35px;">Who is the Parliamentary Leader for the Democratic Alliance (DA)? (1)</textarea></div>                                
                                 <div class="text-check">
-                                    <div><textarea name="section_a[questions][11][content][0]" style="width:590px; height:50px;"></textarea></div>
+                                    <div><textarea name="section_a[questions][11][answer]" style="width:590px; height:50px;"></textarea></div>
                                 </div>
                             </div><!--text-question-->
                             <div class="text-question">
                             	<div class="text-title" style="display:none;"><input type="text" name ="section_a[questions][12][type]" value="7"></div>
                                 <div class="text-title">12.&nbsp;&nbsp;<textarea name="section_a[questions][12][title]" style="width:592px; height:35px;">Which statutory body is responsible for the official statistics in SA such as e.g. official unemployment figures, or GDP growth rate or CPIX inflation numbers? (1)</textarea></div>                                
                                 <div class="text-check">
-                                    <div><textarea name="section_a[questions][12][content][0]" style="width:590px; height:50px;"></textarea></div>
+                                    <div><textarea name="section_a[questions][12][answer]" style="width:590px; height:50px;"></textarea></div>
                                 </div>
                             </div><!--text-question-->
                             <div class="text-question">
                                 <div class="text-title">13.&nbsp;&nbsp;<textarea name="section_a[questions][13][title]" style="width:592px; height:35px;">Who/what sets the interest rates for South Africa? (1)</textarea></div>                                
                                 <div class="text-check">
-                                    <div><textarea name="section_a[questions][13][content][0]" style="width:590px; height:50px;"></textarea></div>
+                                    <div><textarea name="section_a[questions][13][answer]" style="width:590px; height:50px;"></textarea></div>
                                 </div>
                             </div><!--text-question-->
                             <div class="text-question">
                             	<div class="text-title" style="display:none;"><input type="text" name ="section_a[questions][14][type]" value="7"></div>
                                 <div class="text-title">14.&nbsp;&nbsp;<textarea name="section_a[questions][14][title]" style="width:592px; height:35px;">Name as many South African State-owned companies as possible? (Bonus)</textarea></div>                                
                                 <div class="text-check">
-                                    <div><textarea name="section_a[questions][14][content][0]" style="width:590px; height:50px;"></textarea></div>
+                                    <div><textarea name="section_a[questions][14][answer]" style="width:590px; height:50px;"></textarea></div>
                                 </div>
                             </div><!--text-question-->
                             <div class="text-question">
@@ -382,10 +382,10 @@
                             	<div class="text-title" style="display:none;"><input type="text" name ="section_a[questions][17][type]" value="5"></div>
                                 <div class="text-title">17.&nbsp;&nbsp;<textarea name="section_a[questions][17][title]" style="width:592px; height:35px;">What is the core business of the following companies: (3)</textarea></div>                                
                                 <div class="text-check">
-                                    <div><input type="text" name="section_a[questions][17][content][0]" style="width:590px;" value="Transnet"><textarea name="section_a[questions][17][answer][0]" style="width:590px; height:35px;"></textarea></div>
-                                    <div><input type="text" name="section_a[questions][17][content][1]" style="width:590px;" value="ArcelorMittal"><textarea name="section_a[questions][17][answer][1]" style="width:590px; height:35px;"></textarea></div>
-                                    <div><input type="text" name="section_a[questions][17][content][2]" style="width:590px;" value="OUTsurance"><textarea name="section_a[questions][17][answer][2]" style="width:590px; height:35px;"></textarea></div>
-                                    <div><input type="text" name="section_a[questions][17][content][3]" style="width:590px;" value="Avis"><textarea name="section_a[questions][17][answer][3]" style="width:590px; height:35px;"></textarea></div>
+                                    <div><input type="text" name="section_a[questions][17][content][1]" style="width:590px;" value="Transnet"><textarea name="section_a[questions][17][answer][0]" style="width:590px; height:35px;"></textarea></div>
+                                    <div><input type="text" name="section_a[questions][17][content][2]" style="width:590px;" value="ArcelorMittal"><textarea name="section_a[questions][17][answer][1]" style="width:590px; height:35px;"></textarea></div>
+                                    <div><input type="text" name="section_a[questions][17][content][3]" style="width:590px;" value="OUTsurance"><textarea name="section_a[questions][17][answer][2]" style="width:590px; height:35px;"></textarea></div>
+                                    <div><input type="text" name="section_a[questions][17][content][4]" style="width:590px;" value="Avis"><textarea name="section_a[questions][17][answer][3]" style="width:590px; height:35px;"></textarea></div>
                                 </div>
                             </div><!--text-question-->
                         </div><!--text-box-->
