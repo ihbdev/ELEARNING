@@ -14,7 +14,7 @@ return array(
 			'class'=>'News',
 			'label'=>'News'	
 		),
-		Category::TYPE_EXAM=>array(
+		Category::TYPE_OFFICE=>array(
 			'form'=>'_form',
 			'max_rank'=>1,
 			'code'=>'exam',

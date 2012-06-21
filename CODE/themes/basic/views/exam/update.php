@@ -213,7 +213,7 @@
                     <div class="row">
                         <label style="width:70px;">Office:</label>
                         <?php 
-						$list=array();
+						$list=array(''=>'All');
 						foreach ($list_office as $id=>$level){
 							$cat=Category::model()->findByPk($id);
 							$view = "";
@@ -223,7 +223,7 @@
 							$list[$id]=$view." ".$cat->name." ".$view;
 						}
 						?>
-						<?php echo $form->dropDownList($user,'office',$list,array('style'=>'width:200px')); ?>
+						<?php echo $form->dropDownList($user,'office_id',$list,array('style'=>'width:200px')); ?>
                     </div>
                     <div class="row">
                         <label style="width:70px;">User Email:</label>
@@ -237,7 +237,7 @@
 						)); ?>		
                     </div>
                     <div class="row">
-                    	<input type="submit" class="button" value="Results" style="margin-left:74px; width:95px;" />
+                    	<input type="submit" class="button" value="Search" style="margin-left:74px; width:95px;" />
                     </div>
                     <?php $this->endWidget(); ?>
                     <div class="row">
@@ -258,7 +258,12 @@
 						array(
 							'name'=>'fullname',
 							'headerHtmlOptions'=>array('width'=>'15%','class'=>'table-title'),		
-						),		
+						),	
+						array(
+							'name'=>'office_id',
+    						'value'=>'$data->office->name',
+							'headerHtmlOptions'=>array('width'=>'8%','class'=>'table-title'),		
+						), 	
 						array(
 							'name'=>'role',
 							'value'=>'implode(", ",$data->label_role)',

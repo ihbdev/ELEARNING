@@ -105,7 +105,7 @@ class ResultController extends Controller
 			
 		//Group categories that contains news
 		$group=new Category();		
-		$group->type=Category::TYPE_EXAM;
+		$group->type=Category::TYPE_OFFICE;
 		$list_office=$group->list_nodes;
 		
 		$this->render('index',array(

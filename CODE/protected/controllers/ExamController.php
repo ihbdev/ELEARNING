@@ -159,8 +159,6 @@ class ExamController extends Controller
 		if(!isset(Yii::app()->session["list-choicing-user"]) || ! Yii::app ()->getRequest ()->getIsAjaxRequest ())		
 			Yii::app()->session["list-choicing-user"]=array();
 		
-		//$model->start_time=date('m/d/Y H:i',$model->start_time);
-		//$model->finish_time=date('m/d/Y H:i',$model->finish_time);
 		if(isset($_POST['Exam']))
 		{
 			$model->attributes=$_POST['Exam'];	
@@ -176,9 +174,9 @@ class ExamController extends Controller
 				$this->redirect(array('update','id'=>$model->id));
 			}	
 		}
-		//Group categories that contains news
+		//List office
 		$group=new Category();		
-		$group->type=Category::TYPE_EXAM;
+		$group->type=Category::TYPE_OFFICE;
 		$list_office=$group->list_nodes;
 		
 		//Get form search test
@@ -213,6 +211,7 @@ class ExamController extends Controller
 			
 		//Search list user	
 		$criteria=new CDbCriteria;
+		$criteria->compare('office_id',$user->office_id);
 		$criteria->compare('email',$user->email,true);
 		$criteria->addNotInCondition('id',Yii::app()->session["list-choicing-user"]);
 		if(isset($_GET['pageSize']))
@@ -342,8 +341,6 @@ class ExamController extends Controller
 		if(!isset(Yii::app()->session["list-choicing-user"]) || ! Yii::app ()->getRequest ()->getIsAjaxRequest ())		
 			Yii::app()->session["list-choicing-user"]=$model->list_users;
 		
-		//$model->start_time=date('m/d/Y H:i',$model->start_time);
-		//$model->finish_time=date('m/d/Y H:i',$model->finish_time);
 		if(isset($_POST['Exam']))
 		{
 			$model->attributes=$_POST['Exam'];	
@@ -362,9 +359,9 @@ class ExamController extends Controller
 				Yii::app()->user->setFlash('success', Language::t('Update successfully'));
 			}	
 		}
-		//Group categories that contains news
+		//List office
 		$group=new Category();		
-		$group->type=Category::TYPE_EXAM;
+		$group->type=Category::TYPE_OFFICE;
 		$list_office=$group->list_nodes;
 		
 		//Get form search test
@@ -399,6 +396,7 @@ class ExamController extends Controller
 			
 		//Search list user	
 		$criteria=new CDbCriteria;
+		$criteria->compare('office_id',$user->office_id);
 		$criteria->compare('email',$user->email,true);
 		$criteria->addNotInCondition('id',Yii::app()->session["list-choicing-user"]);
 		if(isset($_GET['pageSize']))
@@ -500,7 +498,7 @@ class ExamController extends Controller
 			
 		//Group categories that contains news
 		$group=new Category();		
-		$group->type=Category::TYPE_EXAM;
+		$group->type=Category::TYPE_OFFICE;
 		$list_office=$group->list_nodes;
 		
 		$this->render('index',array(

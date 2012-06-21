@@ -25,6 +25,9 @@ class User extends CActiveRecord
 	const STATUS_ACTIVE=1;
 	
 	const LIST_ADMIN=10;
+	
+	const LENGTH_USERNAME=6;
+	const LENGTH_PASSWORD=8;
 	/**
 	 * @var array config list other attributes of the banner
 	 * this attribute no need to search	 
@@ -41,12 +44,11 @@ class User extends CActiveRecord
  	{
  		switch ($this->status) {
  			case self::STATUS_ACTIVE: 
- 				return Yii::app()->request->getBaseUrl(true).'/images/admin/enable.png';
+ 				return Yii::app()->theme->baseUrl.'/images/enable.png';
  				break;
  			case self::STATUS_PENDING:
- 				return Yii::app()->request->getBaseUrl(true).'/images/admin/disable.png';
+ 				return Yii::app()->theme->baseUrl.'/images/disable.png';
  				break;
- 				
  		}	
  	}
  	/**
@@ -103,7 +105,7 @@ class User extends CActiveRecord
 		}
 		return $label_role;
  	}
- 	
+ 	 	
 	/**
 	 * PHP setter magic method for other attributes
 	 * @param $name the attribute name
@@ -180,35 +182,26 @@ class User extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			//Define rules for the scenarios create
-			array('username,clear_password, retype_password,email','required','message'=>'Dữ liệu bắt buộc','on'=>'create',),
-			array('username,email', 'unique','message'=>'Username đã được sử dụng','on'=>'create'),
+			array('email,office_id','required','on'=>'create',),
+			array('email', 'unique','on'=>'create'),
 			array('status', 'in', 'range'=>array(self::STATUS_PENDING,self::STATUS_ACTIVE),'on'=>'create'),			
 			array('role', 'validatorRole','on'=>'create'),
-			array('retype_password', 'compare', 'compareAttribute'=>'clear_password','message'=>'Gõ lại chưa khớp','on'=>'create'),
-			array('email','email','message'=>'Sai dịnh dạng mail','on'=>'create'),
-			array('phone', 'length', 'max'=>16,'message'=>'Tối đa 16 kí tự','on'=>'create'),
-			array('clear_password, retype_password,username, email,firstname, lastname', 'length', 'max'=>32,'message'=>'Tối đa 32 kí tự','on'=>'create'),
-			array('address', 'length', 'max'=>128,'message'=>'Tối đa 128 kí tự','on'=>'create'),
+			array('email','email','on'=>'create'),
+			array('email,firstname, lastname', 'length', 'max'=>32,'on'=>'create'),
 			//Define rules for the scenarios update
-			array('email', 'required','message'=>'Dữ liệu bắt buộc','on'=>'update'),
-			array('email', 'unique','message'=>'Email đã được sử dụng','on'=>'update'),
+			array('email,office_id', 'required','on'=>'update'),
+			array('email', 'unique','on'=>'update'),
 			array('status', 'in', 'range'=>array(self::STATUS_PENDING,self::STATUS_ACTIVE),'on'=>'update'),
 			array('role', 'validatorRole','on'=>'update'),
-			array('email','email','message'=>'Sai dịnh dạng mail','on'=>'update'),
-			array('phone', 'length', 'max'=>16,'message'=>'Tối đa 16 kí tự','on'=>'update'),
-			array('email,firstname, lastname', 'length', 'max'=>32,'message'=>'Tối đa 32 kí tự','on'=>'update'),
-			array('address', 'length', 'max'=>128,'message'=>'Tối đa 128 kí tự','on'=>'update'),
-			//Define rules for the scenarios reset password
-			array('clear_password, retype_password', 'required','message'=>'Dữ liệu bắt buộc','on'=>'reset_password'),
-			array('retype_password', 'compare', 'compareAttribute'=>'clear_password','message'=>'Gõ lại chưa khớp','on'=>'reset_password'),
-			array('clear_password, retype_password,username', 'length', 'max'=>32,'message'=>'Tối đa 32 kí tự','on'=>'reset_password'),
+			array('email','email','on'=>'update'),
+			array('email,firstname, lastname', 'length', 'max'=>32,'on'=>'update'),
 			//Define rules for the scenarios change password
-			array('old_password,clear_password, retype_password', 'required','message'=>'Dữ liệu bắt buộc','on'=>'change_password'),
+			array('old_password,clear_password, retype_password', 'required','on'=>'change_password'),
 			array('old_password','validatorOldPassword','on'=>'change_password'),
-			array('retype_password', 'compare', 'compareAttribute'=>'clear_password','message'=>'Gõ lại chưa khớp','on'=>'change_password'),
-			array('clear_password, retype_password,username', 'length', 'max'=>32,'message'=>'Tối đa 32 kí tự','on'=>'change_password'),
+			array('retype_password', 'compare', 'compareAttribute'=>'clear_password','on'=>'change_password'),
+			array('clear_password, retype_password,username', 'length', 'max'=>32,'on'=>'change_password'),
 			//Define rules for the scenarios search 
-			array('username, email', 'safe', 'on'=>'search'),
+			array('username, email, office_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -220,7 +213,7 @@ class User extends CActiveRecord
 	 */
 	public function validatorRole($attributes,$params){
 		foreach ($this->role as $role) {
-			if(in_array($role, $this->list_roles)){
+			if(!in_array($role, array_keys($this->list_roles))){
 				$this->addError('role', 'Không tồn tại quyền này');
 			}
 		}
@@ -245,7 +238,9 @@ class User extends CActiveRecord
 	{
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
-		return array();
+		return array(
+			'office'=>array(self::BELONGS_TO,'Category','office_id'),
+		);
 	}
 
 	/**
@@ -257,20 +252,17 @@ class User extends CActiveRecord
 			'username' => 'Username',
 			'password' => 'Password',
 			'email' => 'Email',
-			'role' => 'Quyền',
-			'status' => 'Trạng thái',
-			'lastname'=> 'Tên',
-			'firstname'=> 'Họ',
-			'fullname'=> 'Họ và tên',
-			'address'=> 'Địa chỉ',
-			'phone'=> 'Điện thoại',
-			'register_date'=> 'Ngày đăng ký',
-			'last_visit_date'=> 'Ngày đăng nhập gần nhất',
-			'activation'=> 'Mã kích hoạt',
-			'subscribe'=> 'Đăng kí nhận tin',
-			'old_password'=> 'Password cũ',
-			'clear_password'=> 'Password',
-			'retype_password'=> 'Gõ lại password'
+			'role' => 'Role',
+			'status' => 'Status',
+			'lastname'=> 'Last name',
+			'firstname'=> 'First name',
+			'fullname'=> 'Full name',
+			'office_id'=> 'Office',
+			'register_date'=> 'Register date',
+			'last_visit_date'=> 'Last visit date',
+			'old_password'=> 'Old password',
+			'clear_password'=> 'Clear password',
+			'retype_password'=> 'Retype password'
 		);
 	}
 	/**
@@ -321,6 +313,8 @@ class User extends CActiveRecord
 			}	
 			//Encode other attributes  			
 			$this->other=json_encode($this->list_other_attributes);
+			if($this->role != $this->old_role)
+				$this->username=$this->generateUsername(self::LENGTH_USERNAME);
 			return true;
 		}
 		else
@@ -362,6 +356,7 @@ class User extends CActiveRecord
 		// should not be searched.
 
 		$criteria=new CDbCriteria;
+		$criteria->compare('office_id',$this->office_id);
 		$criteria->compare('username',$this->username,true);
 		$criteria->compare('email',$this->email,true);
 		if(isset($_GET['pageSize']))
@@ -401,6 +396,48 @@ class User extends CActiveRecord
 	public function generateSalt()
 	{
 		return uniqid('',true);
+	}
+	/**
+	 * Generates username.
+	 * @return string username
+	 */
+	public function generateUsername($length)
+	{
+		$tmp='';
+		foreach ($this->role as $role){
+			switch ($role){
+				case 'Admin': 
+					$tmp .= 'A';
+					break;
+				case 'Manager': 
+					$tmp .= 'M';
+					break;
+				case 'Trainer': 
+					$tmp .= 'T';
+					break;
+				case 'Employee': 
+					$tmp .= 'E';
+					break;			
+			}
+		}
+		$len=$length-strlen($tmp);
+		$result=$tmp.str_pad($this->id, $len , "0", STR_PAD_LEFT);
+		return $result;
+	}
+	/**
+	 * Generates password.
+	 * @return string password
+	 */
+	public function generatePassword($length)
+	{
+		$chars = "234567890abcdefghijkmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		$i = 0;
+		$password = "";
+		while ($i <= $length) {
+			$password .= $chars{rand(0,strlen($chars))};
+			$i++;
+		}
+		return $password;
 	}
 	/**
 	 * Suggests a list of existing usernames matching the specified keyword.
@@ -467,10 +504,10 @@ class User extends CActiveRecord
 		if($command->execute()) {
 			switch ($status) {
  			case self::STATUS_ACTIVE: 
- 				$src=Yii::app()->request->getBaseUrl(true).'/images/admin/enable.png';
+ 				$src=Yii::app()->theme->baseUrl.'/images/enable.png';
  				break;
  			case self::STATUS_PENDING:
- 				$src=Yii::app()->request->getBaseUrl(true).'/images/admin/disable.png';
+ 				$src=Yii::app()->theme->baseUrl.'/images/disable.png';
  				break;
  		}	
 			return $src;
