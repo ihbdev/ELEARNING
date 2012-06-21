@@ -90,32 +90,32 @@ class LanguageSkillController extends Controller
 			)		
 		);
 	}
-	
+
 	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
 	public function actionCreate()
 	{
-		$test=new ITest();
+		$test=new TestLanguageSkill();
 		$test->content=array();
-		if(isset($_POST['ITest']))
+		if(isset($_POST['TestLanguageSkill']))
 		{
-			$test->attributes=$_POST['ITest'];
-			$test->type=ITest::TYPE_LANGUAGE;
+			$test->attributes=$_POST['TestLanguageSkill'];
+			$test->type=TestLanguageSkill::TYPE_LANGUAGE;
 			/*
 			 * Update material
 			 */
 			for ($i=1; $i<4; $i++)
 			{
-				if(isset($_POST['ITest']['materials'][$i])){
+				if(isset($_POST['TestLanguageSkill']['materials'][$i])){
 					$material = new Material();
 					$material->catid  = Material::TYPE_LANGUAGE;
-					$material->content  = $_POST['ITest']['materials'][$i];
+					$material->content  = $_POST['TestLanguageSkill']['materials'][$i];
 					$material->save();
 
 					$list_questions[$i] = '';
-					if(isset($_POST['ITest']['questions'][$i])) $list_questions[$i] = array_diff ( explode ( ',', $_POST['ITest']['questions'][$i] ), array ('') );
+					if(isset($_POST['TestLanguageSkill']['questions'][$i])) $list_questions[$i] = array_diff ( explode ( ',', $_POST['TestLanguageSkill']['questions'][$i] ), array ('') );
 
 					foreach($list_questions[$i] as $question_id){
 						$question = Question::model()->findByPk($question_id);
@@ -151,22 +151,22 @@ class LanguageSkillController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-		$test=ITest::model()->findByPk($id);
-		if(isset($_POST['ITest']))
+		$test=TestLanguageSkill::model()->findByPk($id);
+		if(isset($_POST['TestLanguageSkill']))
 		{
-			$test->attributes=$_POST['ITest'];
-			$test->type=ITest::TYPE_LANGUAGE;
+			$test->attributes=$_POST['TestLanguageSkill'];
+			$test->type=TestLanguageSkill::TYPE_LANGUAGE;
 
 			/*
 			 * Update material
 			 */
 			for ($i=1; $i<4; $i++)
 			{
-				if(isset($_POST['ITest']['materials'][$i])){
+				if(isset($_POST['TestLanguageSkill']['materials'][$i])){
 					$list_questions[$i] = '';
-					if(isset($_POST['ITest']['questions'][$i]) && $_POST['ITest']['questions'][$i]!='' ) 
+					if(isset($_POST['TestLanguageSkill']['questions'][$i]) && $_POST['TestLanguageSkill']['questions'][$i]!='' ) 
 					{
-						$list_questions[$i] = array_diff ( explode ( ',', $_POST['ITest']['questions'][$i] ), array ('') );
+						$list_questions[$i] = array_diff ( explode ( ',', $_POST['TestLanguageSkill']['questions'][$i] ), array ('') );
 						$question = Question::model()->findByPk($list_questions[$i][0]);
 
 						if($question->material_id != 0) 
@@ -177,7 +177,7 @@ class LanguageSkillController extends Controller
 							$material->catid  = Material::TYPE_LANGUAGE;
 						}
 
-						$material->content  = $_POST['ITest']['materials'][$i];
+						$material->content  = $_POST['TestLanguageSkill']['materials'][$i];
 						$material->save();
 						
 						foreach($list_questions[$i] as $question_id){
@@ -195,7 +195,7 @@ class LanguageSkillController extends Controller
 			$test->content=array('',$list_questions[1],$list_questions[2],$list_questions[3]);
 			if($test->save())
 			{
-				$test=ITest::model()->findByPk($id);
+				$test=TestLanguageSkill::model()->findByPk($id);
 				Yii::app()->user->setFlash('success', Language::t('Update successfully'));
 			}	
 		}
@@ -227,13 +227,13 @@ class LanguageSkillController extends Controller
 	public function actionIndex()
 	{
 		$this->initCheckbox('checked-test-list');
-		$model=new ITest('search');
+		$model=new TestLanguageSkill('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['ITest']))
-			$model->attributes=$_GET['ITest'];
+		if(isset($_GET['TestLanguageSkill']))
+			$model->attributes=$_GET['TestLanguageSkill'];
 			
 		$criteria = new CDbCriteria ();
-		$criteria->compare ( 'type', ITest::TYPE_LANGUAGE );
+		$criteria->compare ( 'type', TestLanguageSkill::TYPE_LANGUAGE );
 		if($model->title != '')
 			$criteria->compare ( 'title', $model->title, true );
 		if($model->group_level === '0')
@@ -241,7 +241,7 @@ class LanguageSkillController extends Controller
 		if($model->group_level === '1')
 			$criteria->addCondition( 'level <> 0');	
 			
-		$list_tests= new CActiveDataProvider ( 'ITest', array (
+		$list_tests= new CActiveDataProvider ( 'TestLanguageSkill', array (
 			'criteria' => $criteria, 
 			'pagination' => array ('pageSize' => Yii::app ()->user->getState ( 'pageSize', Setting::s('DEFAULT_PAGE_SIZE','System')  ) ), 
 			'sort' => array ('defaultOrder' => 'id DESC' )    		
@@ -257,7 +257,7 @@ class LanguageSkillController extends Controller
 	 */
 	public function actionReverseStatus($id)
 	{
-		$src=ITest::reverseStatus($id);
+		$src=TestLanguageSkill::reverseStatus($id);
 		if($src) 
 			echo json_encode(array('success'=>true,'src'=>$src));
 		else 
@@ -271,7 +271,7 @@ class LanguageSkillController extends Controller
 	{
 		if(isset($_GET['q']) && ($keyword=trim($_GET['q']))!=='')
 		{
-			$titles=ITest::model()->suggestTitle($keyword);
+			$titles=TestLanguageSkill::model()->suggestTitle($keyword);
 			if($titles!==array())
 				echo implode("\n",$titles);
 		}
@@ -403,22 +403,137 @@ class LanguageSkillController extends Controller
 				$question->answer = $answer;
 				$question->type = Question::TYPE_LANGUAGE;
 				$question->material_id = 0;
+
 				if ($question->save ()) {
 					$question = Question::model ()->findByPk ( $question->id );
-					$view = $this->renderPartial ( '_question', array ('question' => $question ), true );
-					$result = array ('success' => true, 'id' => $question->id, 'view' => $view );
-					echo json_encode ( $result );
+					if(isset($test_id) && $test_id>0){
+						$test=TestLanguageSkill::model()->findByPk($test_id);
+						$content=$test->content;
+						$content[]=$question->id;
+						$test->content=$content;
+						if($test->save()){
+							$view = $this->renderPartial ( '_update_question', array ('question' => $question, 'test'=>$test ), true );
+							$result = array ('success' => true, 'id' => $question->id, 'view' => $view );
+							echo json_encode ( $result );
+						}
+					}
+					else {
+						$view = $this->renderPartial ( '_create_question', array ('question' => $question), true );
+						$result = array ('success' => true, 'id' => $question->id, 'view' => $view );
+						echo json_encode ( $result );
+					}
 				}
 			}
 		}
 	}
 
 	/**
-	 * Add a new question
+	 * Update an existed question
 	 */
-	public function actionUpdateQuestion($id) {
+	public function actionUpdateQuestion($id,$test_id=null) {
 		$question=Question::model()->findByPk($id);
-		var_dump($_POST['Question']);
-		exit;
+		$answer=$question->answer;
+		$content=$question->content;
+		$question->attributes=$_POST['UpdateQuestion'];
+		if(isset($_POST['UpdateQuestion']['content'])){
+			foreach ($_POST['UpdateQuestion']['content'] as $index=>$choice){
+				$content[$index]=$choice;
+				if(isset($_POST['UpdateQuestion']['answer']) && in_array($index,$_POST['UpdateQuestion']['answer']))
+					$answer[$index]=1;
+				else 	
+					$answer[$index]=0;
+			}
+		}
+		$review=false;
+		foreach ($answer as $index=>$item){
+			if($item) $review=true;
+		}
+		if($review){
+			$question->answer=$answer;
+			$question->content=$content;
+			if ($question->save ()) {
+				$question = Question::model ()->findByPk ( $question->id );
+				if(isset($test_id) && $test_id>0){
+					$test=TestLanguageSkill::model()->findByPk($test_id);
+					$view = $this->renderPartial ( '_update_question', array ('question' => $question, 'test'=>$test ), true );
+					$result = array ('success' => true, 'view' => $view );
+					echo json_encode ( $result );
+				}
+				else {
+					$view = $this->renderPartial ( '_create_question', array ('question' => $question), true );
+					$result = array ('success' => true, 'view' => $view );
+					echo json_encode ( $result );
+				}
+			}
+		}
+		else{
+				$result = array ('success' => false, 'message' => 'Correct answer not empty' );
+				echo json_encode ( $result );
+			}
+	}
+	
+	/**
+	 * Remove a question or a choice 
+	 */
+	public function actionRemoveQuestion($question_id,$index_choice=-1,$test_id=null) {
+		$question=Question::model()->findByPk($question_id);
+		if($index_choice == -1){
+			$test=TestLanguageSkill::model()->findByPk($test_id);
+			$content=array();
+			foreach ($test->content as $index=>$item){
+				if($item != $question_id)
+					$content[]=$item;
+			}
+			$test->content=$content;
+			if($test->save()){
+				if($question->delete()){
+					$view='';
+					$result = array ('success' => true, 'view' => $view );
+					echo json_encode ( $result );
+				}
+			}
+		}
+		else {
+			$content=array();
+			$answer=array();
+			foreach ($question->content as $index=>$item){
+				if($index != $index_choice)
+				{
+					$content[]=$item;
+				}
+			}
+			foreach ($question->answer as $index=>$item){
+				if($index != $index_choice)
+				{
+					$answer[]=$item;
+				}
+			}
+			$review=false;
+			foreach ($answer as $index=>$item){
+				if($item) $review=true;
+			}
+			if($review){
+				$question->answer=$answer;
+				$question->content=$content;			
+				if($question->save()){
+					$question=Question::model()->findByPk($question_id);
+					if(isset($test_id) && $test_id>0){
+						$test=TestLanguageSkill::model()->findByPk($test_id);
+						$view = $this->renderPartial ( '_update_question', array ('question' => $question, 'test'=>$test ), true );
+						$result = array ('success' => true, 'view' => $view );
+						echo json_encode ( $result );
+					}
+					else{
+						$view = $this->renderPartial ( '_create_question', array ('question' => $question), true );
+						$result = array ('success' => true, 'view' => $view );
+						echo json_encode ( $result );
+					}
+				}
+			}
+			else{
+				$result = array ('success' => false, 'message' => 'Correct answer not empty' );
+				echo json_encode ( $result );
+			}
+		}
 	}
 }

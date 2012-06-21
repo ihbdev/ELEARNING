@@ -46,7 +46,7 @@
 						<h2><?php echo Language::t('Post Q&A Text ').$i?></h2>
 						<!-- Material for question -->
 						<label style="width:66px;"><?php echo Language::t('Material');?>:</label>
-						<textarea  name="ITest[materials][<?php echo $i?>]"  style="width:610px; height:100px;"><?php if(isset($test->content[$i][0])) if(Question::model()->findByPk($test->content[$i][0])->material_id != 0){
+						<textarea  name="TestLanguageSkill[materials][<?php echo $i?>]"  style="width:610px; height:100px;"><?php if(isset($test->content[$i][0])) if(Question::model()->findByPk($test->content[$i][0])->material_id != 0){
 								echo Question::model()->findByPk($test->content[$i][0])->material->content;
 							}?></textarea>
                 		<?php if(isset($test->content[$i]) && $test->content[$i] != ''):?>
@@ -61,7 +61,7 @@
                             		<a class="i16 i16-trashgray"></a>
                             	</div>
                             	<div id="<?php echo $css_id.'_form';?>" style="display: none;">
-                            		<input type="text" name ="" style="width:600px;" value="<?php echo $question->title;?>">
+                            		<input type="text" name ="UpdateQuestion[title]"" style="width:600px;" value="<?php echo $question->title;?>">
                             		<a class="i16 i16-checkblue" href="<?php echo Yii::app()->createUrl('languageSkill/updateQuestion',array('id'=>$question_id))?>"></a>
                             		<a class="i16 i16-removered"></a>
                             	</div>
@@ -74,15 +74,16 @@
                             	<?php $css_id='question'.$question_id.'_'.'choice_'.$index;?> 
                             	<div id="<?php echo $css_id?>" class="<?php if($list_answer[$index]) echo 'active'?>"><label><?php echo chr(65+$index)?>) <?php echo $option?></label>
                             		<a class="i16 i16-statustext"></a>
-                            		<a class="i16 i16-trashgray"></a>
+                            		<a class="i16 i16-trashgray" href="<?php echo Yii::app()->createUrl('languageSkill/removeQuestion',array('question_id'=>$question_id,'index_choice'=>$index,'test_id'=>$test->id,))?>"></a>
                             	</div>
                             	<div id="<?php echo $css_id.'_form';?>" class="row" style="display: none;">
-                            		<input name="Question[answer][]" type="checkbox" value="<?php echo $index?>" <?php if($list_answer[$index]) echo 'checked="checked"'?>/>
-                            		<input type="text" name ="Question[content][<?php echo $index?>]" value="<?php echo $option?>" style="width: 600px;">
-                            		<a class="i16 i16-checkblue"></a>
+                            		<input name="UpdateQuestion[answer][]" type="checkbox" value="<?php echo $index?>" <?php if($list_answer[$index]) echo 'checked="checked"'?>/>
+                            		<input type="text" name ="UpdateQuestion[content][<?php echo $index?>]" value="<?php echo $option?>" style="width: 600px;">
+                            		<a class="i16 i16-checkblue" href="<?php echo Yii::app()->createUrl('languageSkill/updateQuestion',array('id'=>$question_id,'test_id'=>$test->id))?>"></a>
                             		<a class="i16 i16-removered"></a>
                             	</div>
                             	<?php endforeach;?>
+                            	<div class="row"><a class="i16 i16-addgreen add_choice_form" id="<?php echo $question_id?>" href="<?php echo Yii::app()->createUrl('markingUpSkill/updateQuestion',array('id'=>$question_id,'test_id'=>$test->id))?>"></a></div>
                             </div>
                         </div><!--text-question-->
                         <?php endforeach;?>
@@ -90,7 +91,7 @@
 						<div class="markingup-question">                               
 	                    	<div class="q-post_<?php echo $i?>">
 	                        	<div class="row"><h3><?php echo Language::t('Question')?></h3></div>
-	                        	<input id="list_questions_<?php echo $i?>" name="ITest[questions][<?php echo $i?>]" type="hidden" value="<?php echo (isset($test->content[$i]) && $test->content[$i] != '')?implode(',', $test->content[$i]):'';?>"/>
+	                        	<input id="list_questions_<?php echo $i?>" name="TestLanguageSkill[questions][<?php echo $i?>]" type="hidden" value="<?php echo (isset($test->content[$i]) && $test->content[$i] != '')?implode(',', $test->content[$i]):'';?>"/>
 	                        	<?php echo $form->error($test, 'content'); ?>
 	                        	<div class="row"><label style="width:70px;"><?php echo Language::t('Title')?>:</label><textarea name="Question[title]" style="width:600px; height:80px;"></textarea></div>
 	                            <div class="row"><label style="width:70px;"><?php echo Language::t('File')?>:</label><input type="text" name ="Question[supplement]" style="width: 600px;"></div>
@@ -194,18 +195,43 @@ $cs->registerScript(
         })",
   CClientScript::POS_END
   );
-  
- $cs->registerScript(
+
+$cs->registerScript(
+  'js-view-remove',
+  "jQuery(function($) { $('body').on('click','.i16-removered',	
+  		function(){
+  			var hasClass=$(this).hasClass('form');
+  			if(hasClass){
+  				var parent=$(this).parent();
+  				parent.remove();
+  			}
+  			else
+  			{			
+  				var parent=$(this).parent();
+  				parent.hide();
+  				var tmp=parent.attr('id');
+  				var id=tmp.substring(0,tmp.length-5);
+        		$('#'+id).show();
+        	}
+        	});
+        })",
+  CClientScript::POS_END
+  );
+
+$cs->registerScript(
   'js-update',
   "jQuery(function($) { $('body').on('click','.i16-checkblue',	
   		function(){
   			var parent=$(this).parent();	
-  			var url=$(this).attr('href');	
-  			alert(url);	  				
+  			var url=$(this).attr('href');	 				
   			jQuery.ajax({
-  				'data':parent.find('input').serialize(),
+  				'data':parent.parent().parent().find('input').serialize(),
   				'dataType':'json',
   				'success':function(data){
+  					if(data.success)
+  						parent.parent().parent().replaceWith(data.view);
+  					else
+						jAlert(data.message);
         		},
         		'type':'POST',
         		'url':url,
@@ -214,6 +240,52 @@ $cs->registerScript(
        });
       })",
   CClientScript::POS_END
+);
+
+$cs->registerScript(
+  'js-remove',
+  "jQuery(function($) { $('body').on('click','.i16-trashgray',	
+  		function(){
+  			var parent=$(this).parent();	
+  			var url=$(this).attr('href');				
+  			jQuery.ajax({
+  				'dataType':'json',
+  				'success':function(data){
+  					if(data.success)
+  						parent.parent().parent().replaceWith(data.view);
+  					else
+						jAlert(data.message);
+        		},
+        		'type':'POST',
+        		'url':url,
+        		'cache':false});
+       return false;	
+       });
+      })",
+  CClientScript::POS_END
+);
+
+Yii::app()->clientScript->registerScript(
+'add_choice_form', 
+"$('body').on('click','.add_choice_form',
+	function(){
+		var question_id=$(this).attr('id');
+		var href=$(this).attr('href');
+		var css_id='question'+question_id+'_'+'choice_';
+																		
+		var value=0;
+		var parent=$(this).parent();
+		parent.parent().find('input[type=checkbox]').each(
+			function(){
+				if(value < $(this).val()) 
+					value=$(this).val();
+				}
+			);
+		value++;
+		$('<div id=\"$' + css_id + value + '\" class=\"row\"><input name=\"UpdateQuestion[answer][]\" type=\"checkbox\" value=\"' + value + '\"/><input type=\"text\" name =\"UpdateQuestion[content][' + value + ']\" style=\"width: 600px;\"><a class=\"i16 i16-checkblue\" href=\"' + href + '\"></a><a class=\"i16 i16-removered form\"></a></div>').insertBefore(parent);
+		return false;
+})",
+CClientScript::POS_END
 );
 ?>
 <?php 
