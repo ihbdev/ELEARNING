@@ -58,7 +58,7 @@ $cs->registerCssFile(Yii::app()->theme->baseUrl.'/css/jquery.alerts.css');
 <!--end top panel-->
 <!--begin page content-->
 <div id="shell" class="forShell">
-<?php echo $content; ?>
+<?php echo $content;?>
 <div class="clear"></div>
 	<!--begin footer-->
 	<div id="footer" class="top">

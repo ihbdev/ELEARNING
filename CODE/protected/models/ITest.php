@@ -112,9 +112,10 @@ class ITest extends CActiveRecord
 	public function rules()
 	{
 		return array(
-			array('title,level,content','required'),
+			array('title,content','required'),
 			array('type', 'numerical'),
-			array('title,group_level','safe','on'=>'search')
+			array('title,group_level,catid','safe','on'=>'search'),
+			array('catid','safe')
 		);
 	}
 	public function validatorContent($attributes,$params){

@@ -515,7 +515,7 @@ class ExamController extends Controller
 		$group=new Category();		
 		$group->type=Category::TYPE_OFFICE;
 		$list_office=$group->list_nodes;
-		
+		//var_dump($list_office);exit;
 		$this->render('index',array(
 			'model'=>$model,
 			'list_office'=>$list_office

@@ -113,6 +113,7 @@ class MarkingUpSkillController extends Controller
 		}
 		$this->render ( 'create',array('test'=>$test,'group_level'=>$group_level));
 	}
+
 	/**
 	 * Add a new question
 	 */
@@ -352,12 +353,10 @@ class MarkingUpSkillController extends Controller
 	public function actionIndex()
 	{
 		$this->initCheckbox('checked-test-list');
-		
 		$model=new ITest('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['ITest']))
-			$model->attributes=$_GET['ITest'];		
-					
+			$model->attributes=$_GET['ITest'];
 		$this->render('index',array(
 			'model'=>$model
 		));

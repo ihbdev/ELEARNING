@@ -95,7 +95,7 @@ class CategoryController extends Controller
 			$model=new Category();			
 			//Define type of category
 			$model->type=$type;	
-			if(isset($model->config_type[$type]['form']))		
+			if(isset($model->config_type[$type]['form']))
 				$form=$model->config_type[$type]['form'];
 			else 
 				$form='_form';

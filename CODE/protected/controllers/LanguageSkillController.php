@@ -97,7 +97,20 @@ class LanguageSkillController extends Controller
 	 */
 	public function actionCreate()
 	{
-
+		$test=new ITest();
+		$test->content=array();
+		if(isset($_POST['ITest']))
+		{
+			$test->attributes=$_POST['ITest'];
+			$test->type=ITest::TYPE_LANGUAGE;			
+			$list_questions = array_diff ( explode ( ',', $_POST['ITest']['questions'] ), array ('') );
+			$test->content=$list_questions;
+			if($test->save())
+			{
+				$this->redirect(array('update','id'=>$test->id));
+			}	
+		}
+		$this->render('create',array('test'=>$test));
 	}
 	/**
 	 * Copy a new model
@@ -113,7 +126,20 @@ class LanguageSkillController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-	
+		$test=ITest::model()->findByPk($id);
+		if(isset($_POST['ITest']))
+		{
+			$test->attributes=$_POST['ITest'];
+			$test->type=ITest::TYPE_LANGUAGE;			
+			$list_questions = array_diff ( explode ( ',', $_POST['ITest']['questions'] ), array ('') );
+			$test->content=$list_questions;
+			if($test->save())
+			{
+				$test=ITest::model()->findByPk($id);
+				Yii::app()->user->setFlash('success', Language::t('Update successfully'));
+			}	
+		}
+		$this->render ( 'update',array('test'=>$test));
 	}
 
 	/**
@@ -140,7 +166,30 @@ class LanguageSkillController extends Controller
 	 */
 	public function actionIndex()
 	{
-	
+		$this->initCheckbox('checked-test-list');
+		$model=new ITest('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['ITest']))
+			$model->attributes=$_GET['ITest'];
+			
+		$criteria = new CDbCriteria ();
+		$criteria->compare ( 'type', ITest::TYPE_LANGUAGE );
+		if($model->title != '')
+			$criteria->compare ( 'title', $model->title, true );
+		if($model->group_level === '0')
+			$criteria->compare ( 'level',0);
+		if($model->group_level === '1')
+			$criteria->addCondition( 'level <> 0');	
+			
+		$list_tests= new CActiveDataProvider ( 'ITest', array (
+			'criteria' => $criteria, 
+			'pagination' => array ('pageSize' => Yii::app ()->user->getState ( 'pageSize', Setting::s('DEFAULT_PAGE_SIZE','System')  ) ), 
+			'sort' => array ('defaultOrder' => 'id DESC' )    		
+		));
+		$this->render('index',array(
+			'list_tests'=>$list_tests,
+			'model'=>$model
+		));
 	}
 	/**
 	 * Reverse status of language
@@ -148,6 +197,11 @@ class LanguageSkillController extends Controller
 	 */
 	public function actionReverseStatus($id)
 	{
+		$src=ITest::reverseStatus($id);
+		if($src) 
+			echo json_encode(array('success'=>true,'src'=>$src));
+		else 
+			echo json_encode(array('success'=>false));	
 	}
 	
 	/**
@@ -155,16 +209,14 @@ class LanguageSkillController extends Controller
 	 */
 	public function actionSuggestTitle()
 	{
-	
+		if(isset($_GET['q']) && ($keyword=trim($_GET['q']))!=='')
+		{
+			$titles=ITest::model()->suggestTitle($keyword);
+			if($titles!==array())
+				echo implode("\n",$titles);
+		}
 	}
-	
-	/**
-	 * Init checkbox selection
-	 * @param string $name_params, name of section to work	 
-	 */
-	public function initCheckbox($name_params){
-	
-	}
+
 	/*
 	 * List language suggest 
 	 */
@@ -196,6 +248,104 @@ class LanguageSkillController extends Controller
 			if( !isset($_GET['ajax'] )){
 				echo CActiveForm::validate($model);
 				Yii::app()->end();
+			}
+		}
+	}
+
+	/**
+	 * Add a new question
+	 */
+	public function actionAddQuestion(){
+		if (isset ( $_POST ['Question'] )) {
+			$question = new Question ();
+			$question->attributes = $_POST ['Question'];
+			if (! isset ( $question->answer )) {
+				$result = array ('success' => false, 'message' => 'Select answer' );
+				echo json_encode ( $result );
+			} else{
+				$answer = array ();
+				foreach ( $question->content as $index => $option ) {
+					if (in_array ( $index, $question->answer ))
+						$answer [$index] = 1;
+					else
+						$answer [$index] = 0;
+				}
+				$question->answer = $answer;
+				$question->type = Question::TYPE_LANGUAGE;
+				if (! isset ( $question->material_id ) && isset ( $material->id ))
+					$question->material_id = $material->id;
+				else
+					$question->material_id = 0;
+				if ($question->save ()) {
+					$question = Question::model ()->findByPk ( $question->id );
+					$view = $this->renderPartial ( 'add_question', array ('question' => $question ), true );
+					$result = array ('success' => true, 'id' => $question->id, 'view' => $view );
+					echo json_encode ( $result );
+				}
+			}
+		}
+	}
+
+	/**
+	 * Init checkbox selection
+	 * @param string $name_params, name of section to work	 
+	 */
+	public function initCheckbox($name_params){
+		if (! isset ( Yii::app ()->session [$name_params] ))
+			Yii::app ()->session [$name_params] = array ();
+		if (! Yii::app ()->getRequest ()->getIsAjaxRequest () && $name_params != 'checked-suggest-list')
+		{
+				Yii::app ()->session [$name_params] = array ();
+		}
+		else {
+			if (isset ( $_POST ['list-checked'] )) {
+				$list_new = array_diff ( explode ( ',', $_POST ['list-checked'] ), array ('' ) );
+				$list_old = Yii::app ()->session [$name_params];
+				$list = $list_old;
+				foreach ( $list_new as $id ) {
+					if (! in_array ( $id, $list_old ))
+						$list [] = $id;
+				}
+				Yii::app ()->session [$name_params] = $list;
+			}
+			if (isset ( $_POST ['list-unchecked'] )) {
+				$list_unchecked = array_diff ( explode ( ',', $_POST ['list-unchecked'] ), array ('' ) );
+				$list_old = Yii::app ()->session [$name_params];
+				$list = array ();
+				foreach ( $list_old as $id ) {
+					if (! in_array ( $id, $list_unchecked )) {
+						$list [] = $id;
+					}
+				}
+				Yii::app ()->session [$name_params] = $list;
+			}
+		}if (! isset ( Yii::app ()->session [$name_params] ))
+			Yii::app ()->session [$name_params] = array ();
+		if (! Yii::app ()->getRequest ()->getIsAjaxRequest () && $name_params != 'checked-suggest-list')
+		{
+				Yii::app ()->session [$name_params] = array ();
+		}
+		else {
+			if (isset ( $_POST ['list-checked'] )) {
+				$list_new = array_diff ( explode ( ',', $_POST ['list-checked'] ), array ('' ) );
+				$list_old = Yii::app ()->session [$name_params];
+				$list = $list_old;
+				foreach ( $list_new as $id ) {
+					if (! in_array ( $id, $list_old ))
+						$list [] = $id;
+				}
+				Yii::app ()->session [$name_params] = $list;
+			}
+			if (isset ( $_POST ['list-unchecked'] )) {
+				$list_unchecked = array_diff ( explode ( ',', $_POST ['list-unchecked'] ), array ('' ) );
+				$list_old = Yii::app ()->session [$name_params];
+				$list = array ();
+				foreach ( $list_old as $id ) {
+					if (! in_array ( $id, $list_unchecked )) {
+						$list [] = $id;
+					}
+				}
+				Yii::app ()->session [$name_params] = $list;
 			}
 		}
 	}
