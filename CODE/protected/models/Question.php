@@ -75,7 +75,7 @@ class Question extends CActiveRecord
 	{
 		return array(
 			array('content,answer,title','required'),
-			array('supplement','safe')
+			array('supplement,material_id','safe')
 		);
 	}
 	/**

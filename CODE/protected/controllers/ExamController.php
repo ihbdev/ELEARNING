@@ -96,7 +96,7 @@ class ExamController extends Controller
 		$model=Exam::model()->findByPk($id);
 		$test=ITest::model()->findByPk($model->test_id);
 		if(in_array(Yii::app()->user->id,$model->list_users)){
-			if(time() > $model->start_time && time() < $model->finish_time)	{		
+			if(time() > $model->start_time && time() < $model->finish_time)	{
 				switch($model->type){
 					case Exam::TYPE_LANGUAGE:
 						$form='view_language';
@@ -144,6 +144,7 @@ class ExamController extends Controller
 					'test'=>$test
 				) );
 			}
+			else echo "Đã quá thời gian thi! ^^";
 		}
 	}
 	/**
@@ -161,18 +162,19 @@ class ExamController extends Controller
 		
 		if(isset($_POST['Exam']))
 		{
-			$model->attributes=$_POST['Exam'];	
-			
+			$model->attributes=$_POST['Exam'];
+			$model->test_id = $_POST['Exam']['test_id'];
 			$model->start_time=strtotime($model->start_time);
 			$model->finish_time=strtotime($model->finish_time);
 			$model->list_users=array_diff(explode(',',$_POST['Exam']['users']),array(''));
 			
 			$test=ITest::model()->findByPk($model->test_id);
-			$model->type=$test->type;		
+			var_dump($model->test_id);
+			$model->type=$test->type;
 			if($model->save())
 			{
 				$this->redirect(array('update','id'=>$model->id));
-			}	
+			}
 		}
 		//List office
 		$group=new Category();		

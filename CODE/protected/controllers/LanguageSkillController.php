@@ -102,9 +102,34 @@ class LanguageSkillController extends Controller
 		if(isset($_POST['ITest']))
 		{
 			$test->attributes=$_POST['ITest'];
-			$test->type=ITest::TYPE_LANGUAGE;			
-			$list_questions = array_diff ( explode ( ',', $_POST['ITest']['questions'] ), array ('') );
-			$test->content=$list_questions;
+			$test->type=ITest::TYPE_LANGUAGE;
+			/*
+			 * Update material
+			 */
+			for ($i=1; $i<4; $i++)
+			{
+				if(isset($_POST['ITest']['materials'][$i])){
+					$material = new Material();
+					$material->catid  = Material::TYPE_LANGUAGE;
+					$material->content  = $_POST['ITest']['materials'][$i];
+					$material->save();
+
+					$list_questions[$i] = '';
+					if(isset($_POST['ITest']['questions'][$i])) $list_questions[$i] = array_diff ( explode ( ',', $_POST['ITest']['questions'][$i] ), array ('') );
+
+					foreach($list_questions[$i] as $question_id){
+						$question = Question::model()->findByPk($question_id);
+						$question->material_id = $material->id;
+						$question->save();
+					}
+				}
+			}
+
+			/*
+			 * Update Test
+			 */
+			$test->content=array('',$list_questions[1],$list_questions[2],$list_questions[3]);
+
 			if($test->save())
 			{
 				$this->redirect(array('update','id'=>$test->id));
@@ -130,9 +155,44 @@ class LanguageSkillController extends Controller
 		if(isset($_POST['ITest']))
 		{
 			$test->attributes=$_POST['ITest'];
-			$test->type=ITest::TYPE_LANGUAGE;			
-			$list_questions = array_diff ( explode ( ',', $_POST['ITest']['questions'] ), array ('') );
-			$test->content=$list_questions;
+			$test->type=ITest::TYPE_LANGUAGE;
+
+			/*
+			 * Update material
+			 */
+			for ($i=1; $i<4; $i++)
+			{
+				if(isset($_POST['ITest']['materials'][$i])){
+					$list_questions[$i] = '';
+					if(isset($_POST['ITest']['questions'][$i]) && $_POST['ITest']['questions'][$i]!='' ) 
+					{
+						$list_questions[$i] = array_diff ( explode ( ',', $_POST['ITest']['questions'][$i] ), array ('') );
+						$question = Question::model()->findByPk($list_questions[$i][0]);
+
+						if($question->material_id != 0) 
+							$material = Material::model()->findByPk($question->material_id);
+						else
+						{
+							$material = new Material();
+							$material->catid  = Material::TYPE_LANGUAGE;
+						}
+
+						$material->content  = $_POST['ITest']['materials'][$i];
+						$material->save();
+						
+						foreach($list_questions[$i] as $question_id){
+							$question = Question::model()->findByPk($question_id);
+							$question->material_id = $material->id;
+							$question->save();
+						}
+					}
+				}
+			}
+
+			/*
+			 * Update Test
+			 */
+			$test->content=array('',$list_questions[1],$list_questions[2],$list_questions[3]);
 			if($test->save())
 			{
 				$test=ITest::model()->findByPk($id);
@@ -253,40 +313,6 @@ class LanguageSkillController extends Controller
 	}
 
 	/**
-	 * Add a new question
-	 */
-	public function actionAddQuestion(){
-		if (isset ( $_POST ['Question'] )) {
-			$question = new Question ();
-			$question->attributes = $_POST ['Question'];
-			if (! isset ( $question->answer )) {
-				$result = array ('success' => false, 'message' => 'Select answer' );
-				echo json_encode ( $result );
-			} else{
-				$answer = array ();
-				foreach ( $question->content as $index => $option ) {
-					if (in_array ( $index, $question->answer ))
-						$answer [$index] = 1;
-					else
-						$answer [$index] = 0;
-				}
-				$question->answer = $answer;
-				$question->type = Question::TYPE_LANGUAGE;
-				if (! isset ( $question->material_id ) && isset ( $material->id ))
-					$question->material_id = $material->id;
-				else
-					$question->material_id = 0;
-				if ($question->save ()) {
-					$question = Question::model ()->findByPk ( $question->id );
-					$view = $this->renderPartial ( 'add_question', array ('question' => $question ), true );
-					$result = array ('success' => true, 'id' => $question->id, 'view' => $view );
-					echo json_encode ( $result );
-				}
-			}
-		}
-	}
-
-	/**
 	 * Init checkbox selection
 	 * @param string $name_params, name of section to work	 
 	 */
@@ -348,5 +374,51 @@ class LanguageSkillController extends Controller
 				Yii::app ()->session [$name_params] = $list;
 			}
 		}
+	}
+
+	/**
+	 * Add a new question
+	 */
+	public function actionAddQuestion() {
+		if (isset ( $_POST ['Question'])) {
+			$question = new Question ();
+			$question->attributes=$_POST['Question'];		
+			if (! isset ( $_POST['Question']['answer'] )) {
+				$result = array ('success' => false, 'message' => 'Select answer' );
+				echo json_encode ( $result );
+			}
+			else {
+				$content=array();
+				$answer=array();
+				foreach ($_POST ['Question']['content'] as $index=>$choice){
+					if($choice != '') {
+						$content[]=$choice;
+						if (in_array ( $index, $_POST ['Question']['answer'] ))
+							$answer [] = 1;
+						else
+							$answer [] = 0;
+					}
+				};
+				$question->content = $content;				
+				$question->answer = $answer;
+				$question->type = Question::TYPE_LANGUAGE;
+				$question->material_id = 0;
+				if ($question->save ()) {
+					$question = Question::model ()->findByPk ( $question->id );
+					$view = $this->renderPartial ( '_question', array ('question' => $question ), true );
+					$result = array ('success' => true, 'id' => $question->id, 'view' => $view );
+					echo json_encode ( $result );
+				}
+			}
+		}
+	}
+
+	/**
+	 * Add a new question
+	 */
+	public function actionUpdateQuestion($id) {
+		$question=Question::model()->findByPk($id);
+		var_dump($_POST['Question']);
+		exit;
 	}
 }
