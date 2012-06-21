@@ -108,7 +108,7 @@ class Exam extends CActiveRecord
 	public function rules()
 	{
 		return array(
-			array('office_id,test_id,type,list_users','required'),
+			array('title,office_id,test_id,type,list_users','required'),
 			array('start_time', 'compare', 'operator'=>'<','compareAttribute'=>'finish_time','message'=>'Start time must be less than Finish time'),
 			array('start_time,finish_time','safe'),
 		);
@@ -228,16 +228,35 @@ class Exam extends CActiveRecord
 		else return false;
 	}
 	/**
+	 * Suggests a list of existing usernames matching the specified keyword.
+	 * @param string the keyword to be matched
+	 * @param integer maximum number of tags to be returned
+	 * @return array list of matching username names
+	 */
+	public function suggestTitle($keyword,$limit=20)
+	{
+		$exams=$this->findAll(array(
+			'condition'=>'title LIKE :keyword',
+			'order'=>'title DESC',
+			'limit'=>$limit,
+			'params'=>array(
+				':keyword'=>'%'.strtr($keyword,array('%'=>'\%', '_'=>'\_', '\\'=>'\\\\')).'%',
+			),
+		));
+		$names=array();
+		foreach($exams as $exam)
+			$titles[]=$exam->title;
+			return $titles;
+	}
+	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
 	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
 	 */
 	public function search() {
 		$criteria = new CDbCriteria ();
-		$criteria->compare ( 'type', Exam::TYPE_MARKINGUP );
-		if($this->type != '')
-			$criteria->compare ( 'type',$this->type);
-		if($this->office_id != '')
-			$criteria->compare ( 'office_id',$this->office_id);
+		$criteria->compare ( 'title', $this->title, true );
+		$criteria->compare ( 'type',$this->type);
+		$criteria->compare ( 'office_id',$this->office_id);
 			
 		$list_exams= new CActiveDataProvider ( 'Exam', array (
 			'criteria' => $criteria, 

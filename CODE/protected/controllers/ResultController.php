@@ -94,11 +94,12 @@ class ResultController extends Controller
 /**
 	 * Lists all models.
 	 */
-	public function actionIndex()
+	public function actionIndex($exam_id)
 	{
 		$this->initCheckbox('checked-result-list');
 		
 		$model=new Result('search');
+		$model->exam_id=$exam_id;
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Result']))
 			$model->attributes=$_GET['Result'];

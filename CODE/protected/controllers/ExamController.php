@@ -321,6 +321,21 @@ class ExamController extends Controller
 		
 	}
 	/**
+	 * Suggests a list of existing test matching the specified keyword.
+	 * @param string the keyword to be matched
+	 * @param integer maximum number of tags to be returned
+	 * @return array list of matching tilte
+	 */
+	public function actionSuggestTitle()
+	{
+		if(isset($_GET['q']) && ($keyword=trim($_GET['q']))!=='')
+		{
+			$owners=Exam::model()->suggestTitle($keyword);
+			if($owners!==array())
+				echo implode("\n",$owners);
+		}
+	}
+	/**
 	 * Select test
 	 */
 	public function actionSelectTest($test_id) {

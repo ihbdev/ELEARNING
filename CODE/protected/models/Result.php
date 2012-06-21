@@ -51,6 +51,16 @@ class Result extends CActiveRecord
 			return parent::__get($name);
 	}
 	
+/**
+	 * Get url of this news
+	 * @return string $url, the absoluted path of this news
+	 */
+	public function getUrl()
+ 	{
+ 		$url=Yii::app()->createUrl("result/view",array('id'=>$this->id));
+		return $url;
+ 	}
+	
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -79,8 +89,9 @@ class Result extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'exam_id'=>'Đề thi',
-			'user_id'=>'Thí sinh'
+			'exam_id'=>'Exam',
+			'user_id'=>'Employee',
+			'office_id'=>'Office'
 		);
 	}
 	/**
@@ -92,7 +103,7 @@ class Result extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'exam'=>array(self::BELONGS_TO,'Exam','exam_id'),
-			'user_id'=>array(self::BELONGS_TO,'User','user_id'),
+			'user'=>array(self::BELONGS_TO,'User','user_id'),
 			'office'=>array(self::BELONGS_TO,'Category','office_id'),
 		);
 	}
