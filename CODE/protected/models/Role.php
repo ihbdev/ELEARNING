@@ -273,8 +273,15 @@ class Role extends CActiveRecord
 		if($this->type>0 && $this->id>0){
 			$max_rank=$this->max_rank;
 			$parent=Role::model()->findByPk($this->parent_id);
-			if(($parent->level+$this->rank)>=$max_rank){
-				$this->addError('parent_id', 'Vượt quá cấp quy định. Bạn không thể chuyển tới thư mục này.');
+			if(isset($parent)){
+				if(($parent->level+$this->rank)>=$max_rank){
+						$this->addError('parent_id', 'Vượt quá cấp quy định. Bạn không thể chuyển tới thư mục này.');
+				}
+			}
+			else{
+			if($this->rank>=$max_rank){
+						$this->addError('parent_id', 'Vượt quá cấp quy định. Bạn không thể chuyển tới thư mục này.');
+				}
 			}
 		}
 	}

@@ -56,8 +56,23 @@
                 <!--end left content-->
                 <!--begin right content-->
                 <div class="fl" style="width:480px;">
-                    <ul>
+                    <ul>                        
                         <li>
+                        <?php echo $form->labelEx($model,'office_id'); ?>
+                        <?php 
+						$list=array(''=>'All');
+						foreach ($list_office as $id=>$level){
+							$cat=Category::model()->findByPk($id);
+							$view = "";
+							for($i=1;$i<$level;$i++){
+								$view .="---";
+							}
+							$list[$id]=$view." ".$cat->name." ".$view;
+						}
+						?>
+						<?php echo $form->dropDownList($model,'office_id',$list,array('style'=>'width:200px')); ?>
+                  	  	</li>
+                  	  	<li>
                           	<?php echo $form->labelEx($model,'email'); ?>
 							<?php $this->widget('CAutoComplete', array(
                          	'model'=>$model,
@@ -86,10 +101,10 @@
 						'selectableRows'=>2,
 						'headerHtmlOptions'=>array('width'=>'2%','class'=>'table-title'),
 						'checked'=>'in_array($data->id,Yii::app()->session["checked-user-list"])'
-    				),	
+    				),	    				
     				array(
 						'name'=>'username',
-						'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),		
+						'headerHtmlOptions'=>array('width'=>'8%','class'=>'table-title'),		
 					), 
 					array(
 						'name'=>'email',
@@ -97,8 +112,13 @@
 					), 
 					array(
 						'name'=>'fullname',
-						'headerHtmlOptions'=>array('width'=>'15%','class'=>'table-title'),		
-					),		
+						'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),		
+					),
+					array(
+						'name'=>'office_id',
+    					'value'=>'$data->office->name',
+						'headerHtmlOptions'=>array('width'=>'8%','class'=>'table-title'),		
+					), 		
 					array(
 						'name'=>'role',
 						'value'=>'implode(", ",$data->label_role)',
@@ -119,7 +139,7 @@
     						(
             					'label'=>'Đổi trạng thái người dùng',
             					'imageUrl'=>'$data->imageStatus',
-            					'url'=>'Yii::app()->createUrl("admin/user/reverseStatus", array("id"=>$data->id))',
+            					'url'=>'Yii::app()->createUrl("user/reverseStatus", array("id"=>$data->id))',
     							'click'=>'function(){
 									var th=this;									
 									jQuery.ajax({
@@ -145,19 +165,13 @@
     					(
     						'update' => array(
     							'label'=>'Chỉnh sửa thông tin của user',
-								'imageUrl'=>Yii::app()->request->getBaseUrl(true).'/images/admin/edit.png',
+								'imageUrl'=>Yii::app()->theme->baseUrl.'/images/edit.png',
     						),
         					'password' => array
     						(
             					'label'=>'Reset password of user',
-            					'imageUrl'=>Yii::app()->request->getBaseUrl(true).'/images/admin/reset_pwd.png',
-            					'url'=>'Yii::app()->createUrl("admin/user/resetPassword", array("id"=>$data->id))',
-        					),
-        					'copy' => array
-    						(
-            					'label'=>'Copy user',
-            					'imageUrl'=>Yii::app()->request->getBaseUrl(true).'/images/admin/copy.gif',
-            					'url'=>'Yii::app()->createUrl("admin/news/copy", array("id"=>$data->id))',
+            					'imageUrl'=>Yii::app()->theme->baseUrl.'/images/reset_pwd.png',
+            					'url'=>'Yii::app()->createUrl("user/resetPassword", array("id"=>$data->id))',
         					),
         				),
 						'headerHtmlOptions'=>array('width'=>'20%','class'=>'table-title'),
@@ -170,7 +184,7 @@
 					'delete'=>array(
 						'action'=>'delete',
 						'label'=>'Delete all',
-						'imageUrl' => '/images/admin/delete.png',
+						'imageUrl' => Yii::app()->theme->baseUrl.'/images/delete.png',
 						'url'=>'admin/user/checkbox'
 					),
 				),

@@ -94,18 +94,19 @@ class ResultController extends Controller
 /**
 	 * Lists all models.
 	 */
-	public function actionIndex()
+	public function actionIndex($exam_id)
 	{
 		$this->initCheckbox('checked-result-list');
 		
 		$model=new Result('search');
+		$model->exam_id=$exam_id;
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Result']))
 			$model->attributes=$_GET['Result'];
 			
 		//Group categories that contains news
 		$group=new Category();		
-		$group->type=Category::TYPE_EXAM;
+		$group->type=Category::TYPE_OFFICE;
 		$list_office=$group->list_nodes;
 		
 		$this->render('index',array(

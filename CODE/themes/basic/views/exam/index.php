@@ -2,34 +2,45 @@
 	<div class="folder top">
 		<!--begin title-->
 		<div class="folder-header">
-			<h1><?php echo Language::t('List results')?></h1>
+			<h1><?php echo Language::t('List exams')?></h1>
 			<div class="header-menu">
 				<ul>
-					<li class="ex-show"><a class="activities-icon" href=""><span><?php echo Language::t('List results')?></span></a></li>
+					<li class="ex-show"><a class="activities-icon" href=""><span><?php echo Language::t('List exams')?></span></a></li>
 				</ul>
 			</div>
 		</div>
 		<!--end title-->
 		<div class="folder-content">
             <div>
-            	<input type="button" class="button" value="<?php echo Language::t('Add new result')?>" style="width:180px;" onClick="parent.location='<?php echo Yii::app()->createUrl('result/create')?>'"/>
+            	<input type="button" class="button" value="<?php echo Language::t('Add new exam')?>" style="width:180px;" onClick="parent.location='<?php echo Yii::app()->createUrl('exam/create')?>'"/>
                 <div class="line top bottom"></div>	
             </div>
              <!--begin box search-->
          <?php 
 			Yii::app()->clientScript->registerScript('search', "
-				$('#result-search').submit(function(){
-				$.fn.yiiGridView.update('result-list', {
+				$('#exam-search').submit(function(){
+				$.fn.yiiGridView.update('exam-list', {
 					data: $(this).serialize()});
 					return false;
 				});");
 		?>
             <div class="box-search">            
                 <h2><?php echo Language::t("Search")?></h2>
-                <?php $form=$this->beginWidget('CActiveForm', array('method'=>'get','id'=>'result-search')); ?>
+                <?php $form=$this->beginWidget('CActiveForm', array('method'=>'get','id'=>'exam-search')); ?>
                 <!--begin left content-->
                 <div class="fl" style="width:480px;">
-                    <ul>			
+                    <ul>
+                    <li>
+                         	<?php echo $form->labelEx($model,'title'); ?>
+                         	<?php $this->widget('CAutoComplete', array(
+                         	'model'=>$model,
+                         	'attribute'=>'title',
+							'url'=>array('exam/suggestTitle'),
+							'htmlOptions'=>array(
+								'style'=>'width:230px;',
+								),
+						)); ?>								
+                        </li>			
                     <?php 
 					$list=array(''=>'All')+Exam::$list_type;
 					?>
@@ -78,7 +89,7 @@
             <!--end box search-->		
            <?php 
 			$this->widget('iPhoenixGridView', array(
-  				'id'=>'result-list',
+  				'id'=>'exam-list',
   				'dataProvider'=>$model->search(),		
   				'columns'=>array(
 					array(
@@ -86,21 +97,25 @@
 						'selectableRows'=>2,
 						'headerHtmlOptions'=>array('width'=>'2%','class'=>'table-title'),
 						'checked'=>'in_array($data->id,Yii::app()->session["checked-exam-list"])'
-    				),			
+    				),	
     				array(
-						'name'=>'catid',
-    					'value'=>'$data->office->name',
+						'name'=>'title',
 						'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),		
+					),		
+    				array(
+						'name'=>'office_id',
+    					'value'=>'$data->office->name',
+						'headerHtmlOptions'=>array('width'=>'8%','class'=>'table-title'),		
 					),
 					array(
 						'name'=>'type',
     					'value'=>'Exam::$list_type[$data->type]',
-						'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),			
+						'headerHtmlOptions'=>array('width'=>'8%','class'=>'table-title'),			
 					),
 					array(
 						'name'=>'list_users',
     					'value'=>'sizeof($data->list_users)." users"',
-						'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),			
+						'headerHtmlOptions'=>array('width'=>'6%','class'=>'table-title'),			
 					),
 					array(
 						'name'=>'start_time',
@@ -132,7 +147,7 @@
     						(
             					'label'=>Language::t('Change status'),
             					'imageUrl'=>'$data->imageStatus',
-            					'url'=>'Yii::app()->createUrl("result/reverseStatus", array("id"=>$data->id))',
+            					'url'=>'Yii::app()->createUrl("exam/reverseStatus", array("id"=>$data->id))',
     							'click'=>'function(){
 									var th=this;									
 									jQuery.ajax({
@@ -157,7 +172,7 @@
 						'header'=>Language::t('Tools'),
 						'class'=>'CButtonColumn',
     					'template'=>'{update}{delete}{view}',
-						'deleteConfirmation'=>Language::t('Are you sure that you want to delete the result?'),
+						'deleteConfirmation'=>Language::t('Are you sure that you want to delete the exam?'),
 						'afterDelete'=>'function(link,success,data){ if(success) jAlert("'.Language::t("Delete succcessfully").'"); }',
     					'buttons'=>array
     					(
@@ -171,7 +186,7 @@
     						(
             					'label'=>Language::t('Copy'),
             					'imageUrl'=>Yii::app()->theme->baseUrl.'/images/copy.gif',
-            					'url'=>'Yii::app()->createUrl("result/copy", array("id"=>$data->id))',
+            					'url'=>'Yii::app()->createUrl("exam/copy", array("id"=>$data->id))',
         					),
         					'view'=>array(
     							'url'=>'$data->url',
@@ -181,14 +196,14 @@
 					),    				
  	 			),
  	 			'template'=>'{displaybox}{checkbox}{summary}{items}{pager}',
-  				'summaryText'=>'{count} '.Language::t('results'),
+  				'summaryText'=>'{count} '.Language::t('exams'),
  	 			'pager'=>array('class'=>'CLinkPager','header'=>'','prevPageLabel'=>'< Trước','nextPageLabel'=>'Sau >','htmlOptions'=>array('class'=>'pages fr')),
 				'actions'=>array(
 					'delete'=>array(
 						'action'=>'delete',
 						'label'=>Language::t('Delete'),
 						'imageUrl' => Yii::app()->theme->baseUrl.'/images/delete.png',
-						'url'=>'result/checkbox'
+						'url'=>'exam/checkbox'
 					),
 				),
  	 			)); ?>

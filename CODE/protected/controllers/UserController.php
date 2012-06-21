@@ -114,14 +114,26 @@ class UserController extends Controller
 			$model->attributes=$_POST['User'];	
 			//Create password and salt
 			if($model->validate()){
+				$clear_password=$model->generatePassword(User::LENGTH_PASSWORD);
 				$model->salt=$model->generateSalt();
-				$model->password=$model->hashPassword($model->clear_password,$model->salt);
+				$model->password=$model->hashPassword($clear_password,$model->salt);
 			}
-			if($model->save())
-				$this->redirect(array('index'));			
+			if($model->save()){
+				$model=User::model()->findByPk($model->id);
+				$model->username=$model->generateUsername(User::LENGTH_USERNAME);
+				if($model->save())
+					$this->redirect(array('update','id'=>$model->id));	
+			}		
 		}
+		
+		//List office
+		$group=new Category();		
+		$group->type=Category::TYPE_OFFICE;
+		$list_office=$group->list_nodes;
+		
 		$this->render('create',array(
 			'model'=>$model,
+			'list_office'=>$list_office
 		));
 	}
 
@@ -142,10 +154,17 @@ class UserController extends Controller
 			//Fix bug situation no set role
 			if(!isset($_POST['User']['role']))$model->role=array();
 			if($model->save())
-				$this->redirect(array('index'));			
+				$this->redirect(array('update','id'=>$model->id));			
 		}
+		
+		//List office
+		$group=new Category();		
+		$group->type=Category::TYPE_OFFICE;
+		$list_office=$group->list_nodes;
+		
 		$this->render('update',array(
 			'model'=>$model,
+			'list_office'=>$list_office
 		));
 	}
 
@@ -179,8 +198,15 @@ class UserController extends Controller
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['User']))
 			$model->attributes=$_GET['User'];
+		
+		//List office
+		$group=new Category();		
+		$group->type=Category::TYPE_OFFICE;
+		$list_office=$group->list_nodes;
+		
 		$this->render('index',array(
 			'model'=>$model,
+			'list_office'=>$list_office
 		));
 	}
 	/**
