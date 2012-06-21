@@ -107,68 +107,45 @@ class ResultController extends Controller
 		//Group categories that contains news
 		$group=new Category();		
 		$group->type=Category::TYPE_OFFICE;
-		$list_office=$group->list_nodes;
+		$list_office = $group->list_nodes;
 		
-		$this->render('index',array(
-			'model'=>$model,
-			'list_office'=>$list_office
-		));
+		$this->render ( 'index', array ('model' => $model, 'list_office' => $list_office ) );
 	}
 	
-	public function actionView($id)
-	{		
-		$model=Result::model()->findByPk($id);
-		$test=ITest::model()->findByPk($model->test_id);
-		if(in_array(Yii::app()->user->id,$model->list_users)){
-			if(time() > $model->start_time && time() < $model->finish_time)	{		
-				switch($model->type){
-					case Result::TYPE_LANGUAGE:
-						$form='view_language';
-						break;
-					case Result::TYPE_KNOWLEDGE:
-						$form='view_knowledge';
-						break;
-					case Result::TYPE_MARKINGUP:
-						if($test->level > 0)
-							$form='view_marking_up_level';
-						else 
-							$form='view_marking_up_final';
-						break;
-					case Result::TYPE_CODING:
-						$form='view_coding';
-						break;
-				}
-
-				if(isset($_POST['Result']))
-				{
-					$result=new Result();	
-					$result->result_id=$id;
-					$result->user_id=Yii::app()->user->id;
-					$list_answer=array();
-					foreach ($_POST['Result'] as $question_id=>$content){
-						$question=Question::model()->findByPk($question_id);
-						$tmp=array();
-						foreach ($question->answer as $index=>$item){
-							if(in_array($index,$content))
-								$tmp[$index]=1;
-							else 
-								$tmp[$index]=0;
-						}
-						$list_answer[$question_id]=$tmp;
-					}	
-					$result->answer=$list_answer;
-					if($result->save())
-					{
-						Yii::app()->user->setFlash('success', Language::t('Finish'));
-					}	
-				}
-				
-				$this->render ( $form, array(
-					'model'=>$model,
-					'test'=>$test
-				) );
-			}
+	public function actionView($id) {
+		$model = Result::model ()->findByPk ( $id );
+		$exam=$model->exam;
+		$test=$exam->test;
+		$user=$model->user;
+		switch ($exam->type) {
+			case Exam::TYPE_LANGUAGE :
+				$form = 'view_language';
+				break;
+			case Exam::TYPE_KNOWLEDGE :
+				$form = 'view_knowledge';
+				break;
+			case Exam::TYPE_MARKINGUP :
+				if ($test->level > 0)
+					$form = 'view_marking_up';
+				else
+					$form = 'view_marking_up';
+				break;
+			case Exam::TYPE_CODING :
+				$form = 'view_coding';
+				break;
 		}
+		$max_num_choices=0;
+		foreach ($model->answer as $index=>$answer){
+			if(sizeof($answer) > $max_num_choices)
+				$max_num_choices=sizeof($answer);
+		}		
+		$this->render ( $form, array(
+			'model'=>$model,
+			'exam'=>$exam,
+			'test'=>$test,
+			'user'=>$user,
+			'max_num_choices'=>$max_num_choices
+		) );
 	}
 	
 	/**
