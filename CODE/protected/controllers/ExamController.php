@@ -92,7 +92,7 @@ class ExamController extends Controller
 		);
 	}
 	public function actionView($id)
-	{		
+	{				
 		$model=Exam::model()->findByPk($id);
 		$test=ITest::model()->findByPk($model->test_id);
 		if(in_array(Yii::app()->user->id,$model->list_users)){
@@ -114,31 +114,45 @@ class ExamController extends Controller
 						$form='view_coding';
 						break;
 				}
-
+				
 				if(isset($_POST['Result']))
 				{
 					$result=new Result();	
 					$result->exam_id=$id;
 					$result->user_id=Yii::app()->user->id;
 					$list_answer=array();
-					foreach ($_POST['Result'] as $question_id=>$content){
-						$question=Question::model()->findByPk($question_id);
-						$tmp=array();
-						foreach ($question->answer as $index=>$item){
-							if(in_array($index,$content))
-								$tmp[$index]=1;
-							else 
-								$tmp[$index]=0;
-						}
-						$list_answer[$question_id]=$tmp;
-					}	
+					
+					switch($model->type){
+						case Exam::TYPE_LANGUAGE:
+							break;
+						case Exam::TYPE_KNOWLEDGE:
+							foreach ($_POST['Result'] as $question_id=>$content){
+								$question=Question::model()->findByPk($question_id);
+								$list_answer[$question_id]=$content;
+							}
+							break;														
+						case Exam::TYPE_MARKINGUP:	
+							foreach ($_POST['Result'] as $question_id=>$content){
+								$question=Question::model()->findByPk($question_id);
+								$tmp=array();
+								foreach ($question->answer as $index=>$item){
+									if(in_array($index,$content))
+										$tmp[$index]=1;
+									else 
+										$tmp[$index]=0;
+								}
+								$list_answer[$question_id]=$tmp;
+							}
+							break;
+							
+					}
+					
 					$result->answer=$list_answer;
 					if($result->save())
 					{
 						Yii::app()->user->setFlash('success', Language::t('Finish'));
 					}	
 				}
-				
 				$this->render ( $form, array(
 					'model'=>$model,
 					'test'=>$test

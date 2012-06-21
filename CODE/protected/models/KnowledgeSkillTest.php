@@ -12,7 +12,7 @@
 /**
  * Test includes attributes and methods of Test class  
  */
-class ITest extends CActiveRecord
+class KnowledgeSkillTest extends CActiveRecord
 {
 	/**
 	 * Config status of news
@@ -25,17 +25,17 @@ class ITest extends CActiveRecord
 	const TYPE_CODING=4;
 	
 	static $list_type=array(
-			ITest::TYPE_LANGUAGE=>'Language Skill',
-			ITest::TYPE_KNOWLEDGE=>'Knowledge Skill',
-			ITest::TYPE_MARKINGUP=>'Marking-up Skill',
-			ITest::TYPE_CODING=>'Coding Skill'
+			KnowledgeSkillTest::TYPE_LANGUAGE=>'Language Skill',
+			KnowledgeSkillTest::TYPE_KNOWLEDGE=>'Knowledge Skill',
+			KnowledgeSkillTest::TYPE_MARKINGUP=>'Marking-up Skill',
+			KnowledgeSkillTest::TYPE_CODING=>'Coding Skill'
 	);
 	
 	const MARKINGUP_MAX_LEVEL=9;
 	/**
 	 * @var array config list other attributes of the banner
 	 * this attribute no need to search	 
-	 */
+	 */	
 	private $config_other_attributes=array('modified','description','content');	
 	private $list_other_attributes;
 	public $section_a;
@@ -118,7 +118,7 @@ class ITest extends CActiveRecord
 			array('title,content','required'),
 			array('type', 'numerical'),
 			array('title,group_level,catid','safe','on'=>'search'),
-			array('catid,description','safe')
+			array('catid','safe')
 		);
 	}
 	public function validatorContent($attributes,$params){
@@ -139,7 +139,6 @@ class ITest extends CActiveRecord
 			'content'=>'List questions',
 			'created_by' => 'Author',
 			'created_date' => 'Created Time',
-			'description' => 'Description',
 		);
 	}
 	/**
@@ -150,8 +149,7 @@ class ITest extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'author'=>array(self::BELONGS_TO,'User','created_by'),
-			'cat'=>array(self::BELONGS_TO,'Category','catid'),
+			'author'=>array(self::BELONGS_TO,'User','created_by')
 		);
 	}
 	/**
@@ -193,7 +191,7 @@ class ITest extends CActiveRecord
 			{
 				$this->created_date=time();
 				$this->created_by=Yii::app()->user->id;		
-				$this->status=ITest::STATUS_ACTIVE;		
+				$this->status=KnowledgeSkillTest::STATUS_ACTIVE;		
 			}
 			else {
 				$modified=$this->modified;
@@ -271,7 +269,7 @@ class ITest extends CActiveRecord
 	 */
 	public function search(){
 		$criteria = new CDbCriteria ();
-		$criteria->compare ( 'type', ITest::TYPE_MARKINGUP );
+		$criteria->compare ( 'type', KnowledgeSkillTest::TYPE_MARKINGUP );
 		if($this->title != '')
 			$criteria->compare ( 'title', $this->title, true );
 		if($this->group_level === '0')
@@ -279,7 +277,7 @@ class ITest extends CActiveRecord
 		if($this->group_level === '1')
 			$criteria->addCondition( 'level <> 0');	
 			
-		$list_tests= new CActiveDataProvider ( 'ITest', array (
+		$list_tests= new CActiveDataProvider ( 'KnowledgeSkillTest', array (
 			'criteria' => $criteria, 
 			'pagination' => array ('pageSize' => Yii::app ()->user->getState ( 'pageSize', Setting::s('DEFAULT_PAGE_SIZE','System')  ) ), 
 			'sort' => array ('defaultOrder' => 'id DESC' )    		
