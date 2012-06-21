@@ -149,10 +149,10 @@
                             	<div class="text-title" style="display:none;"><input type="text" name ="section_a[questions][4][type]" value="5"></div>
                             	<div class="text-title">4.&nbsp;&nbsp;<textarea name="section_a[questions][4][title]" style="width:592px; height:35px;">Name two  SA companies for each of the following: (8)</textarea></div>                                
                                 <div class="text-check">
-                                    <div><input type="text" name="section_a[questions][4][content][1]" style="width:590px;" value="Airlines"><textarea name="section_a[questions][4][answer][0]" style="width:592px; height:35px;"></textarea></div>
-                                    <div><input type="text" name="section_a[questions][4][content][2]" style="width:590px;" value="Mining"><textarea name="section_a[questions][4][answer][1]" style="width:592px; height:35px;"></textarea></div>
-                                    <div><input type="text" name="section_a[questions][4][content][3]" style="width:590px;" value="Telecommunications"><textarea name="section_a[questions][4][answer][2]" style="width:592px; height:35px;"></textarea></div>                                    
-                                    <div><input type="text" name="section_a[questions][4][content][4]" style="width:590px;" value="Retailers"><textarea name="section_a[questions][4][answer][3]" style="width:592px; height:35px;"></textarea></div>                                                                                                            
+                                    <div><input type="text" name="section_a[questions][4][content][1]" style="width:590px;" value="Airlines"><textarea name="section_a[questions][4][answer][1]" style="width:592px; height:35px;"></textarea></div>
+                                    <div><input type="text" name="section_a[questions][4][content][2]" style="width:590px;" value="Mining"><textarea name="section_a[questions][4][answer][2]" style="width:592px; height:35px;"></textarea></div>
+                                    <div><input type="text" name="section_a[questions][4][content][3]" style="width:590px;" value="Telecommunications"><textarea name="section_a[questions][4][answer][3]" style="width:592px; height:35px;"></textarea></div>                                    
+                                    <div><input type="text" name="section_a[questions][4][content][4]" style="width:590px;" value="Retailers"><textarea name="section_a[questions][4][answer][4]" style="width:592px; height:35px;"></textarea></div>                                                                                                            
                                 </div>
                             </div><!--text-question-->
                             <div class="text-question">
@@ -232,16 +232,16 @@
                                     <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                         <tbody>
                                             <tr align="center">
-                                            	<td width="50%"><input type="text" name="section_a[questions][7][content][0]" style="width:290px;" value=""></td>
-                                                <td width="50%"><input type="text" name="section_a[questions][7][content][1]" style="width:290px;" value=""></td>                                                
+                                            	<td width="50%"><input type="text" name="section_a[questions][7][answer][1]" style="width:290px;" value=""></td>
+                                                <td width="50%"><input type="text" name="section_a[questions][7][answer][2]" style="width:290px;" value=""></td>                                                
                                             </tr>
                                             <tr align="center">
-                                                <td><input type="text" name="section_a[questions][7][content][2]" style="width:290px;" value="Walmart"></td>
-                                                <td><input type="text" name="section_a[questions][7][content][3]" style="width:290px;" value=""></td>
+                                                <td><input type="text" name="section_a[questions][7][answer][3]" style="width:290px;" value="Walmart"></td>
+                                                <td><input type="text" name="section_a[questions][7][answer][4]" style="width:290px;" value=""></td>
                                             </tr>
                                             <tr align="center">
-                                                <td><input type="text" name="section_a[questions][7][content][4]" style="width:290px;"></td>
-                                                <td><input type="text" name="section_a[questions][7][content][5]" style="width:290px;"></td>
+                                                <td><input type="text" name="section_a[questions][7][answer][5]" style="width:290px;"></td>
+                                                <td><input type="text" name="section_a[questions][7][answer][6]" style="width:290px;"></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -314,7 +314,7 @@
                             	<div class="text-title" style="display:none;"><input type="text" name ="section_a[questions][10][type]" value="7"></div>
                             	<div class="text-title">10.&nbsp;&nbsp;<textarea name="section_a[questions][10][title]" style="width:592px; height:35px;">List a few political examples of stories that have made headlines recently (4)</textarea></div>                                
                                 <div class="text-check">
-                                    <div><textarea name="section_a[questions][10][content][0]" style="width:590px; height:50px;"></textarea></div>
+                                    <div><textarea name="section_a[questions][10][answer]" style="width:590px; height:50px;"></textarea></div>
                                 </div>
                             </div><!--text-question-->
                             <div class="text-question">
@@ -332,6 +332,7 @@
                                 </div>
                             </div><!--text-question-->
                             <div class="text-question">
+                            	<div class="text-title" style="display:none;"><input type="text" name ="section_a[questions][13][type]" value="7"></div>
                                 <div class="text-title">13.&nbsp;&nbsp;<textarea name="section_a[questions][13][title]" style="width:592px; height:35px;">Who/what sets the interest rates for South Africa? (1)</textarea></div>                                
                                 <div class="text-check">
                                     <div><textarea name="section_a[questions][13][answer]" style="width:590px; height:50px;"></textarea></div>
@@ -351,20 +352,20 @@
                                     <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                         <tbody>
                                             <tr align="center">
-                                            	<td width="50%"><input type="text" name="section_a[questions][15][content][0]" style="width:290px;"></td>
-                                                <td width="50%"><input type="text" name="section_a[questions][15][content][1]" style="width:290px;"></td>                                                
+                                            	<td width="50%"><input type="text" name="section_a[questions][15][answer][1]" style="width:290px;"></td>
+                                                <td width="50%"><input type="text" name="section_a[questions][15][answer][2]" style="width:290px;"></td>                                                
+                                            </tr>
+                                            <tr align="center">                                                
+                                                <td><input type="text" name="section_a[questions][15][answer][3]" style="width:290px;"></td>
+                                                <td><input type="text" name="section_a[questions][15][answer][4]" style="width:290px;"></td>
                                             </tr>
                                             <tr align="center">
-                                                <td><input type="text" name="section_a[questions][15][content][2]" style="width:290px;"></td>
-                                                <td><input type="text" name="section_a[questions][15][content][3]" style="width:290px;"></td>
+                                                <td><input type="text" name="section_a[questions][15][answer][5]" style="width:290px;"></td>
+                                                <td><input type="text" name="section_a[questions][15][answer][6]" style="width:290px;"></td>
                                             </tr>
                                             <tr align="center">
-                                                <td><input type="text" name="section_a[questions][15][content][4]" style="width:290px;"></td>
-                                                <td><input type="text" name="section_a[questions][15][content][5]" style="width:290px;"></td>
-                                            </tr>
-                                            <tr align="center">
-                                                <td><input type="text" name="section_a[questions][15][content][6]" style="width:290px;"></td>
-                                                <td><input type="text" name="section_a[questions][15][content][7]" style="width:290px;"></td>
+                                                <td><input type="text" name="section_a[questions][15][answer][7]" style="width:290px;"></td>
+                                                <td><input type="text" name="section_a[questions][15][answer][8]" style="width:290px;"></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -375,7 +376,7 @@
                             	<div class="text-title" style="display:none;"><input type="text" name ="section_a[questions][16][type]" value="7"></div>
                             	<div class="text-title">16.&nbsp;&nbsp;<textarea name="section_a[questions][16][title]" style="width:592px; height:35px;">What is Naspers? (1)</textarea></div>                                
                                 <div class="text-check">
-                                    <div><textarea name="section_a[questions][16][content][0]" style="width:590px; height:50px;"></textarea></div>
+                                    <div><textarea name="section_a[questions][16][answer]" style="width:590px; height:50px;"></textarea></div>
                                 </div>
                             </div><!--text-question-->
                             <div class="text-question">
@@ -416,7 +417,7 @@ Die belanghebbendes sal veral hul mening oor die oopstel van handel in die horin
                                 <div class="table">
                                     <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                         <tbody>
-                                            <tr align="center">
+                                            <tr align="center" class="table-title">
                                             	<td width="30%"><input type="text" name="section_b[questions][1][content][0]" style="width:155px;"></td>
                                                 <td width="70%"><input type="text" name="section_b[questions][1][answer][0]" style="width:405px;"></td>                                                
                                             </tr>
@@ -494,7 +495,7 @@ reach higher levels and required close monitoring, the World Bank cautioned.
                                 <div class="table">
                                     <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                         <tbody>
-                                            <tr align="center">
+                                            <tr align="center" class="table-title">
                                             	<td width="50%"><input type="text" name="section_c[questions][1][content][0]" style="width:290px;"></td>
                                                 <td width="50%"><input type="text" name="section_c[questions][1][answer][0]" style="width:290px;"></td>                                
                                             </tr>

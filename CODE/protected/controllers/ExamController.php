@@ -122,17 +122,32 @@ class ExamController extends Controller
 					$result->exam_id=$id;
 					$result->user_id=Yii::app()->user->id;
 					$list_answer=array();
-					foreach ($_POST['Result'] as $question_id=>$content){
-						$question=Question::model()->findByPk($question_id);
-						$tmp=array();
-						foreach ($question->answer as $index=>$item){
-							if(in_array($index,$content))
-								$tmp[$index]=1;
-							else 
-								$tmp[$index]=0;
-						}
-						$list_answer[$question_id]=$tmp;
-					}	
+					
+					switch($model->type){
+						case Exam::TYPE_LANGUAGE:
+							break;
+						case Exam::TYPE_KNOWLEDGE:
+							foreach ($_POST['Result'] as $question_id=>$content){
+								$question=Question::model()->findByPk($question_id);
+								$list_answer[$question_id]=$content;
+							}
+							break;														
+						case Exam::TYPE_MARKINGUP:	
+							foreach ($_POST['Result'] as $question_id=>$content){
+								$question=Question::model()->findByPk($question_id);
+								$tmp=array();
+								foreach ($question->answer as $index=>$item){
+									if(in_array($index,$content))
+										$tmp[$index]=1;
+									else 
+										$tmp[$index]=0;
+								}
+								$list_answer[$question_id]=$tmp;
+							}
+							break;
+							
+					}
+					
 					$result->answer=$list_answer;
 					if($result->save())
 					{

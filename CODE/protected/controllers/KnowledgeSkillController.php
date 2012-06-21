@@ -95,14 +95,14 @@ class KnowledgeSkillController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$test=new ITest();		
+		$test=new KnowledgeSkillTest();		
 		$test->title = 'Knowledskill test';
 		$temp_content = array('section_a'=>'','section_b'=>'','section_c'=>'');	
 		$temp_section = array('description'=>"",'questions'=>array());		
 		//var_dump($test->section_a['questions']); //exit;
 		if(isset($_POST['section_a']))
 		{		
-			$test->type=ITest::TYPE_KNOWLEDGE;	
+			$test->type=KnowledgeSkillTest::TYPE_KNOWLEDGE;	
 			for($i=1; $i<=17; $i++)
 			{
 				$question = new Question();
@@ -174,9 +174,9 @@ class KnowledgeSkillController extends Controller
 			$test->section_c = $temp_section;
 			$temp_content['section_c'] = $test->section_c;
 		}						
-		if(isset($_POST['ITest']['catid']))
+		if(isset($_POST['KnowledgeSkillTest']['catid']))
 		{
-			$test->catid = $_POST['ITest']['catid'];
+			$test->catid = $_POST['KnowledgeSkillTest']['catid'];
 			$test->content = $temp_content;
 		}
 		//var_dump($test->save());
@@ -238,16 +238,16 @@ class KnowledgeSkillController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-		$test=ITest::model()->findByPk($id);
-		if(isset($_POST['ITest']))
+		$test=KnowledgeSkillTest::model()->findByPk($id);
+		if(isset($_POST['KnowledgeSkillTest']))
 		{
-			$test->attributes=$_POST['ITest'];
-			$test->type=ITest::TYPE_KNOWLEDGE;			
+			$test->attributes=$_POST['KnowledgeSkillTest'];
+			$test->type=KnowledgeSkillTest::TYPE_KNOWLEDGE;			
 			//$list_questions = array_diff ( explode ( ',', $_POST['ITest']['questions'] ), array ('') );
 			//$test->content=$list_questions;
 			if($test->save())
 			{
-				$test=ITest::model()->findByPk($id);
+				$test=KnowledgeSkillTest::model()->findByPk($id);
 				Yii::app()->user->setFlash('success', Language::t('Update success'));
 			}	
 		}
@@ -287,7 +287,7 @@ class KnowledgeSkillController extends Controller
 			case 'delete' :
 				if (Yii::app ()->user->checkAccess ( 'test_delete')) {
 					foreach ( $list_checked as $id ) {
-						$item = ITest::model ()->findByPk ( (int)$id );
+						$item = KnowledgeSkillTest::model ()->findByPk ( (int)$id );
 						if (isset ( $item ))
 							if (! $item->delete ()) {
 								echo 'false';
@@ -311,17 +311,17 @@ class KnowledgeSkillController extends Controller
 	{
 		$this->initCheckbox('checked-test-list');
 		$criteria = new CDbCriteria ();
-		$criteria->compare ( 'type', ITest::TYPE_KNOWLEDGE );
-		$list_tests= new CActiveDataProvider ( 'ITest', array (
+		$criteria->compare ( 'type', KnowledgeSkillTest::TYPE_KNOWLEDGE );
+		$list_tests= new CActiveDataProvider ( 'KnowledgeSkillTest', array (
 			'criteria' => $criteria, 
 			'pagination' => array ('pageSize' => Yii::app ()->user->getState ( 'pageSize', Setting::s('DEFAULT_PAGE_SIZE','System')  ) ), 
 			'sort' => array ('defaultOrder' => 'id DESC' )    		
 		));
 		
-		$model=new ITest('search');
+		$model=new KnowledgeSkillTest('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['ITest']))
-			$model->attributes=$_GET['ITest'];
+		if(isset($_GET['KnowledgeSkillTest']))
+			$model->attributes=$_GET['KnowledgeSkillTest'];
 				
 		$this->render('index',array(
 			'list_tests'=>$list_tests,
