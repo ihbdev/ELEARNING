@@ -38,6 +38,35 @@ class Material extends CActiveRecord
 		return 'tbl_material';
 	}
 	/**
+	 * PHP setter magic method for other attributes
+	 * @param $name the attribute name
+	 * @param $value the attribute value
+	 * set value into particular attribute
+	 */
+	public function __set($name,$value)
+	{
+		if(in_array($name,$this->config_other_attributes))
+			$this->list_other_attributes[$name]=$value;
+		else 
+			parent::__set($name,$value);
+	}
+	
+	/**
+	 * PHP getter magic method for other attributes
+	 * @param $name the attribute name
+	 * @return value of {$name} attribute
+	 */
+	public function __get($name)
+	{
+		if(in_array($name,$this->config_other_attributes))
+			if(isset($this->list_other_attributes[$name])) 
+				return $this->list_other_attributes[$name];
+			else 
+		 		return null;
+		else
+			return parent::__get($name);
+	}
+	/**
 	 * @return array validation rules for model attributes.
 	 */	
 	public function rules()

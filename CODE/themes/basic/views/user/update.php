@@ -17,6 +17,13 @@
 				<ul>
 					<div class="row">
                     	<li>
+							<?php echo $form->labelEx($model,'username'); ?>
+							<?php echo $form->textField($model,'username',array('style'=>'width:280px','maxlength'=>'32','readonly'=>'readonly')); ?>					
+							<?php echo $form->error($model, 'username'); ?>
+						</li>
+					</div>					
+					<div class="row">
+                    	<li>
 							<?php echo $form->labelEx($model,'email'); ?>
 							<?php echo $form->textField($model,'email',array('style'=>'width:280px','maxlength'=>'32')); ?>					
 							<?php echo $form->error($model, 'email'); ?>
@@ -29,38 +36,38 @@
                   		<?php echo $form->error($model, 'role'); ?>
                     </li>
                     </div>
-                    <div class="row">
-						<li>
-                       		<?php echo $form->labelEx($model,'status'); ?>
-                        	<?php echo $form->dropDownList($model,'status',$model->list_label_status,array('style'=>'width:100px')); ?>
-                   			<?php echo $form->error($model, 'status'); ?>
-                    	</li>
-                    </div>                   
-                    <div class="row">
                    		<li>
-						<input type="reset" class="button" value="Hủy thao tác" style="margin-left:153px; width:125px;" />	
-						<input type="submit" class="button" value="Cập nhật" style="margin-left:20px; width:125px;" />						                 		
+                   		<input type="reset" class="button" value="Hủy thao tác" style="margin-left:153px; width:125px;" />
+                    	<input type="submit" class="button" value="Cập nhật" style="margin-left:20px; width:125px;" />					 
                     	</li>
-                    </div>                 
 				</ul>
 			</div>
 			<!--end left content-->
 			<div class="fl" style="width:480px;">
 				<ul>
-                    <div class="row">
+				 	<div class="row">
+                        <?php echo $form->labelEx($model,'office_id'); ?>
+                        <?php 
+						$list=array();
+						foreach ($list_office as $id=>$level){
+							$cat=Category::model()->findByPk($id);
+							$view = "";
+							for($i=1;$i<$level;$i++){
+								$view .="---";
+							}
+							$list[$id]=$view." ".$cat->name." ".$view;
+						}
+						?>
+						<?php echo $form->dropDownList($model,'office_id',$list,array('style'=>'width:200px')); ?>
+						<?php echo $form->error($model, 'office_id'); ?>
+                    </div>
+					 <div class="row">
 						<li>
-							<?php echo $form->labelEx($model,'phone'); ?>
-							<?php echo $form->textField($model,'phone',array('style'=>'width:280px;','maxlength'=>'16')); ?>
-							<?php echo $form->error($model, 'phone'); ?>
-						</li>
-					</div>
-					<div class="row">
-						<li>
-							<?php echo $form->labelEx($model,'address'); ?>
-							<?php echo $form->textField($model,'address',array('style'=>'width:280px;','maxlength'=>'128')); ?>
-							<?php echo $form->error($model, 'address'); ?>
-						</li>     
-					</div>
+                       		<?php echo $form->labelEx($model,'status'); ?>
+                        	<?php echo $form->dropDownList($model,'status',$model->list_label_status,array('style'=>'width:100px')); ?>
+                   			<?php echo $form->error($model, 'status'); ?>
+                    	</li>
+                    </div> 
 					<div class="row">
 						<li>
 							<?php echo $form->labelEx($model,'firstname'); ?>

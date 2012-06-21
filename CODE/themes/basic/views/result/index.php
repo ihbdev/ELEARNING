@@ -29,13 +29,17 @@
                 <?php $form=$this->beginWidget('CActiveForm', array('method'=>'get','id'=>'exam-search')); ?>
                 <!--begin left content-->
                 <div class="fl" style="width:480px;">
-                    <ul>			
-                    <?php 
-					$list=array(''=>'All')+Exam::$list_type;
-					?>
+                    <ul>                 
 					<li>
-						<?php echo $form->labelEx($model,'type'); ?>
-						<?php echo $form->dropDownList($model,'type',$list,array('style'=>'width:200px')); ?>
+                         	<?php echo $form->labelEx($model,'username'); ?>
+                         	<?php $this->widget('CAutoComplete', array(
+                         	'model'=>$model,
+                         	'attribute'=>'user_id',
+							'url'=>array('user/suggestUsername'),
+							'htmlOptions'=>array(
+								'style'=>'width:230px;',
+								),
+						)); ?>								
 					</li>	               
                         <li>
                         <?php 
@@ -86,93 +90,43 @@
 						'selectableRows'=>2,
 						'headerHtmlOptions'=>array('width'=>'2%','class'=>'table-title'),
 						'checked'=>'in_array($data->id,Yii::app()->session["checked-exam-list"])'
-    				),			
+    				),	
     				array(
-						'name'=>'catid',
+						'name'=>'username',
+    					'value'=>'$data->user->username',
+						'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),		
+					),	
+					array(
+						'name'=>'email',
+    					'value'=>'$data->user->email',
+						'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),		
+					),
+					array(
+						'name'=>'office_id',
     					'value'=>'$data->office->name',
 						'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),		
 					),
+    				array(
+						'name'=>'exam_id',
+    					'value'=>'$data->exam->title',
+						'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),		
+					),		
 					array(
 						'name'=>'type',
-    					'value'=>'Exam::$list_type[$data->type]',
+    					'value'=>'Exam::$list_type[$data->exam->type]',
 						'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),			
-					),
-					array(
-						'name'=>'list_users',
-    					'value'=>'sizeof($data->list_users)." users"',
-						'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),			
-					),
-					array(
-						'name'=>'start_time',
-						'value'=>'date("m/d/Y H:i",$data->start_time)',
-						'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),		
-					), 
-					array(
-						'name'=>'finish_time',
-						'value'=>'date("m/d/Y H:i",$data->finish_time)',
-						'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),		
-					), 
-					array(
-						'name'=>'author',
-						'value'=>'$data->author->username',
-						'headerHtmlOptions'=>array('width'=>'5%','class'=>'table-title'),		
-					), 						
-					array(
-						'name'=>'created_date',
-						'value'=>'date("H:i d/m/Y",$data->created_date)',
-						'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),		
-					), 		
-					array(
-						'header'=>Language::t('Status'),
-						'class'=>'iPhoenixButtonColumn',
-    					'template'=>'{reverse}',
-    					'buttons'=>array
-    					(
-        					'reverse' => array
-    						(
-            					'label'=>Language::t('Change status'),
-            					'imageUrl'=>'$data->imageStatus',
-            					'url'=>'Yii::app()->createUrl("exam/reverseStatus", array("id"=>$data->id))',
-    							'click'=>'function(){
-									var th=this;									
-									jQuery.ajax({
-										type:"POST",
-										dataType:"json",
-										url:$(this).attr("href"),
-										success:function(data) {
-											if(data.success){
-												$(th).find("img").attr("src",data.src);
-												}
-										},
-										error: function (request, status, error) {
-        										jAlert(request.responseText);
-    									}
-										});
-								return false;}',
-        					),
-        				),
-						'headerHtmlOptions'=>array('width'=>'5%','class'=>'table-title'),
-					),    											   	   
+					),																		   	   
 					array(
 						'header'=>Language::t('Tools'),
 						'class'=>'CButtonColumn',
-    					'template'=>'{update}{delete}{view}',
+    					'template'=>'{delete}{view}',
 						'deleteConfirmation'=>Language::t('Are you sure that you want to delete the exam?'),
 						'afterDelete'=>'function(link,success,data){ if(success) jAlert("'.Language::t("Delete succcessfully").'"); }',
     					'buttons'=>array
     					(
-    						'update' => array(
-    							'label'=>Language::t('Edit'),
-    						),
         					'delete' => array(
     							'label'=>Language::t('Delete'),
     						),
-    						'copy' => array
-    						(
-            					'label'=>Language::t('Copy'),
-            					'imageUrl'=>Yii::app()->theme->baseUrl.'/images/copy.gif',
-            					'url'=>'Yii::app()->createUrl("exam/copy", array("id"=>$data->id))',
-        					),
         					'view'=>array(
     							'url'=>'$data->url',
     						)

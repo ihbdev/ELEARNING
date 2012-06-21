@@ -77,8 +77,8 @@ class Question extends CActiveRecord
 	public function rules()
 	{
 		return array(
-			array('content,answer,title','required'),
-			array('type,supplement','safe')
+			array('content,answer,title','required'),			
+			array('type,supplement,material_id','safe')
 		);
 	}
 	/**

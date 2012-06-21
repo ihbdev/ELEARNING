@@ -19,6 +19,14 @@
             <input value="" name="Exam[test_id]" id="Exam_test_id" type="hidden">
             <input value="" id="Exam_users" name="Exam[users]" type="hidden">
             <div class="testpost-outer">
+           		 <div class="testpost-box">
+					<h2>Title</h2>
+                    <div class="row">
+                        <label style="width:66px;">Title:</label>
+						<?php echo $form->textField($model,'title',array('style'=>'width:400px')); ?>
+						<?php echo $form->error($model, 'title'); ?>
+                    </div>
+                </div><!--testpost-box-->
             	<div class="testpost-box">
 					<h2>Choose Office</h2>
                     <div class="row">
@@ -83,7 +91,7 @@
                 <?php $this->endWidget(); ?>
                 
                 <div class="testpost-box">
-                       <?php 
+				<?php 
 				Yii::app()->clientScript->registerScript('search-test', "
 				$('#test-search').submit(function(){
 				$.fn.yiiGridView.update('test-list', {
@@ -122,7 +130,7 @@
                     <?php $this->endWidget(); ?>
                     <div class="row">
                         <h4>List results searching:</h4>                        
-                    <?php 
+                    <?php
 					$this->widget('iPhoenixGridView', array(
   					'id'=>'test-list',
   					'dataProvider'=>$list_test,
@@ -140,11 +148,6 @@
 							'name'=>'level',
 							'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),		
 						),
-						array(
-							'name'=>'author',
-							'value'=>'$data->author->username',
-							'headerHtmlOptions'=>array('width'=>'5%','class'=>'table-title'),		
-						), 						
 						array(
 							'name'=>'created_date',
 							'value'=>'date("H:i d/m/Y",$data->created_date)',
@@ -207,7 +210,7 @@
                     <div class="row">
                         <label style="width:70px;">Office:</label>
                         <?php 
-						$list=array();
+						$list=array(''=>'All');
 						foreach ($list_office as $id=>$level){
 							$cat=Category::model()->findByPk($id);
 							$view = "";
@@ -217,7 +220,7 @@
 							$list[$id]=$view." ".$cat->name." ".$view;
 						}
 						?>
-						<?php echo $form->dropDownList($user,'office',$list,array('style'=>'width:200px')); ?>
+						<?php echo $form->dropDownList($user,'office_id',$list,array('style'=>'width:200px')); ?>
                     </div>
                     <div class="row">
                         <label style="width:70px;">User Email:</label>
@@ -231,7 +234,7 @@
 						)); ?>		
                     </div>
                     <div class="row">
-                    	<input type="submit" class="button" value="Results" style="margin-left:74px; width:95px;" />
+                    	<input type="submit" class="button" value="Search" style="margin-left:74px; width:95px;" />
                     </div>
                     <?php $this->endWidget(); ?>
                     <div class="row">
@@ -252,7 +255,12 @@
 						array(
 							'name'=>'fullname',
 							'headerHtmlOptions'=>array('width'=>'15%','class'=>'table-title'),		
-						),		
+						),	
+						array(
+							'name'=>'office_id',
+    						'value'=>'$data->office->name',
+							'headerHtmlOptions'=>array('width'=>'8%','class'=>'table-title'),		
+						), 	
 						array(
 							'name'=>'role',
 							'value'=>'implode(", ",$data->label_role)',

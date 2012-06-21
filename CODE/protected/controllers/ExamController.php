@@ -97,7 +97,6 @@ class ExamController extends Controller
 		$test=ITest::model()->findByPk($model->test_id);
 		if(in_array(Yii::app()->user->id,$model->list_users)){
 			if(time() > $model->start_time && time() < $model->finish_time)	{
-						
 				switch($model->type){
 					case Exam::TYPE_LANGUAGE:
 						$form='view_language';
@@ -154,16 +153,12 @@ class ExamController extends Controller
 						Yii::app()->user->setFlash('success', Language::t('Finish'));
 					}	
 				}
-				//$tmp = $test->content;
-				//var_dump($test->content);
-				
-				//var_dump($tmp['section_a']->description);
-				//exit;
 				$this->render ( $form, array(
 					'model'=>$model,
 					'test'=>$test
 				) );
 			}
+			else echo "Đã quá thời gian thi! ^^";
 		}
 	}
 	/**
@@ -179,26 +174,25 @@ class ExamController extends Controller
 		if(!isset(Yii::app()->session["list-choicing-user"]) || ! Yii::app ()->getRequest ()->getIsAjaxRequest ())		
 			Yii::app()->session["list-choicing-user"]=array();
 		
-		//$model->start_time=date('m/d/Y H:i',$model->start_time);
-		//$model->finish_time=date('m/d/Y H:i',$model->finish_time);
 		if(isset($_POST['Exam']))
 		{
-			$model->attributes=$_POST['Exam'];	
-			
+			$model->attributes=$_POST['Exam'];
+			$model->test_id = $_POST['Exam']['test_id'];
 			$model->start_time=strtotime($model->start_time);
 			$model->finish_time=strtotime($model->finish_time);
 			$model->list_users=array_diff(explode(',',$_POST['Exam']['users']),array(''));
 			
 			$test=ITest::model()->findByPk($model->test_id);
-			$model->type=$test->type;		
+			var_dump($model->test_id);
+			$model->type=$test->type;
 			if($model->save())
 			{
 				$this->redirect(array('update','id'=>$model->id));
-			}	
+			}
 		}
-		//Group categories that contains news
+		//List office
 		$group=new Category();		
-		$group->type=Category::TYPE_EXAM;
+		$group->type=Category::TYPE_OFFICE;
 		$list_office=$group->list_nodes;
 		
 		//Get form search test
@@ -233,6 +227,7 @@ class ExamController extends Controller
 			
 		//Search list user	
 		$criteria=new CDbCriteria;
+		$criteria->compare('office_id',$user->office_id);
 		$criteria->compare('email',$user->email,true);
 		$criteria->addNotInCondition('id',Yii::app()->session["list-choicing-user"]);
 		if(isset($_GET['pageSize']))
@@ -342,6 +337,21 @@ class ExamController extends Controller
 		
 	}
 	/**
+	 * Suggests a list of existing test matching the specified keyword.
+	 * @param string the keyword to be matched
+	 * @param integer maximum number of tags to be returned
+	 * @return array list of matching tilte
+	 */
+	public function actionSuggestTitle()
+	{
+		if(isset($_GET['q']) && ($keyword=trim($_GET['q']))!=='')
+		{
+			$owners=Exam::model()->suggestTitle($keyword);
+			if($owners!==array())
+				echo implode("\n",$owners);
+		}
+	}
+	/**
 	 * Select test
 	 */
 	public function actionSelectTest($test_id) {
@@ -362,8 +372,6 @@ class ExamController extends Controller
 		if(!isset(Yii::app()->session["list-choicing-user"]) || ! Yii::app ()->getRequest ()->getIsAjaxRequest ())		
 			Yii::app()->session["list-choicing-user"]=$model->list_users;
 		
-		//$model->start_time=date('m/d/Y H:i',$model->start_time);
-		//$model->finish_time=date('m/d/Y H:i',$model->finish_time);
 		if(isset($_POST['Exam']))
 		{
 			$model->attributes=$_POST['Exam'];	
@@ -382,9 +390,9 @@ class ExamController extends Controller
 				Yii::app()->user->setFlash('success', Language::t('Update successfully'));
 			}	
 		}
-		//Group categories that contains news
+		//List office
 		$group=new Category();		
-		$group->type=Category::TYPE_EXAM;
+		$group->type=Category::TYPE_OFFICE;
 		$list_office=$group->list_nodes;
 		
 		//Get form search test
@@ -419,6 +427,7 @@ class ExamController extends Controller
 			
 		//Search list user	
 		$criteria=new CDbCriteria;
+		$criteria->compare('office_id',$user->office_id);
 		$criteria->compare('email',$user->email,true);
 		$criteria->addNotInCondition('id',Yii::app()->session["list-choicing-user"]);
 		if(isset($_GET['pageSize']))
@@ -520,7 +529,7 @@ class ExamController extends Controller
 			
 		//Group categories that contains news
 		$group=new Category();		
-		$group->type=Category::TYPE_EXAM;
+		$group->type=Category::TYPE_OFFICE;
 		$list_office=$group->list_nodes;
 		//var_dump($list_office);exit;
 		$this->render('index',array(

@@ -14,28 +14,7 @@
 			<?php $form=$this->beginWidget('CActiveForm', array('method'=>'post','enableAjaxValidation'=>true)); ?>	
 			<!--begin left content-->
 			<div class="fl" style="width:480px;">
-				<ul>
-					<div class="row">
-						<li>
-							<?php echo $form->labelEx($model,'username'); ?>
-							<?php echo $form->textField($model,'username',array('style'=>'width:280px;','maxlength'=>'32')); ?>	
-							<?php echo $form->error($model, 'username'); ?>				
-						</li>
-					</div>
-					<div class="row">
-						<li>
-							<?php echo $form->labelEx($model,'clear_password'); ?>
-							<?php echo $form->passwordField($model,'clear_password',array('style'=>'width:280px;','maxlength'=>'32')); ?>
-							<?php echo $form->error($model, 'clear_password'); ?>
-						</li>
-					</div>
-					<div class="row">
-						<li>
-							<?php echo $form->labelEx($model,'retype_password'); ?>
-							<?php echo $form->passwordField($model,'retype_password',array('style'=>'width:280px;','maxlength'=>'32')); ?>
-							<?php echo $form->error($model, 'retype_password'); ?>
-						</li>
-					</div>
+				<ul>					
 					<div class="row">
                     	<li>
 							<?php echo $form->labelEx($model,'email'); ?>
@@ -59,6 +38,22 @@
 			<!--end left content-->
 			<div class="fl" style="width:480px;">
 				<ul>
+				 	<div class="row">
+                        <?php echo $form->labelEx($model,'office_id'); ?>
+                        <?php 
+						$list=array();
+						foreach ($list_office as $id=>$level){
+							$cat=Category::model()->findByPk($id);
+							$view = "";
+							for($i=1;$i<$level;$i++){
+								$view .="---";
+							}
+							$list[$id]=$view." ".$cat->name." ".$view;
+						}
+						?>
+						<?php echo $form->dropDownList($model,'office_id',$list,array('style'=>'width:200px')); ?>
+						<?php echo $form->error($model, 'office_id'); ?>
+                    </div>
 					 <div class="row">
 						<li>
                        		<?php echo $form->labelEx($model,'status'); ?>
@@ -66,20 +61,6 @@
                    			<?php echo $form->error($model, 'status'); ?>
                     	</li>
                     </div> 
-                    <div class="row">
-						<li>
-							<?php echo $form->labelEx($model,'phone'); ?>
-							<?php echo $form->textField($model,'phone',array('style'=>'width:280px;','maxlength'=>'16')); ?>
-							<?php echo $form->error($model, 'phone'); ?>
-						</li>
-					</div>
-					<div class="row">
-						<li>
-							<?php echo $form->labelEx($model,'address'); ?>
-							<?php echo $form->textField($model,'address',array('style'=>'width:280px;','maxlength'=>'128')); ?>
-							<?php echo $form->error($model, 'address'); ?>
-						</li>     
-					</div>
 					<div class="row">
 						<li>
 							<?php echo $form->labelEx($model,'firstname'); ?>
