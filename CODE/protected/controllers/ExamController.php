@@ -164,18 +164,19 @@ class ExamController extends Controller
 		//$model->finish_time=date('m/d/Y H:i',$model->finish_time);
 		if(isset($_POST['Exam']))
 		{
-			$model->attributes=$_POST['Exam'];	
-			
+			$model->attributes=$_POST['Exam'];
+			$model->test_id = $_POST['Exam']['test_id'];
 			$model->start_time=strtotime($model->start_time);
 			$model->finish_time=strtotime($model->finish_time);
 			$model->list_users=array_diff(explode(',',$_POST['Exam']['users']),array(''));
 			
 			$test=ITest::model()->findByPk($model->test_id);
-			$model->type=$test->type;		
+			var_dump($model->test_id);
+			$model->type=$test->type;
 			if($model->save())
 			{
 				$this->redirect(array('update','id'=>$model->id));
-			}	
+			}
 		}
 		//Group categories that contains news
 		$group=new Category();		

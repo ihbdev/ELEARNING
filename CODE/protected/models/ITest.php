@@ -147,7 +147,8 @@ class ITest extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'author'=>array(self::BELONGS_TO,'User','created_by')
+			'author'=>array(self::BELONGS_TO,'User','created_by'),
+			'cat'=>array(self::BELONGS_TO,'Category','catid'),
 		);
 	}
 	/**

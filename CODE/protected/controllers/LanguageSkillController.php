@@ -179,7 +179,6 @@ class LanguageSkillController extends Controller
 
 						$material->content  = $_POST['ITest']['materials'][$i];
 						$material->save();
-						var_dump($material->id);
 						
 						foreach($list_questions[$i] as $question_id){
 							$question = Question::model()->findByPk($question_id);

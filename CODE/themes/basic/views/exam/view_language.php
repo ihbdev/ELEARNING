@@ -1,141 +1,54 @@
 <!--begin page content-->
 <div id="shell" class="forShell">
+	<?php $form=$this->beginWidget('CActiveForm', array('method'=>'post','enableAjaxValidation'=>true, 'id'=>'add_exam')); ?>
 	<div class="fl main-test">
     	<h2>Language Skills</h2>
         <ul class="main-test-ul">
-        	<li><h5>Language Final Test: English skill 3</h5></li>
-            <li><label>Language:</label><span> English</span></li>
+        	<li><h5>Language Final Test: <?php echo $test->title?></h5></li>
+            <li><label>Language:</label><span> <?php echo $test->cat->name?></span></li>
         </ul>
-        <div class="today">Today: 21/3/2012</div>
+        <div class="today">Today: <?php echo date('m/d/Y',time())?></div>
         <div class="line"></div>
         <div class="text-control-intro">
         	<div class="text-intro-hide"><span class="i16 i16-albumup"></span>Hide</div>
             <div class="text-intro-show"><span class="i16 i16-albumdown"></span>show</div>
         </div>
         <div class="test-introduction">
-            <p>Test for quick text understanding</p>
-            <br />
-            <p>Read this text once completely. Indicate as soon as possible if the questions below the text are True (T) or False (F). Answer each question only on the basis of what is explicitly written in the sentence in question (Q1, Q2, etc.). Do not interpret the sentence in any way. Do not answer on the basis information that was printed in the article before or after the sentence in question. If a piece of information is not included in the sentence in question, the answer if False (F).</p>
+			<?php echo $test->description?>
         </div><!--test-introduction-->
-        <div class="text-content">
-        	<h3>Text 1</h3>
-            <h4>Allianz, Swiss Re post strong profits</h4>
+        <?php $i = -1;?>
+        <?php foreach($test->content as $questions):?>
+        <?php $i++ ?>
+        <?php if($i > 0): ?>
+        <?php if($questions[0] != ''): ?>
+        <div class="text-content" id="text-content-<?php echo $i?>" style="display:none">
+        	<h3>Text <?php echo $i?></h3>
+            <!-- <h4>Allianz, Swiss Re post strong profits</h4> -->
             <div class="text-intro">
-                <p>Insurers'rosy outlooks fail to sway skeptical investors reading between the lines</p>
-                <p>Buoyed by the recovery of the world´s financial markets, two of Europe´s largest insurance groups, Allianz AG and Swiss Reinsurance Co., each reported a strong rise in 2004 net profit, but skeptical investors pushed both companies'shares lower following the announcements.</p>
-                <p>Allianz, Europe´s largest insurer by gross premiums, reported a 16% increase in 2004 net profit to €2.2 billion, raised its dividend 17% and gave an upbeat outlook for 2005. The group´s results were bolstered by a significant drop in bad-debt provisions and higher revenue at its Dresdner Bank AG unit, as well as cost cuts and strong year-end life-insurance sales because of changes in German tax law related to the retirement benefits.</p>
-                <p>Allianz´s banking operations, in which Dresdner accounts for roughly 90%, posted a 2004 net profit of €104 million, after a loss of €1.3 billion in 2003. However, investors were disappointed by a closer reading of Dresdner´s fourth-quarter performance, which showed a higher-than-expected restructuring charge of €180 million, suggesting that not all the bank´s problems were behind it yet. Thursday in Frankfurt, Allianz´s stock price fell 1.4% to €97.40.</p>
-                <p>Adding to investors'disappointment, Chief Executive Michael Diekmann said that Allianz doesn´t plan to sell any of its larger units at the moment, signaling that its investment bank, Dresdner Kleinwort Wasserstein, is no longer up for sale. Allianz said two years ago it would back Dresdner Kleinwort Wasserstein with €2.4 billion in capital until August 2005.</p>
-                <p>HVB Group analyst Lucio Di Geronimo said the insurer´s renewed commitment to Dresdner Kleinwort Wasserstein didn´t add value to the insurer´s business. "That shows that the pressure eases once the operations show improved results, but when the pressure returns, it may be too late [to sell]," Mr. Di Geronimo said.</p>
+				<?php echo (Question::model()->findByPk($questions[0])->material_id != 0)?Question::model()->findByPk($questions[0])->material->content:'Have not any material';?>
             </div><!--text-intro-->
             <div class="text-box">
+				<?php $question_index=1;?>
+            	<?php foreach($questions as $question_id):?>
+            	<?php $question=Question::model()->findByPk($question_id);?>
             	<div class="text-question">
-                	<div class="text-title">Q1): Allianz, Swiss Re post strong profits.</div>
-                    <div class="text-check">
-                    	<div><input id="t1-q1-1" name="" type="checkbox" value="" /><label for="t1-q1-1">1) Swiss Re says that Allianz has strong results.</label></div>
-                        <div><input id="t1-q1-2" name="" type="checkbox" value="" /><label for="t1-q1-2">2) Allianz and Swiss Re reported good results.</label></div>
-                        <div><input id="t1-q1-3" name="" type="checkbox" value="" /><label for="t1-q1-3">3) Allianz and Swiss Re reported bad results.</label></div>
-                        <div><input id="t1-q1-4" name="" type="checkbox" value="" /><label for="t1-q1-4">4) Allianz reported better results than Swiss Re.</label></div>
-                        <div><input id="t1-q1-5" name="" type="checkbox" value="" /><label for="t1-q1-5">5) Allianz reported weaker results than Swiss Re.</label></div>
-                    </div>
-                </div><!--text-question-->
-                <div class="text-question">
-                	<div class="text-title">Q2) Insurers'rosy outlook fail to sway skeptical investors reading between the lines.</div>
-                    <div class="text-check">
-                    	<div><input id="t1-q2-1" name="" type="checkbox" value="" /><label for="t1-q2-1">1) Investors are forecasting rosy results for Allianz and Swiss Re.</label></div>
-                        <div><input id="t1-q2-2" name="" type="checkbox" value="" /><label for="t1-q2-2">2) Investors are not convinced by the new design of Allianz´s business report.</label></div>
-                        <div><input id="t1-q2-3" name="" type="checkbox" value="" /><label for="t1-q2-3">3) Allianz and Swiss Re cannot convince investors to read between the lines.</label></div>
-                        <div><input id="t1-q2-4" name="" type="checkbox" value="" /><label for="t1-q2-4">4) Allianz and Swiss re forecast a rosy outlook.</label></div>
-                        <div><input id="t1-q2-5" name="" type="checkbox" value="" /><label for="t1-q2-5">5) Investors aren´t convinced about Allianz´s prospects.</label></div>
-                        <div><input id="t1-q2-6" name="" type="checkbox" value="" /><label for="t1-q2-6">6) Investors are reading Allianz´s business report different from what Allianz communicates.</label></div>
-                    </div>
-                </div><!--text-question-->
-                <div class="text-question">
-                	<div class="text-title">Q3): Allianz, Swiss Re post strong profits.</div>
-                    <div class="text-check">
-                    	<div><input id="t1-q3-1" name="" type="checkbox" value="" /><label for="t1-q3-1">1) Swiss Re says that Allianz has strong results.</label></div>
-                        <div><input id="t1-q3-2" name="" type="checkbox" value="" /><label for="t1-q3-2">2) Allianz and Swiss Re reported good results.</label></div>
-                        <div><input id="t1-q3-3" name="" type="checkbox" value="" /><label for="t1-q3-3">3) Allianz and Swiss Re reported bad results.</label></div>
-                        <div><input id="t1-q3-4" name="" type="checkbox" value="" /><label for="t1-q3-4">4) Allianz reported better results than Swiss Re.</label></div>
-                        <div><input id="t1-q3-5" name="" type="checkbox" value="" /><label for="t1-q3-5">5) Allianz reported weaker results than Swiss Re.</label></div>
-                    </div>
-                </div><!--text-question-->
-                <div class="text-question">
-                	<div class="text-title">Q4) Insurers'rosy outlook fail to sway skeptical investors reading between the lines.</div>
-                    <div class="text-check">
-                    	<div><input id="t1-q4-1" name="" type="checkbox" value="" /><label for="t1-q4-1">1) Investors are forecasting rosy results for Allianz and Swiss Re.</label></div>
-                        <div><input id="t1-q4-2" name="" type="checkbox" value="" /><label for="t1-q4-2">2) Investors are not convinced by the new design of Allianz´s business report.</label></div>
-                        <div><input id="t1-q4-3" name="" type="checkbox" value="" /><label for="t1-q4-3">3) Allianz and Swiss Re cannot convince investors to read between the lines.</label></div>
-                        <div><input id="t1-q4-4" name="" type="checkbox" value="" /><label for="t1-q4-4">4) Allianz and Swiss re forecast a rosy outlook.</label></div>
-                        <div><input id="t1-q4-5" name="" type="checkbox" value="" /><label for="t1-q4-5">5) Investors aren´t convinced about Allianz´s prospects.</label></div>
-                        <div><input id="t1-q4-6" name="" type="checkbox" value="" /><label for="t1-q4-6">6) Investors are reading Allianz´s business report different from what Allianz communicates.</label></div>
-                    </div>
-                </div><!--text-question-->
-                <div class="text-question">
-                	<div class="text-title">Q5): Allianz, Swiss Re post strong profits.</div>
-                    <div class="text-check">
-                    	<div><input id="t1-q5-1" name="" type="checkbox" value="" /><label for="t1-q5-1">1) Swiss Re says that Allianz has strong results.</label></div>
-                        <div><input id="t1-q5-2" name="" type="checkbox" value="" /><label for="t1-q5-2">2) Allianz and Swiss Re reported good results.</label></div>
-                        <div><input id="t1-q5-3" name="" type="checkbox" value="" /><label for="t1-q5-3">3) Allianz and Swiss Re reported bad results.</label></div>
-                        <div><input id="t1-q5-4" name="" type="checkbox" value="" /><label for="t1-q5-4">4) Allianz reported better results than Swiss Re.</label></div>
-                        <div><input id="t1-q5-5" name="" type="checkbox" value="" /><label for="t1-q5-5">5) Allianz reported weaker results than Swiss Re.</label></div>
-                    </div>
-                </div><!--text-question-->
-                <div class="text-question">
-                	<div class="text-title">Q6) Insurers'rosy outlook fail to sway skeptical investors reading between the lines.</div>
-                    <div class="text-check">
-                    	<div><input id="t1-q6-1" name="" type="checkbox" value="" /><label for="t1-q6-1">1) Investors are forecasting rosy results for Allianz and Swiss Re.</label></div>
-                        <div><input id="t1-q6-2" name="" type="checkbox" value="" /><label for="t1-q6-2">2) Investors are not convinced by the new design of Allianz´s business report.</label></div>
-                        <div><input id="t1-q6-3" name="" type="checkbox" value="" /><label for="t1-q6-3">3) Allianz and Swiss Re cannot convince investors to read between the lines.</label></div>
-                        <div><input id="t1-q6-4" name="" type="checkbox" value="" /><label for="t1-q6-4">4) Allianz and Swiss re forecast a rosy outlook.</label></div>
-                        <div><input id="t1-q6-5" name="" type="checkbox" value="" /><label for="t1-q6-5">5) Investors aren´t convinced about Allianz´s prospects.</label></div>
-                        <div><input id="t1-q6-6" name="" type="checkbox" value="" /><label for="t1-q6-6">6) Investors are reading Allianz´s business report different from what Allianz communicates.</label></div>
-                    </div>
-                </div><!--text-question-->
-                <div class="text-question">
-                	<div class="text-title">Q7): Allianz, Swiss Re post strong profits.</div>
-                    <div class="text-check">
-                    	<div><input id="t1-q7-1" name="" type="checkbox" value="" /><label for="t1-q7-1">1) Swiss Re says that Allianz has strong results.</label></div>
-                        <div><input id="t1-q7-2" name="" type="checkbox" value="" /><label for="t1-q7-2">2) Allianz and Swiss Re reported good results.</label></div>
-                        <div><input id="t1-q7-3" name="" type="checkbox" value="" /><label for="t1-q7-3">3) Allianz and Swiss Re reported bad results.</label></div>
-                        <div><input id="t1-q7-4" name="" type="checkbox" value="" /><label for="t1-q7-4">4) Allianz reported better results than Swiss Re.</label></div>
-                        <div><input id="t1-q7-5" name="" type="checkbox" value="" /><label for="t1-q7-5">5) Allianz reported weaker results than Swiss Re.</label></div>
-                    </div>
-                </div><!--text-question-->
-                <div class="text-question">
-                	<div class="text-title">Q8) Insurers'rosy outlook fail to sway skeptical investors reading between the lines.</div>
-                    <div class="text-check">
-                    	<div><input id="t1-q8-1" name="" type="checkbox" value="" /><label for="t1-q8-1">1) Investors are forecasting rosy results for Allianz and Swiss Re.</label></div>
-                        <div><input id="t1-q8-2" name="" type="checkbox" value="" /><label for="t1-q8-2">2) Investors are not convinced by the new design of Allianz´s business report.</label></div>
-                        <div><input id="t1-q8-3" name="" type="checkbox" value="" /><label for="t1-q8-3">3) Allianz and Swiss Re cannot convince investors to read between the lines.</label></div>
-                        <div><input id="t1-q8-4" name="" type="checkbox" value="" /><label for="t1-q8-4">4) Allianz and Swiss re forecast a rosy outlook.</label></div>
-                        <div><input id="t1-q8-5" name="" type="checkbox" value="" /><label for="t1-q8-5">5) Investors aren´t convinced about Allianz´s prospects.</label></div>
-                        <div><input id="t1-q8-6" name="" type="checkbox" value="" /><label for="t1-q8-6">6) Investors are reading Allianz´s business report different from what Allianz communicates.</label></div>
-                    </div>
-                </div><!--text-question-->
-                <div class="text-question">
-                	<div class="text-title">Q9): Allianz, Swiss Re post strong profits.</div>
-                    <div class="text-check">
-                    	<div><input id="t1-q9-1" name="" type="checkbox" value="" /><label for="t1-q9-1">1) Swiss Re says that Allianz has strong results.</label></div>
-                        <div><input id="t1-q9-2" name="" type="checkbox" value="" /><label for="t1-q9-2">2) Allianz and Swiss Re reported good results.</label></div>
-                        <div><input id="t1-q9-3" name="" type="checkbox" value="" /><label for="t1-q9-3">3) Allianz and Swiss Re reported bad results.</label></div>
-                        <div><input id="t1-q9-4" name="" type="checkbox" value="" /><label for="t1-q9-4">4) Allianz reported better results than Swiss Re.</label></div>
-                        <div><input id="t1-q9-5" name="" type="checkbox" value="" /><label for="t1-q9-5">5) Allianz reported weaker results than Swiss Re.</label></div>
-                    </div>
-                </div><!--text-question-->
-                <div class="text-question">
-                	<div class="text-title">Q10) Insurers'rosy outlook fail to sway skeptical investors reading between the lines.</div>
-                    <div class="text-check">
-                    	<div><input id="t1-q10-1" name="" type="checkbox" value="" /><label for="t1-q10-1">1) Investors are forecasting rosy results for Allianz and Swiss Re.</label></div>
-                        <div><input id="t1-q10-2" name="" type="checkbox" value="" /><label for="t1-q10-2">2) Investors are not convinced by the new design of Allianz´s business report.</label></div>
-                        <div><input id="t1-q10-3" name="" type="checkbox" value="" /><label for="t1-q10-3">3) Allianz and Swiss Re cannot convince investors to read between the lines.</label></div>
-                        <div><input id="t1-q10-4" name="" type="checkbox" value="" /><label for="t1-q10-4">4) Allianz and Swiss re forecast a rosy outlook.</label></div>
-                        <div><input id="t1-q10-5" name="" type="checkbox" value="" /><label for="t1-q10-5">5) Investors aren´t convinced about Allianz´s prospects.</label></div>
-                        <div><input id="t1-q10-6" name="" type="checkbox" value="" /><label for="t1-q10-6">6) Investors are reading Allianz´s business report different from what Allianz communicates.</label></div>
-                    </div>
-                </div><!--text-question-->
+					<div class="text-title">Q<?php echo $question_index?>) <?php echo $question->title?></div>
+					<div class="text-check">
+						<?php $list_choices=Question::interChange($question->content);?>
+						<?php $choice_index=1;?>
+						<?php foreach($list_choices as $index=>$choice):?>
+						<div><input id="<?php echo $choice_index?>" name="Result[<?php echo $question_id?>][]" type="checkbox" value="<?php echo $index?>" /><label for="<?php echo $choice_index?>"><?php echo $choice_index?>) <?php echo $choice;?></label></div>
+						<?php $choice_index++;?>
+						<?php endforeach;?>
+					</div>
+				</div><!--text-question-->
+				<?php $question_index++;?>
+				<?php endforeach;?>
             </div><!--text-box-->
         </div><!--text-content-->
+        <?php endif?>
+        <?php endif?>
+        <?php endforeach;?>
         <div class="line"></div>
         <div class="text-button">
         	<a class="fl btn-pre">&laquo;&nbsp;Pre Text</a>
@@ -143,9 +56,9 @@
         </div><!--text-button-->
         <div class="text-choose">
         	<h4>Choose other text</h4>
-        	<a href="#" class="text-item">Text1</a>
-            <a href="#" class="text-item greenbg">Text2</a>
-            <a href="#" class="text-item yellowbg">Text3</a>
+				<a id="text1" class="text-item">Text1</a>
+				<a id="text2" class="text-item greenbg">Text2</a>
+				<a id="text3" class="text-item yellowbg">Text3</a>
         </div><!-text-choose-->
     </div><!--main-test-->
 	<div class="fr sidebar-test">
@@ -161,9 +74,9 @@
 				<li>-&nbsp;Time test: 120'</li>
             	<li>-&nbsp;Include: 3 Text</li>
                 <li>
-                	<a href="#" class="text-item">Text1</a>
-            		<a href="#" class="text-item greenbg">Text2</a>
-            		<a href="#" class="text-item yellowbg">Text3</a>
+					<a id="text1_" class="text-item">Text1</a>
+					<a id="text2_" class="text-item greenbg">Text2</a>
+					<a id="text3_" class="text-item yellowbg">Text3</a>
                 </li>
             </ul>
         </div><!--text-info-->
@@ -177,13 +90,42 @@
         </div><!--text-note-->
         <div class="text-finish">
         	<h5>Click to finish test.</h5>
-            <input name="" type="submit" class="btn-submit" value="Finish" />
+        	<input name="" type="submit" class="btn-submit" value="Finish" />
         </div><!--text-finish-->
 	</div><!--sidebar-test-->
-	<div class="clear"></div>
-	<!--begin footer-->
-	<div id="footer">
-		<p>© 2012 <a href="">Media Tenor International</a>. All rights reserved</p>
-	</div>
-	<!--end footer-->
+	<?php $this->endWidget(); ?>
 </div>
+<script>
+$(document).ready(function() {
+	$('#text-content-1').show();
+	var next = $('.text-content:first');
+    $('a.btn-next').click(function() {
+        next.hide();
+		next = next.next('.text-content');
+		if(next.text() == '') next = $('.text-content:first');
+    	next.show();
+    });
+    $('a.btn-pre').click(function() {
+        next.hide();
+		next = next.prev('.text-content');
+		if(next.text() == '') next = $('.text-content:last');
+    	next.show();
+    });
+
+    $('#text1,#text1_').click(function() {
+		$('#text-content-1').show();
+		$('#text-content-2').hide();
+		$('#text-content-3').hide();
+    });
+    $('#text2,#text2_').click(function() {
+		$('#text-content-2').show();
+		$('#text-content-1').hide();
+		$('#text-content-3').hide();
+    });
+    $('#text3,#text3_').click(function() {
+		$('#text-content-3').show();
+		$('#text-content-2').hide();
+		$('#text-content-1').hide();
+    });
+});
+</script>

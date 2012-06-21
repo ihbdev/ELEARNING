@@ -122,7 +122,7 @@
                     <?php $this->endWidget(); ?>
                     <div class="row">
                         <h4>List results searching:</h4>                        
-                    <?php 
+                    <?php
 					$this->widget('iPhoenixGridView', array(
   					'id'=>'test-list',
   					'dataProvider'=>$list_test,
@@ -140,11 +140,6 @@
 							'name'=>'level',
 							'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),		
 						),
-						array(
-							'name'=>'author',
-							'value'=>'$data->author->username',
-							'headerHtmlOptions'=>array('width'=>'5%','class'=>'table-title'),		
-						), 						
 						array(
 							'name'=>'created_date',
 							'value'=>'date("H:i d/m/Y",$data->created_date)',
