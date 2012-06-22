@@ -179,11 +179,11 @@ class KnowledgeSkillController extends Controller
 			$test->catid = $_POST['KnowledgeSkillTest']['catid'];
 			$test->content = $temp_content;
 		}
-		//var_dump($test->save());
+
 		if($test->save())
 		{
 			//$this->redirect(array('update','id'=>$test->id));
-			Yii::app()->user->setFlash('success', Language::t('Knowledge created successfully'));
+			Yii::app()->user->setFlash('success', Language::t('Knowledge test is created successfully'));
 		}
 		//var_dump($test); exit;
 		/*
