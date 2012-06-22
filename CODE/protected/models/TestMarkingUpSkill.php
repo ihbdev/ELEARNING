@@ -12,7 +12,7 @@
 /**
  * Test includes attributes and methods of Test class  
  */
-class ITest extends CActiveRecord
+class TestMarkingUpSkill extends CActiveRecord
 {
 	/**
 	 * Config status of news
@@ -25,10 +25,10 @@ class ITest extends CActiveRecord
 	const TYPE_CODING=4;
 	
 	static $list_type=array(
-			ITest::TYPE_LANGUAGE=>'Language Skill',
-			ITest::TYPE_KNOWLEDGE=>'Knowledge Skill',
-			ITest::TYPE_MARKINGUP=>'Marking-up Skill',
-			ITest::TYPE_CODING=>'Coding Skill'
+			TestMarkingUpSkill::TYPE_LANGUAGE=>'Language Skill',
+			TestMarkingUpSkill::TYPE_KNOWLEDGE=>'Knowledge Skill',
+			TestMarkingUpSkill::TYPE_MARKINGUP=>'Marking-up Skill',
+			TestMarkingUpSkill::TYPE_CODING=>'Coding Skill'
 	);
 	
 	const MARKINGUP_MAX_LEVEL=9;
@@ -38,9 +38,6 @@ class ITest extends CActiveRecord
 	 */
 	private $config_other_attributes=array('modified','description','content');	
 	private $list_other_attributes;
-	public $section_a;
-	public $section_b;
-	public $section_c;
 	
 	public $group_level;
 	
@@ -193,7 +190,7 @@ class ITest extends CActiveRecord
 			{
 				$this->created_date=time();
 				$this->created_by=Yii::app()->user->id;		
-				$this->status=ITest::STATUS_ACTIVE;		
+				$this->status=TestMarkingUpSkill::STATUS_ACTIVE;		
 			}
 			else {
 				$modified=$this->modified;
@@ -271,7 +268,7 @@ class ITest extends CActiveRecord
 	 */
 	public function search(){
 		$criteria = new CDbCriteria ();
-		$criteria->compare ( 'type', ITest::TYPE_MARKINGUP );
+		$criteria->compare ( 'type', TestMarkingUpSkill::TYPE_MARKINGUP );
 		if($this->title != '')
 			$criteria->compare ( 'title', $this->title, true );
 		if($this->group_level === '0')
@@ -279,7 +276,7 @@ class ITest extends CActiveRecord
 		if($this->group_level === '1')
 			$criteria->addCondition( 'level <> 0');	
 			
-		$list_tests= new CActiveDataProvider ( 'ITest', array (
+		$list_tests= new CActiveDataProvider ( 'TestMarkingUpSkill', array (
 			'criteria' => $criteria, 
 			'pagination' => array ('pageSize' => Yii::app ()->user->getState ( 'pageSize', Setting::s('DEFAULT_PAGE_SIZE','System')  ) ), 
 			'sort' => array ('defaultOrder' => 'id DESC' )    		

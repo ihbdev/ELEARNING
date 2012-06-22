@@ -18,6 +18,9 @@ class Question extends CActiveRecord
 	const TYPE_KNOWLEDGE=2;
 	const TYPE_MARKINGUP=3;
 	const TYPE_CODING=4;
+	const TYPE_FILL=5;
+	const TYPE_MATCHING=6;	
+	const TYPE_WRITING=7;
 	
 	const TYPE_UPDATE_TITLE=1;
 	const TYPE_UPDATE_CHOICE=2;
@@ -74,8 +77,8 @@ class Question extends CActiveRecord
 	public function rules()
 	{
 		return array(
-			array('content,answer,title','required'),
-			array('supplement,material_id','safe')
+			array('content,answer,title','required'),			
+			array('type,supplement,material_id','safe')
 		);
 	}
 	/**

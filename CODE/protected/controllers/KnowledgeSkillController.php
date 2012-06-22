@@ -41,6 +41,7 @@ class KnowledgeSkillController extends Controller
 	public function accessRules()
 	{
 		return array(
+		/*
 			array('allow',  
 				'actions'=>array('index'),
 				'roles'=>array('language_index'),
@@ -54,7 +55,7 @@ class KnowledgeSkillController extends Controller
 				'roles'=>array('language_suggestTitle'),
 			),
 			array('allow', 
-				'actions'=>array('update'),
+				'actions'=>array('update','index'),
 				'users'=>array('@'),
 			),
 			array('allow',  
@@ -81,7 +82,8 @@ class KnowledgeSkillController extends Controller
 				'actions'=>array('updateSuggest'),
 				'roles'=>array('language_updateSuggest'),
 			),
-			array('deny', 
+*/			
+			array('allow', 
 				'users'=>array('*'),
 			),			
 		);
@@ -93,7 +95,135 @@ class KnowledgeSkillController extends Controller
 	 */
 	public function actionCreate()
 	{
+		$test=new KnowledgeSkillTest();		
+		$test->title = 'Knowledskill test';
+		$temp_content = array('section_a'=>'','section_b'=>'','section_c'=>'');	
+		$temp_section = array('description'=>"",'questions'=>array());		
+		//var_dump($test->section_a['questions']); //exit;
+		if(isset($_POST['section_a']))
+		{		
+			$test->type=KnowledgeSkillTest::TYPE_KNOWLEDGE;	
+			for($i=1; $i<=17; $i++)
+			{
+				$question = new Question();
+				$question->attributes = $_POST ['section_a']['questions'][$i];
+				if($question->type==Question::TYPE_WRITING)
+				{
+					$question->content = $question->title;
+					$question->answer = 'get from trainee';
+					//var_dump($question); exit;						
+				}
+				//var_dump($_POST ['section_a']['questions'][$i]); exit;
+				if($question->save())
+				{	
+					$temp_section['questions'][$i] = $question->id;					
+				}
+			}
+			$temp_section['description']=$_POST['section_a']['description'];			
+			$test->section_a = $temp_section;
+			//var_dump($test->section_a);
+			$temp_content['section_a'] = $test->section_a;
+		}
+		$temp_section = array('description'=>"",'questions'=>array());
+		if(isset($_POST['materials']['B']) && isset($_POST['section_b']))
+		{			
+			$material = new Material();
+			$material->catid = Material::TYPE_KNOWLEDGE;
+			$material->content = $_POST['materials']['B'];
+			$material->save();
+			for($i=1; $i<=2; $i++)
+			{
+				$question = new Question();
+				$question->attributes = $_POST ['section_b']['questions'][$i];
+				if($question->type==Question::TYPE_WRITING)
+				{
+					$question->content = $question->title;
+					$question->answer = $question->title;				
+				}
+				$question->material_id = $material->id;
+				if($question->save())
+				{	
+					$temp_section['questions'][$i] = $question->id;					
+				}
+			}
+			//var_dump($temp_section);exit;
+			$test->section_b = $temp_section;
+			$temp_content['section_b'] = $test->section_b;
+		}
+		$temp_section = array('description'=>"",'questions'=>array());
+		if(isset($_POST['materials']['C']) && isset($_POST['section_c']))
+		{
+			$material = new Material();
+			$material->catid = Material::TYPE_KNOWLEDGE;
+			$material->content = $_POST['materials']['C'];
+			$material->save();
+			for($i=1; $i<=2; $i++)
+			{
+				$question = new Question();
+				$question->attributes = $_POST ['section_c']['questions'][$i];
+				$question->material_id = $material->id;
+				if($question->type==Question::TYPE_WRITING)
+				{
+					$question->content = $question->title;					
+				}				
+				if($question->save())
+				{	
+					$temp_section['questions'][$i] = $question->id;					
+				}
+			}
+			$test->section_c = $temp_section;
+			$temp_content['section_c'] = $test->section_c;
+		}						
+		if(isset($_POST['KnowledgeSkillTest']['catid']))
+		{
+			$test->catid = $_POST['KnowledgeSkillTest']['catid'];
+			$test->content = $temp_content;
+		}
+		//var_dump($test->save());
+		if($test->save())
+		{
+			//$this->redirect(array('update','id'=>$test->id));
+		}
+		//var_dump($test); exit;
+		/*
+		if(isset($_POST['ITest']))
+		{
+			$test->attributes=$_POST['ITest'];
+			$test->type=ITest::TYPE_KNOWLEDGE;		
+			$list_questions = array_diff ( explode ( ',', $_POST['ITest']['section_a']['questions'] ), array ('') );
+			$test->section_a->questions=$list_questions;
+			if($test->save())
+			{
+				$this->redirect(array('update','id'=>$test->id));
+			}	
+		}
+		*/
+		$this->render ( 'create',array('test'=>$test));		
 	}
+	/**
+	 * Add a new question
+	 */
+	public function actionAddQuestion() {		
+		if (isset ( $_POST ['Question'] )) {
+			$question = new Question ();
+			$question->attributes = $_POST ['Question'];
+			if (! isset ( $question->answer )) {
+				$result = array ('success' => false, 'message' => 'Select answer' );
+				echo json_encode ( $result );
+			} else {				
+				if (! isset ( $question->material_id ) && isset ( $material->id ))
+					$question->material_id = $material->id;
+				else
+					$question->material_id = 0;
+				if ($question->save ()) {
+					$question = Question::model ()->findByPk ( $question->id );
+					$view = $this->renderPartial ( 'add_question', array ('question' => $question ), true );
+					$result = array ('success' => true, 'id' => $question->id, 'view' => $view );
+					echo json_encode ( $result );
+				}
+			}
+		}
+	}	
 	/**
 	 * Copy a new model
 	 * @param integer $id the ID of model to be copied
@@ -108,7 +238,20 @@ class KnowledgeSkillController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-	
+		$test=KnowledgeSkillTest::model()->findByPk($id);
+		if(isset($_POST['KnowledgeSkillTest']))
+		{
+			$test->attributes=$_POST['KnowledgeSkillTest'];
+			$test->type=KnowledgeSkillTest::TYPE_KNOWLEDGE;			
+			//$list_questions = array_diff ( explode ( ',', $_POST['ITest']['questions'] ), array ('') );
+			//$test->content=$list_questions;
+			if($test->save())
+			{
+				$test=KnowledgeSkillTest::model()->findByPk($id);
+				Yii::app()->user->setFlash('success', Language::t('Update success'));
+			}	
+		}
+		$this->render ( 'update',array('test'=>$test));	
 	}
 
 	/**
@@ -118,7 +261,17 @@ class KnowledgeSkillController extends Controller
 	 */
 	public function actionDelete($id)
 	{
-		
+		if(Yii::app()->request->isPostRequest)
+		{
+			// we only allow deletion via POST request
+			$this->loadModel($id)->delete();
+
+			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+			if(!isset($_GET['ajax']))
+				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+		}
+		else
+			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');		
 	}
 
 	/**
@@ -128,14 +281,53 @@ class KnowledgeSkillController extends Controller
 	 */
 	public function actionCheckbox($action)
 	{
-		
+		$this->initCheckbox('checked-test-list');
+		$list_checked = Yii::app()->session["checked-test-list"];
+		switch ($action) {
+			case 'delete' :
+				if (Yii::app ()->user->checkAccess ( 'test_delete')) {
+					foreach ( $list_checked as $id ) {
+						$item = KnowledgeSkillTest::model ()->findByPk ( (int)$id );
+						if (isset ( $item ))
+							if (! $item->delete ()) {
+								echo 'false';
+								Yii::app ()->end ();
+							}
+					}
+					Yii::app ()->session ["checked-test-list"] = array ();
+				} else {
+					echo 'false';
+					Yii::app ()->end ();
+				}
+				break;
+		}
+		echo 'true';
+		Yii::app()->end();		
 	}
 	/**
 	 * Lists all models.
 	 */
 	public function actionIndex()
 	{
-	
+		$this->initCheckbox('checked-test-list');
+		$criteria = new CDbCriteria ();
+		$criteria->compare ( 'type', KnowledgeSkillTest::TYPE_KNOWLEDGE );
+		$list_tests= new CActiveDataProvider ( 'KnowledgeSkillTest', array (
+			'criteria' => $criteria, 
+			'pagination' => array ('pageSize' => Yii::app ()->user->getState ( 'pageSize', Setting::s('DEFAULT_PAGE_SIZE','System')  ) ), 
+			'sort' => array ('defaultOrder' => 'id DESC' )    		
+		));
+		
+		$model=new KnowledgeSkillTest('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['KnowledgeSkillTest']))
+			$model->attributes=$_GET['KnowledgeSkillTest'];
+				
+		$this->render('index',array(
+			'list_tests'=>$list_tests,
+			'model'=>$model
+		));
+		
 	}
 	/**
 	 * Reverse status of language
@@ -187,5 +379,22 @@ class KnowledgeSkillController extends Controller
 	protected function performAjaxValidation($model)
 	{
 		
+	}
+	/**
+	 * 
+	 * function for tester doing the test
+	 */
+	public function actionTest()
+	{
+		//$employee = User::model()->findByPk($employee_id);
+		//$test = ITest::model()->findByPk($test_id);
+		//$exam = Exam::model()->findByPk($exam_id);
+		
+		$this->render('making_test', array(
+				//'test'=>$test,
+				//'employee'=>$employee,
+				//'exam'=>$exam,	
+			));
+			
 	}
 }
