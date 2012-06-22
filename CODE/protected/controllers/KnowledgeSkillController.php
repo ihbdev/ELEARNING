@@ -183,6 +183,7 @@ class KnowledgeSkillController extends Controller
 		if($test->save())
 		{
 			//$this->redirect(array('update','id'=>$test->id));
+			Yii::app()->user->setFlash('success', Language::t('Knowledge created successfully'));
 		}
 		//var_dump($test); exit;
 		/*
