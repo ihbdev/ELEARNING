@@ -98,13 +98,13 @@ class MarkingUpSkillController extends Controller
 	 */
 	public function actionCreate($group_level)
 	{
-		$test=new ITest();
+		$test=new TestMarkingUpSkill();
 		$test->content=array();
-		if(isset($_POST['ITest']))
+		if(isset($_POST['TestMarkingUpSkill']))
 		{
-			$test->attributes=$_POST['ITest'];
-			$test->type=ITest::TYPE_MARKINGUP;			
-			$list_questions = array_diff ( explode ( ',', $_POST['ITest']['questions'] ), array ('') );
+			$test->attributes=$_POST['TestMarkingUpSkill'];
+			$test->type=TestMarkingUpSkill::TYPE_MARKINGUP;			
+			$list_questions = array_diff ( explode ( ',', $_POST['TestMarkingUpSkill']['questions'] ), array ('') );
 			$test->content=$list_questions;
 			if($test->save())
 			{
@@ -144,7 +144,7 @@ class MarkingUpSkillController extends Controller
 				if ($question->save ()) {
 					$question = Question::model ()->findByPk ( $question->id );
 					if(isset($test_id) && $test_id>0){
-						$test=ITest::model()->findByPk($test_id);
+						$test=TestMarkingUpSkill::model()->findByPk($test_id);
 						$content=$test->content;
 						$content[]=$question->id;
 						$test->content=$content;
@@ -190,7 +190,7 @@ class MarkingUpSkillController extends Controller
 			if ($question->save ()) {
 				$question = Question::model ()->findByPk ( $question->id );
 				if(isset($test_id) && $test_id>0){
-					$test=ITest::model()->findByPk($test_id);
+					$test=TestMarkingUpSkill::model()->findByPk($test_id);
 					$view = $this->renderPartial ( '_update_question', array ('question' => $question, 'test'=>$test ), true );
 					$result = array ('success' => true, 'view' => $view );
 					echo json_encode ( $result );
@@ -214,7 +214,7 @@ class MarkingUpSkillController extends Controller
 	public function actionRemoveQuestion($question_id,$index_choice=-1,$test_id=null) {
 		$question=Question::model()->findByPk($question_id);
 		if($index_choice == -1){
-			$test=ITest::model()->findByPk($test_id);
+			$test=TestMarkingUpSkill::model()->findByPk($test_id);
 			$content=array();
 			foreach ($test->content as $index=>$item){
 				if($item != $question_id)
@@ -254,7 +254,7 @@ class MarkingUpSkillController extends Controller
 				if($question->save()){
 					$question=Question::model()->findByPk($question_id);
 					if(isset($test_id) && $test_id>0){
-						$test=ITest::model()->findByPk($test_id);
+						$test=TestMarkingUpSkill::model()->findByPk($test_id);
 						$view = $this->renderPartial ( '_update_question', array ('question' => $question, 'test'=>$test ), true );
 						$result = array ('success' => true, 'view' => $view );
 						echo json_encode ( $result );
@@ -280,16 +280,16 @@ class MarkingUpSkillController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-		$test=ITest::model()->findByPk($id);
-		if(isset($_POST['ITest']))
+		$test=TestMarkingUpSkill::model()->findByPk($id);
+		if(isset($_POST['TestMarkingUpSkill']))
 		{
-			$test->attributes=$_POST['ITest'];
-			$test->type=ITest::TYPE_MARKINGUP;			
-			$list_questions = array_diff ( explode ( ',', $_POST['ITest']['questions'] ), array ('') );
+			$test->attributes=$_POST['TestMarkingUpSkill'];
+			$test->type=TestMarkingUpSkill::TYPE_MARKINGUP;			
+			$list_questions = array_diff ( explode ( ',', $_POST['TestMarkingUpSkill']['questions'] ), array ('') );
 			$test->content=$list_questions;
 			if($test->save())
 			{
-				$test=ITest::model()->findByPk($id);
+				$test=TestMarkingUpSkill::model()->findByPk($id);
 				Yii::app()->user->setFlash('success', Language::t('Update successfully'));
 			}	
 		}
@@ -330,7 +330,7 @@ class MarkingUpSkillController extends Controller
 				//if (Yii::app ()->user->checkAccess ( 'test_delete')) {
 				if(true){
 					foreach ( $list_checked as $id ) {
-						$item = ITest::model ()->findByPk ( (int)$id );
+						$item = TestMarkingUpSkill::model ()->findByPk ( (int)$id );
 						if (isset ( $item ))
 							if (! $item->delete ()) {
 								echo 'false';
@@ -353,10 +353,10 @@ class MarkingUpSkillController extends Controller
 	public function actionIndex()
 	{
 		$this->initCheckbox('checked-test-list');
-		$model=new ITest('search');
+		$model=new TestMarkingUpSkill('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['ITest']))
-			$model->attributes=$_GET['ITest'];
+		if(isset($_GET['TestMarkingUpSkill']))
+			$model->attributes=$_GET['TestMarkingUpSkill'];
 		$this->render('index',array(
 			'model'=>$model
 		));
@@ -367,7 +367,7 @@ class MarkingUpSkillController extends Controller
 	 */
 	public function actionReverseStatus($id)
 	{
-		$src=ITest::reverseStatus($id);
+		$src=TestMarkingUpSkill::reverseStatus($id);
 		if($src) 
 			echo json_encode(array('success'=>true,'src'=>$src));
 		else 
@@ -381,7 +381,7 @@ class MarkingUpSkillController extends Controller
 	{
 		if(isset($_GET['q']) && ($keyword=trim($_GET['q']))!=='')
 		{
-			$titles=ITest::model()->suggestTitle($keyword);
+			$titles=TestMarkingUpSkill::model()->suggestTitle($keyword);
 			if($titles!==array())
 				echo implode("\n",$titles);
 		}
@@ -458,7 +458,7 @@ class MarkingUpSkillController extends Controller
 	 */
 	public function loadModel($id)
 	{
-		$model=ITest::model()->findByPk($id);
+		$model=TestMarkingUpSkill::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;

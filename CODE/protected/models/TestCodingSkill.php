@@ -12,7 +12,7 @@
 /**
  * Test includes attributes and methods of Test class  
  */
-class ITest extends CActiveRecord
+class TestCodingSkill extends CActiveRecord
 {
 	/**
 	 * Config status of news
@@ -25,10 +25,10 @@ class ITest extends CActiveRecord
 	const TYPE_CODING=4;
 	
 	static $list_type=array(
-			ITest::TYPE_LANGUAGE=>'Language Skill',
-			ITest::TYPE_KNOWLEDGE=>'Knowledge Skill',
-			ITest::TYPE_MARKINGUP=>'Marking-up Skill',
-			ITest::TYPE_CODING=>'Coding Skill'
+			TestCodingSkill::TYPE_LANGUAGE=>'Language Skill',
+			TestCodingSkill::TYPE_KNOWLEDGE=>'Knowledge Skill',
+			TestCodingSkill::TYPE_MARKINGUP=>'Marking-up Skill',
+			TestCodingSkill::TYPE_CODING=>'Coding Skill'
 	);
 	
 	const MARKINGUP_MAX_LEVEL=9;
@@ -36,7 +36,7 @@ class ITest extends CActiveRecord
 	 * @var array config list other attributes of the banner
 	 * this attribute no need to search	 
 	 */
-	private $config_other_attributes=array('modified','description','content');	
+	private $config_other_attributes=array('modified','description','content','type_coding');	
 	private $list_other_attributes;
 	public $section_a;
 	public $section_b;
@@ -118,7 +118,7 @@ class ITest extends CActiveRecord
 			array('title,content','required'),
 			array('type', 'numerical'),
 			array('title,group_level,catid','safe','on'=>'search'),
-			array('catid,description','safe')
+			array('catid,description,type_coding','safe')
 		);
 	}
 	public function validatorContent($attributes,$params){
@@ -140,6 +140,7 @@ class ITest extends CActiveRecord
 			'created_by' => 'Author',
 			'created_date' => 'Created Time',
 			'description' => 'Description',
+			'type_coding' => 'Type of Coding'
 		);
 	}
 	/**
@@ -193,7 +194,7 @@ class ITest extends CActiveRecord
 			{
 				$this->created_date=time();
 				$this->created_by=Yii::app()->user->id;		
-				$this->status=ITest::STATUS_ACTIVE;		
+				$this->status=TestCodingSkill::STATUS_ACTIVE;		
 			}
 			else {
 				$modified=$this->modified;
@@ -271,7 +272,7 @@ class ITest extends CActiveRecord
 	 */
 	public function search(){
 		$criteria = new CDbCriteria ();
-		$criteria->compare ( 'type', ITest::TYPE_MARKINGUP );
+		$criteria->compare ( 'type', TestCodingSkill::TYPE_CODING );
 		if($this->title != '')
 			$criteria->compare ( 'title', $this->title, true );
 		if($this->group_level === '0')
@@ -279,7 +280,7 @@ class ITest extends CActiveRecord
 		if($this->group_level === '1')
 			$criteria->addCondition( 'level <> 0');	
 			
-		$list_tests= new CActiveDataProvider ( 'ITest', array (
+		$list_tests= new CActiveDataProvider ( 'TestCodingSkill', array (
 			'criteria' => $criteria, 
 			'pagination' => array ('pageSize' => Yii::app ()->user->getState ( 'pageSize', Setting::s('DEFAULT_PAGE_SIZE','System')  ) ), 
 			'sort' => array ('defaultOrder' => 'id DESC' )    		

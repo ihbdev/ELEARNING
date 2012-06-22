@@ -260,7 +260,7 @@
 							'name'=>'office_id',
     						'value'=>'$data->office->name',
 							'headerHtmlOptions'=>array('width'=>'8%','class'=>'table-title'),		
-						), 	
+						),
 						array(
 							'name'=>'role',
 							'value'=>'implode(", ",$data->label_role)',

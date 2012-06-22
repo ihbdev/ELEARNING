@@ -47,7 +47,7 @@
 						<h2><?php echo Language::t('Post Q&A Text ').$i?></h2>
 						<!-- Material for question -->
 						<label style="width:66px;"><?php echo Language::t('Material');?>:</label>
-						<textarea  name="ITest[materials][<?php echo $i?>]"  style="width:610px; height:150px;"></textarea>
+						<textarea  name="TestLanguageSkill[materials][<?php echo $i?>]"  style="width:610px; height:150px;"></textarea>
 						<?php if(isset($test->content[$i])):?>
 						<?php foreach ($test->content[$i] as $question_id):?>
 	                    	<?php $question=Question::model()->findByPk($question_id);?>
@@ -89,7 +89,7 @@
 	                    <div class="markingup-question">                               
 	                    	<div class="q-post_<?php echo $i?>">
 	                        	<div class="row"><h3><?php echo Language::t('Question')?></h3></div>
-	                        	<input id="list_questions_<?php echo $i?>" name="ITest[questions][<?php echo $i?>]" type="show" value="<?php echo(isset($test->content[$i])?implode(',', $test->content[$i]):'');?>"/>
+	                        	<input id="list_questions_<?php echo $i?>" name="TestLanguageSkill[questions][<?php echo $i?>]" type="show" value="<?php echo(isset($test->content[$i])?implode(',', $test->content[$i]):'');?>"/>
 	                        	<?php echo $form->error($test, 'content'); ?>
 	                        	<div class="row"><label style="width:70px;"><?php echo Language::t('Title')?>:</label><textarea name="Question[title]" style="width:600px; height:80px;"></textarea></div>
 	                            <div class="row"><label style="width:70px;"><?php echo Language::t('File')?>:</label><input type="text" name ="Question[supplement]" style="width: 600px;"></div>

@@ -5,7 +5,7 @@
 			<h1><?php echo Language::t('List results')?></h1>
 			<div class="header-menu">
 				<ul>
-					<li class="ex-show"><a class="activities-icon" href=""><span><?php echo Language::t('List results')?></span></a></li>
+					<li class="ex-show"><a class="activities-icon" href=""><span><?php echo $exam->title?></span></a></li>
 				</ul>
 			</div>
 		</div>
@@ -25,24 +25,17 @@
                 <?php $form=$this->beginWidget('CActiveForm', array('method'=>'get','id'=>'exam-search')); ?>
                 <!--begin left content-->
                 <div class="fl" style="width:480px;">
-                    <ul>
-                    <li>
-                         	<?php echo $form->labelEx($model,'title'); ?>
+                    <ul>                 
+					<li>
+                         	<?php echo $form->labelEx($model,'username'); ?>
                          	<?php $this->widget('CAutoComplete', array(
                          	'model'=>$model,
-                         	'attribute'=>'title',
-							'url'=>array('exam/suggestTitle'),
+                         	'attribute'=>'user_id',
+							'url'=>array('user/suggestUsername'),
 							'htmlOptions'=>array(
 								'style'=>'width:230px;',
 								),
 						)); ?>								
-                        </li>			
-                    <?php 
-					$list=array(''=>'All')+Exam::$list_type;
-					?>
-					<li>
-						<?php echo $form->labelEx($model,'type'); ?>
-						<?php echo $form->dropDownList($model,'type',$list,array('style'=>'width:200px')); ?>
 					</li>	               
                         <li>
                         <?php 
@@ -59,22 +52,7 @@
                 <!--end left content-->
                 <!--begin right content-->
                 <div class="fl" style="width:480px;">
-                    <ul>                   	
-					<?php 
-					$list=array(''=>'All');
-						foreach ($list_office as $id=>$level){
-							$cat=Category::model()->findByPk($id);
-							$view = "";
-							for($i=1;$i<$level;$i++){
-								$view .="---";
-							}
-							$list[$id]=$view." ".$cat->name." ".$view;
-						}
-						?>
-					<li>
-						<?php echo $form->labelEx($model,'office_id'); ?>
-						<?php echo $form->dropDownList($model,'office_id',$list,array('style'=>'width:200px')); ?>
-					</li>		
+                    <ul>                  						
                     </ul>
                 </div>
                 <!--end right content-->
@@ -95,32 +73,38 @@
 						'checked'=>'in_array($data->id,Yii::app()->session["checked-exam-list"])'
     				),	
     				array(
-						'name'=>'title',
+						'name'=>'username',
+    					'value'=>'$data->user->username',
+						'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),		
+					),	
+					array(
+						'name'=>'email',
+    					'value'=>'$data->user->email',
+						'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),		
+					),
+    				array(
+						'name'=>'exam_id',
+    					'value'=>'$data->exam->title',
 						'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),		
 					),		
-    				array(
-						'name'=>'office_id',
-    					'value'=>'$data->office->name',
-						'headerHtmlOptions'=>array('width'=>'8%','class'=>'table-title'),		
-					),
 					array(
 						'name'=>'type',
-    					'value'=>'Exam::$list_type[$data->type]',
-						'headerHtmlOptions'=>array('width'=>'8%','class'=>'table-title'),			
-					),
+    					'value'=>'Exam::$list_type[$data->exam->type]',
+						'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),			
+					),																		   	   
 					array(
-						'name'=>'finish_time',
-						'value'=>'date("m/d/Y H:i",$data->finish_time)',
-						'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),		
-					), 																   	   
-					array(
-						'header'=>Language::t('View results'),
+						'header'=>Language::t('Tools'),
 						'class'=>'CButtonColumn',
-    					'template'=>'{view}',
+    					'template'=>'{delete}{view}',
+						'deleteConfirmation'=>Language::t('Are you sure that you want to delete the exam?'),
+						'afterDelete'=>'function(link,success,data){ if(success) jAlert("'.Language::t("Delete succcessfully").'"); }',
     					'buttons'=>array
     					(
+        					'delete' => array(
+    							'label'=>Language::t('Delete'),
+    						),
         					'view'=>array(
-    							'url'=>'Yii::app()->createUrl("result/list",array("exam_id"=>$data->id))',
+    							'url'=>'$data->url',
     						)
         				),
 						'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),

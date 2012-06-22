@@ -2,31 +2,32 @@
 	<div class="folder top">
 		<!--begin title-->
 		<div class="folder-header">
-			<h1>quản trị tin tức</h1>
+			<h1><?php echo Language::t('List test Marking-up')?></h1>
 			<div class="header-menu">
 				<ul>
-					<li class="ex-show"><a class="activities-icon" href=""><span>Danh sách tin tức</span></a></li>
+					<li class="ex-show"><a class="activities-icon" href=""><span><?php echo Language::t('List test Marking-up')?></span></a></li>
 				</ul>
 			</div>
 		</div>
 		<!--end title-->
 		<div class="folder-content">
             <div>
-            	<input type="button" class="button" value="Thêm tin" style="width:180px;" onClick="parent.location='<?php echo Yii::app()->createUrl('news/create')?>'"/>
+            	<input type="button" class="button" value="<?php echo Language::t('Add new test marking-up final')?>" style="width:180px;" onClick="parent.location='<?php echo Yii::app()->createUrl('markingUpSkill/create',array('group_level'=>0))?>'"/>
+                <input type="button" class="button" value="<?php echo Language::t('Add new test marking-up level')?>" style="width:180px;" onClick="parent.location='<?php echo Yii::app()->createUrl('markingUpSkill/create',array('group_level'=>1))?>'"/>
                 <div class="line top bottom"></div>	
             </div>
              <!--begin box search-->
          <?php 
 			Yii::app()->clientScript->registerScript('search', "
-				$('#news-search').submit(function(){
-				$.fn.yiiGridView.update('news-list', {
+				$('#test-search').submit(function(){
+				$.fn.yiiGridView.update('test-list', {
 					data: $(this).serialize()});
 					return false;
 				});");
 		?>
             <div class="box-search">            
                 <h2>Tìm kiếm</h2>
-                <?php $form=$this->beginWidget('CActiveForm', array('method'=>'get','id'=>'news-search')); ?>
+                <?php $form=$this->beginWidget('CActiveForm', array('method'=>'get','id'=>'test-search')); ?>
                 <!--begin left content-->
                 <div class="fl" style="width:480px;">
                     <ul>
@@ -35,23 +36,16 @@
                          	<?php $this->widget('CAutoComplete', array(
                          	'model'=>$model,
                          	'attribute'=>'title',
-							'url'=>array('news/suggestTitle'),
+							'url'=>array('markingUpSkill/suggestTitle'),
 							'htmlOptions'=>array(
 								'style'=>'width:230px;',
 								),
-						)); ?>								
-                        </li>   
-                         <?php 
-							$list=array(''=>'Không lọc');
-							$list +=News::getList_label_specials();
-						?>	
-						<li>
-							<?php echo $form->labelEx($model,'special'); ?>
-							<?php echo $form->dropDownList($model,'special',$list,array('style'=>'width:200px')); ?>
-						</li>                    
+						)); ?>	
+						</li>				
+                                        
                         <li>
                         <?php 
-							echo CHtml::submitButton('Lọc kết quả',
+							echo CHtml::submitButton('Search',
     						array(
     							'class'=>'button',
     							'style'=>'margin-left:153px; width:95px;',
@@ -65,24 +59,12 @@
                 <!--begin right content-->
                 <div class="fl" style="width:480px;">
                     <ul>
-                      <li>
-							<?php echo $form->labelEx($model,'lang'); ?>
-							<?php echo $form->dropDownList($model,'lang',array(''=>'Tất cả')+LanguageForm::getList_languages_exist(),array('style'=>'width:200px')); ?>
-                    	</li> 
                     <?php 
-					$list=array(''=>'Tất cả các thư mục');
-					foreach ($list_category as $id=>$level){
-						$cat=Category::model()->findByPk($id);
-						$view = "";
-						for($i=1;$i<$level;$i++){
-							$view .="---";
-						}
-						$list[$id]=$view." ".$cat->name." ".$view;
-					}
+					$list=array(''=>'All','0'=>'Final','1'=>'Level');
 					?>
 					<li>
-						<?php echo $form->labelEx($model,'catid'); ?>
-						<?php echo $form->dropDownList($model,'catid',$list,array('style'=>'width:200px')); ?>
+						<?php echo $form->labelEx($model,'group_level'); ?>
+						<?php echo $form->dropDownList($model,'group_level',$list,array('style'=>'width:200px')); ?>
 					</li>				
                     </ul>
                 </div>
@@ -94,28 +76,23 @@
             <!--end box search-->		
            <?php 
 			$this->widget('iPhoenixGridView', array(
-  				'id'=>'news-list',
+  				'id'=>'test-list',
   				'dataProvider'=>$model->search(),		
   				'columns'=>array(
 					array(
       					'class'=>'CCheckBoxColumn',
 						'selectableRows'=>2,
 						'headerHtmlOptions'=>array('width'=>'2%','class'=>'table-title'),
-						'checked'=>'in_array($data->id,Yii::app()->session["checked-news-list"])'
+						'checked'=>'in_array($data->id,Yii::app()->session["checked-test-list"])'
     				),			
     				array(
 						'name'=>'title',
-						'headerHtmlOptions'=>array('width'=>'20%','class'=>'table-title'),		
+						'headerHtmlOptions'=>array('width'=>'15%','class'=>'table-title'),		
 					),
 					array(
-						'name'=>'category',
-						'value'=>'$data->label_category',
-						'headerHtmlOptions'=>array('width'=>'8%','class'=>'table-title'),		
-					), 
-					array(
-						'name'=>'order_view',
-						'value'=>'$data->order_view',
-						'headerHtmlOptions'=>array('width'=>'5%','class'=>'table-title'),		
+						'name'=>'group_level',
+						'value'=>'$data->level==0?"Final":"Level"',
+						'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),		
 					),
 					array(
 						'name'=>'author',
@@ -128,16 +105,16 @@
 						'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),		
 					), 		
 					array(
-						'header'=>'Trạng thái',
+						'header'=>Language::t('Status'),
 						'class'=>'iPhoenixButtonColumn',
     					'template'=>'{reverse}',
     					'buttons'=>array
     					(
         					'reverse' => array
     						(
-            					'label'=>'Đổi trạng thái bài viết',
+            					'label'=>Language::t('Change status'),
             					'imageUrl'=>'$data->imageStatus',
-            					'url'=>'Yii::app()->createUrl("news/reverseStatus", array("id"=>$data->id))',
+            					'url'=>'Yii::app()->createUrl("markingUpSkill/reverseStatus", array("id"=>$data->id))',
     							'click'=>'function(){
 									var th=this;									
 									jQuery.ajax({
@@ -157,30 +134,26 @@
         					),
         				),
 						'headerHtmlOptions'=>array('width'=>'5%','class'=>'table-title'),
-					),    
+					),    											   	   
 					array(
-						'name'=>'visits',
-						'headerHtmlOptions'=>array('width'=>'5%','class'=>'table-title'),		
-					),											   	   
-					array(
-						'header'=>'Công cụ',
+						'header'=>Language::t('Tools'),
 						'class'=>'CButtonColumn',
-    					'template'=>'{copy}{update}{delete}{view}',
-						'deleteConfirmation'=>'Bạn muốn xóa bài viết này?',
-						'afterDelete'=>'function(link,success,data){ if(success) jAlert("Bạn đã xóa thành công"); }',
+    					'template'=>'{update}{delete}{view}',
+						'deleteConfirmation'=>Language::t('Are you sure that you want to delete the test?'),
+						'afterDelete'=>'function(link,success,data){ if(success) jAlert("'.Language::t("Delete succcessfully").'"); }',
     					'buttons'=>array
     					(
     						'update' => array(
-    							'label'=>'Chỉnh sửa bài viết',
+    							'label'=>Language::t('Edit'),
     						),
         					'delete' => array(
-    							'label'=>'Xóa bài viết',
+    							'label'=>Language::t('Delete'),
     						),
     						'copy' => array
     						(
-            					'label'=>'Copy bài viết',
+            					'label'=>Language::t('Copy'),
             					'imageUrl'=>Yii::app()->theme->baseUrl.'/images/copy.gif',
-            					'url'=>'Yii::app()->createUrl("news/copy", array("id"=>$data->id))',
+            					'url'=>'Yii::app()->createUrl("markingUpSkill/copy", array("id"=>$data->id))',
         					),
         					'view'=>array(
     							'url'=>'$data->url',
@@ -190,21 +163,15 @@
 					),    				
  	 			),
  	 			'template'=>'{displaybox}{checkbox}{summary}{items}{pager}',
-  				'summaryText'=>'Có {count} tin',
+  				'summaryText'=>'{count} '.Language::t('tests'),
  	 			'pager'=>array('class'=>'CLinkPager','header'=>'','prevPageLabel'=>'< Trước','nextPageLabel'=>'Sau >','htmlOptions'=>array('class'=>'pages fr')),
 				'actions'=>array(
 					'delete'=>array(
 						'action'=>'delete',
-						'label'=>'Xóa',
+						'label'=>Language::t('Delete'),
 						'imageUrl' => Yii::app()->theme->baseUrl.'/images/delete.png',
-						'url'=>'news/checkbox'
+						'url'=>'markingUpSkill/checkbox'
 					),
-					'copy'=>array(
-						'action'=>'copy',
-						'label'=>'Copy',
-						'imageUrl' => Yii::app()->theme->baseUrl.'/images/copy.gif',
-						'url'=>'news/checkbox'
-					)
 				),
  	 			)); ?>
 		</div>

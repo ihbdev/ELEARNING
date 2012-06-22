@@ -162,7 +162,12 @@ class Question extends CActiveRecord
 	 * Check correct answer or uncorrect answer
 	 */
 	public function check($answer){
-		
+		$result=true;
+		foreach ($this->answer as $index=>$choice){
+			if($choice != $answer[$index])
+				$result=false;
+		}
+		return $result;
 	}
 	/*
 	 * Interchange list options
