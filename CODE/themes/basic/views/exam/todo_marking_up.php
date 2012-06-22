@@ -1,7 +1,7 @@
 <!--begin page content-->
 <div id="shell" class="forShell">
 	<div class="fl main-test">
-	<?php $form=$this->beginWidget('CActiveForm', array('method'=>'post','enableAjaxValidation'=>true, 'id'=>'add_exam')); ?>
+	<?php $form=$this->beginWidget('CActiveForm', array('method'=>'post','enableAjaxValidation'=>true, 'id'=>'view_exam')); ?>
     	<h2>Marking-up test</h2>
         <ul class="main-test-ul">
         	<li><h5>Marking-up test level: Level <?php echo $test->level?></h5></li>
@@ -14,15 +14,7 @@
             <div class="text-intro-show"><span class="i16 i16-albumdown"></span>show</div>
         </div>
         <div class="test-introduction">
-            <p>What's "Marking up" in the Media Tenor World?</p>
-            <br />
-            <p>Marking up means the process how our employees search/find/extract relevant branch/combined  or Detail based articles in certain medias like newspapers/TV/internet. Relevant are articles which contains MT-Clients, topics/themes or protagonists or companies from branches (like insurances or banks) with more than 5 lines / 5 seconds. In some media we also capture cited medias.<br>
-There are different methods in  media-analysis to catch/collect such articles and to provide them:</br>
-  - Clippings</br>
-  -	Search-Strings, Search-Engines and Fundstellenchecks</br>
-  -	Marking-up  (individualized Media-Searching)</br>
-All methods have pro and cons. The marking-up by skilled Media-Analysts is by far the accurate way with the highest hit and lowest error ratio.
-</p>
+			<?php echo $test->description?>
         </div><!--test-introduction-->
         <div class="text-content">
         	<h3>Level <?php echo $test->level?></h3>
@@ -31,13 +23,23 @@ All methods have pro and cons. The marking-up by skilled Media-Analysts is by fa
             	<?php $question_index=1;?>
             	<?php foreach($test->content as $question_id):?>
             	<?php $question=Question::model()->findByPk($question_id);?>
+            	<?php 
+            	$tmp_choice=array();
+            	if(isset($tmp_result))
+            	{
+            		foreach ($tmp_result->answer as $id=>$choice){
+            			if($id==$question_id) 
+            				$tmp_choice=$choice;    
+            		}        		
+            	}
+            	?>
             	<div class="text-question">
                 	<div class="text-title">Q<?php echo $question_index?>) <?php echo $question->title?></div>
                     <div class="text-check">
                     	<?php $list_choices=Question::interChange($question->content);?>
                     	<?php $choice_index=1;?>
                     	<?php foreach($list_choices as $index=>$choice):?>
-                    	<div><input id="<?php echo $choice_index?>" name="Result[<?php echo $question_id?>][]" type="checkbox" value="<?php echo $index?>" /><label for="<?php echo $choice_index?>"><?php echo $choice_index?>) <?php echo $choice;?></label></div>
+                    	<div <?php if( isset($tmp_choice[$index]) && $tmp_choice[$index]) echo "class='active'"?>><input id="<?php echo $choice_index?>" name="Result[<?php echo $question_id?>][]" type="checkbox" value="<?php echo $index?>" <?php if( isset($tmp_choice[$index]) && $tmp_choice[$index]) echo "checked='checked'"?> class="answer_input"/><label for="<?php echo $choice_index?>"><?php echo $choice_index?>) <?php echo $choice;?></label></div>
 						<?php $choice_index++;?>
                     	<?php endforeach;?>                   
                     </div>
@@ -86,3 +88,22 @@ All methods have pro and cons. The marking-up by skilled Media-Analysts is by fa
 			</ul>			
         </div><!--text-note-->
 	</div><!--sidebar-test-->
+<?php 
+$cs = Yii::app()->getClientScript(); 
+ // Script hide form update
+$cs->registerScript(
+  'js-store-answer',
+  "jQuery(function($) { $('body').on('change','.answer_input',	
+  		function(){
+  				jQuery.ajax({
+  				'data':$('#view_exam').serialize(),
+  				'dataType':'json',
+  				'success':function(data){},
+        		'type':'POST',
+        		'url':'".Yii::app()->createUrl('exam/store',array('id'=>$model->id))."',
+        		'cache':false});
+        	});
+        })",
+  CClientScript::POS_END
+  );
+  ?>

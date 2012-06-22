@@ -131,12 +131,7 @@
 						'name'=>'author',
 						'value'=>'$data->author->username',
 						'headerHtmlOptions'=>array('width'=>'5%','class'=>'table-title'),		
-					), 						
-					array(
-						'name'=>'created_date',
-						'value'=>'date("H:i d/m/Y",$data->created_date)',
-						'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),		
-					), 		
+					), 						 		
 					array(
 						'header'=>Language::t('Status'),
 						'class'=>'iPhoenixButtonColumn',

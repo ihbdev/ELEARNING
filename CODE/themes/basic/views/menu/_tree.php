@@ -3,7 +3,7 @@
 	<li><label><b>Cấu trúc cây</b></label></li>
 	<li>
 		<?php 
-		$list_style=array('color:red','color:blue','color:black');
+		$list_style=array('color:red','color:blue','color:black','color:pink','color:grey');
 		foreach ($list_nodes as $id=>$level){
 			$node=Menu::model()->findByPk($id);
 			$blank = "&nbsp";

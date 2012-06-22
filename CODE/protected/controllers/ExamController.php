@@ -91,46 +91,125 @@ class ExamController extends Controller
 			),
 		);
 	}
-	public function actionView($id)
-	{		
-		$model=Exam::model()->findByPk($id);
-		$test=ITest::model()->findByPk($model->test_id);
-		if(in_array(Yii::app()->user->id,$model->list_users)){
-			if(time() > $model->start_time && time() < $model->finish_time)	{
-				switch($model->type){
-					case Exam::TYPE_LANGUAGE:
-						$form='view_language';
-						break;
-					case Exam::TYPE_KNOWLEDGE:
-						$form='view_knowledge';
-						break;
-					case Exam::TYPE_MARKINGUP:
-						if($test->level > 0)
-							$form='view_marking_up_level';
-						else 
-							$form='view_marking_up_final';
-						break;
-					case Exam::TYPE_CODING:
-						$form='view_coding';
-						break;
-				}
+	public function checkToDo($exam_id){
+		$exam=Exam::model()->findByPk($exam_id);
+		if(!in_array(Yii::app()->user->id,$exam->list_users))
+			return false;
+		if(time() < $exam->start_time && time() > $exam->finish_time)	
+			return false;
+			
+		$criteria = new CDbCriteria ();
+		$criteria->compare ( 'exam_id',$exam->id);		
+		$criteria->compare ( 'user_id',Yii::app()->user->id);
+		$result=Result::model()->find($criteria);
+		if(isset($result))
+			return false;		
+		return true;
+	}
+	public function actionToDo($id) {
+		$model = Exam::model ()->findByPk ( $id );
+		$test = ITest::model ()->findByPk ( $model->test_id );
+		
+		if ($this->checkToDo ( $model->id )) {
+			$criteria = new CDbCriteria ();
+			$criteria->compare ( 'exam_id', $model->id );
+			$criteria->compare ( 'user_id', Yii::app ()->user->id );
+			$tmp_result = TmpResult::model ()->find ( $criteria );
 
-				if(isset($_POST['Result']))
-				{
-					$result=new Result();	
-					$result->exam_id=$id;
-					$result->user_id=Yii::app()->user->id;
-					$list_answer=array();
-					foreach ($_POST['Result'] as $question_id=>$content){
-						$question=Question::model()->findByPk($question_id);
-						$tmp=array();
-						foreach ($question->answer as $index=>$item){
-							if(in_array($index,$content))
-								$tmp[$index]=1;
-							else 
-								$tmp[$index]=0;
-						}
-						$list_answer[$question_id]=$tmp;
+			switch ($model->type) {
+				case Exam::TYPE_LANGUAGE :
+					$form = 'todo_language';
+					break;
+				case Exam::TYPE_KNOWLEDGE :
+					$form = 'todo_knowledge';
+					break;
+				case Exam::TYPE_MARKINGUP :
+					if ($test->level > 0)
+						$form = 'todo_marking_up';
+					else
+						$form = 'todo_marking_up';
+					break;
+				case Exam::TYPE_CODING :
+					$form = 'todo_coding';
+					break;
+			}
+			
+			if (isset ( $_POST ['Result'] )) {
+				$result = new Result ();
+				$result->exam_id = $id;
+				$result->user_id = Yii::app ()->user->id;
+				$list_answer = array ();
+				foreach ( $_POST ['Result'] as $question_id => $content ) {
+					$question = Question::model ()->findByPk ( $question_id );
+					$tmp = array ();
+					foreach ( $question->answer as $index => $item ) {
+						if (in_array ( $index, $content ))
+							$tmp [$index] = 1;
+						else
+							$tmp [$index] = 0;
+					}
+					$list_answer [$question_id] = $tmp;
+				}
+				$result->answer = $list_answer;
+				if ($result->save())
+					{
+						$tmp_result->delete();
+						$this->redirect(array('result/view','id'=>$result->id));
+					}	
+				}
+				
+				$this->render ( $form, array ('tmp_result'=>$tmp_result,'model' => $model, 'test' => $test ) );
+			} 
+	}
+	public function actionView($id) {
+		$model = Exam::model ()->findByPk ( $id );
+		$test = ITest::model ()->findByPk ( $model->test_id );
+		
+		switch ($model->type) {
+			case Exam::TYPE_LANGUAGE :
+				$form = 'view_language';
+				break;
+			case Exam::TYPE_KNOWLEDGE :
+				$form = 'view_knowledge';
+				break;
+			case Exam::TYPE_MARKINGUP :
+				if ($test->level > 0)
+					$form = 'view_marking_up';
+				else
+					$form = 'view_marking_up';
+				break;
+			case Exam::TYPE_CODING :
+				$form = 'view_coding';
+				break;
+		}
+		
+		$this->render ( $form, array ('model' => $model, 'test' => $test ) );
+	}
+	public function actionStore($id) {
+		$model = Exam::model ()->findByPk ( $id );
+		$test = ITest::model ()->findByPk ( $model->test_id );		
+		if (isset ( $_POST ['Result'] )) {
+			$criteria = new CDbCriteria ();
+			$criteria->compare ( 'exam_id',$model->id);		
+			$criteria->compare ( 'user_id',Yii::app()->user->id);
+			$result=TmpResult::model()->find($criteria);
+			if(!isset($result))	
+			{	
+				$result = new TmpResult ();
+				$result->exam_id = $id;
+				$result->user_id = Yii::app ()->user->id;
+			}
+			$list_answer = array ();
+			foreach ( $_POST ['Result'] as $question_id => $content ) {
+				$question = Question::model ()->findByPk ( $question_id );
+				$tmp = array ();
+				foreach ( $question->answer as $index => $item ) {
+					if (in_array ( $index, $content ))
+						$tmp [$index] = 1;
+					else
+						$tmp [$index] = 0;
+				}
+				$list_answer [$question_id]=$tmp;
 					}	
 					$result->answer=$list_answer;
 					if($result->save())
@@ -138,14 +217,6 @@ class ExamController extends Controller
 						Yii::app()->user->setFlash('success', Language::t('Finish'));
 					}	
 				}
-				
-				$this->render ( $form, array(
-					'model'=>$model,
-					'test'=>$test
-				) );
-			}
-			else echo "Đã quá thời gian thi! ^^";
-		}
 	}
 	/**
 	 * Creates a new model.

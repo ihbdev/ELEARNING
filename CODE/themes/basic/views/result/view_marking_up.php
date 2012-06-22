@@ -50,59 +50,46 @@
                             <table border="0" cellpadding="0" cellspacing="0" width="70%">
                                 <tbody>
                                     <tr align="center" class="table-title">
-                                        <td width="10%">&nbsp;</td>
-                                        <td width="10%"><p>A1</p></td>
-                                        <td width="10%"><p>A2</p></td>
-                                        <td width="10%"><p>A3</p></td>
-                                        <td width="10%"><p>A4</p></td>
-                                        <td width="10%"><p>A5</p></td>
-                                        <td width="10%"><p>A6</p></td>
+                                   		<td width="10%">&nbsp;</td>
+                                        <td width="10%">&nbsp;</td>                                                                               
+                                        <?php for ($i=0;$i<$max_num_choices;$i++):?>
+                                        <td width="10%"><p>A<?php echo $i+1?></p></td>
+                                        <?php endfor;?>
+                                        <td width="10%">Result</td> 
                                     </tr>
+                                    <?php 
+                                    $num_correct=0;
+                                    $index=1;
+                                    ?>
+                                    <?php foreach ($model->answer as $id=>$answer):?>
+                                    <?php $question=Question::model()->findByPk($id);?>
+                                    <?php 
+                                    $check=$question->check($answer);
+                                    if($check) $num_correct++;
+                                    ?>
                                     <tr align="center">
-                                        <td>Q1</td>
-                                        <td><p>T</p></td>
-                                        <td><p>F</p></td>
-                                        <td><p>F</p></td>
-                                        <td><p>T</p></td>
-                                        <td><p>F</p></td>
-                                        <td><p>F</p></td>
+                                        <td ROWSPAN=2>Q<?php echo $index?></td>                                        
+                                        <td>Answer Key</td>
+                                        <?php foreach ($answer as $choice):?>
+                                       		<td><p><?php echo $choice?'T':'F';?></p></td>
+                                        <?php endforeach;?>
+                                        <?php for($i=0;$i<($max_num_choices - sizeof($answer));$i++):?>
+                                        	<td><p><?php echo '';?></p></td>
+                                        <?php endfor;?> 
+                                        <td ROWSPAN=2><?php echo $check?'TRUE':'FALSE'?></td>                                      
                                     </tr>
-                                    <tr align="center">
-                                        <td>Q2</td>
-                                        <td><p>T</p></td>
-                                        <td><p>F</p></td>
-                                        <td><p>F</p></td>
-                                        <td><p>T</p></td>
-                                        <td><p>F</p></td>
-                                        <td><p>F</p></td>
+                                    
+                                     <tr align="center">
+                                        <td>Answer</td>                                        
+                                        <?php foreach ($question->answer as $choice):?>
+                                       		<td><p><?php echo $choice?'T':'F';?></p></td>
+                                        <?php endforeach;?>
+                                        <?php for($i=0;$i<($max_num_choices - sizeof($answer));$i++):?>
+                                        	<td><p><?php echo '';?></p></td>
+                                        <?php endfor;?>                                       
                                     </tr>
-                                    <tr align="center">
-                                        <td>Q3</td>
-                                        <td><p>T</p></td>
-                                        <td><p>F</p></td>
-                                        <td><p>F</p></td>
-                                        <td><p>T</p></td>
-                                        <td><p>F</p></td>
-                                        <td><p>F</p></td>
-                                    </tr>
-                                    <tr align="center">
-                                        <td>Q4</td>
-                                        <td><p>T</p></td>
-                                        <td><p>F</p></td>
-                                        <td><p>F</p></td>
-                                        <td><p>T</p></td>
-                                        <td><p>F</p></td>
-                                        <td><p>F</p></td>
-                                    </tr>
-                                    <tr align="center">
-                                        <td>Q5</td>
-                                        <td><p>T</p></td>
-                                        <td><p>F</p></td>
-                                        <td><p>F</p></td>
-                                        <td><p>T</p></td>
-                                        <td><p>F</p></td>
-                                        <td><p>F</p></td>
-                                    </tr>
+                                    <?php $index++?>
+                                    <?php endforeach;?>                                   
                                 </tbody>
                             </table>
                         </div><!--table-->
@@ -112,18 +99,10 @@
 					<h2>Final result:</h2>
                     <div class="row">
                         <label>Result:</label>
-                        <span><b>85%</b></span>
-                    </div>
-                    <div class="row">
-                        <label>Status:</label>
-                        <span><b>Passed</b></span>
+                        <span><b><?php echo $num_correct.'/'.sizeof($model->answer)?></b></span>
                     </div>
                 </div><!--testpost-box-->
-                <div class="clear"></div>
-                <div class="testpost-button">
-                	<span>Do you want to send result for <b>Lee Haira</b>:&nbsp;</span>
-                    <input type="submit" class="button" value="Click here" style="width:100px;" />
-                </div><!--testpost-button-->		
+                <div class="clear"></div>		
 			</div>
 			<!--end content testpost outer-->
 			<div class="clear"></div>

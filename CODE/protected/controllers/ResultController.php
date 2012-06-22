@@ -91,25 +91,43 @@ class ResultController extends Controller
 			),
 		);
 	}
-/**
+	/**
 	 * Lists all models.
 	 */
-	public function actionIndex($exam_id)
+	public function actionIndex()
 	{
-		$this->initCheckbox('checked-result-list');
+		$this->initCheckbox('checked-exam-list');
 		
-		$model=new Result('search');
-		$model->exam_id=$exam_id;
+		$model=new Exam('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Result']))
-			$model->attributes=$_GET['Result'];
+		if(isset($_GET['Exam']))
+			$model->attributes=$_GET['Exam'];
 			
 		//Group categories that contains news
 		$group=new Category();		
 		$group->type=Category::TYPE_OFFICE;
-		$list_office = $group->list_nodes;
+		$list_office=$group->list_nodes;
+		//var_dump($list_office);exit;
+		$this->render('index',array(
+			'model'=>$model,
+			'list_office'=>$list_office
+		));
+	}
+	/**
+	 * Lists all models.
+	 */
+	public function actionList($exam_id)
+	{
+		$this->initCheckbox('checked-result-list');
 		
-		$this->render ( 'index', array ('model' => $model, 'list_office' => $list_office ) );
+		$model=new Result('search');		
+		$model->unsetAttributes();  // clear any default values
+		$model->exam_id=$exam_id;
+		$exam=Exam::model()->findByPk($exam_id);
+		if(isset($_GET['Result']))
+			$model->attributes=$_GET['Result'];		
+		
+		$this->render ( 'list', array ('model' => $model, 'exam'=>$exam ) );
 	}
 	
 	public function actionView($id) {
