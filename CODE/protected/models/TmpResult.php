@@ -1,7 +1,7 @@
 <?php
 /**
  * 
- * Result class file 
+ * TmpResult class file 
  * @author ihbvietnam <hotro@ihbvietnam.com>
  * @link http://iphoenix.vn
  * @copyright Copyright &copy; 2012 IHB Vietnam
@@ -12,7 +12,7 @@
 /**
  * Exam includes attributes and methods of Exam class  
  */
-class Result extends CActiveRecord
+class TmpResult extends CActiveRecord
 {
 	/**
 	 * @var array config list other attributes of the banner
@@ -71,7 +71,7 @@ class Result extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'tbl_result';
+		return 'tbl_tmp_result';
 	}
 	/**
 	 * @return array validation rules for model attributes.
@@ -148,7 +148,7 @@ class Result extends CActiveRecord
 		$criteria = new CDbCriteria ();
 		$criteria->compare ( 'exam_id',$this->exam_id);		
 		$criteria->compare ( 'user_id',$this->user_id);		
-		$list_results= new CActiveDataProvider ( 'Result', array (
+		$list_results= new CActiveDataProvider ( 'TmpResult', array (
 			'criteria' => $criteria, 
 			'pagination' => array ('pageSize' => Yii::app ()->user->getState ( 'pageSize', Setting::s('DEFAULT_PAGE_SIZE','System')  ) ), 
 			'sort' => array ('defaultOrder' => 'id DESC' )    		
@@ -156,3 +156,4 @@ class Result extends CActiveRecord
 		return $list_results;
 	}
 }
+

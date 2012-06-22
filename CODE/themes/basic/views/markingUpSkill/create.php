@@ -32,6 +32,11 @@
 					 <?php echo $form->textField($test,'title',array('style'=>'width:600px')); ?>
                    	 <?php echo $form->error($test, 'title'); ?>	
                 </div><!--testpost-box-->
+                 <div class="testpost-box">
+					<h2><?php echo Language::t('Test guide')?></h2>
+					 <?php echo $form->textArea($test,'description',array('style'=>'width:600px; height:80px;')); ?>
+                   	 <?php echo $form->error($test, 'description'); ?>	
+                </div><!--testpost-box-->
                  <?php if($group_level != 0):?>
                 <div class="testpost-box">
 					<h2><?php echo Language::t('Choise level')?></h2>
