@@ -5,13 +5,6 @@ return array(
 		'manager_task'=>'Nhóm chức năng',
 		'manager_role'=>'Quyền'
 	),
-	'news'=>array(
-		'view_all'=>'Hiển thị tất cả',
-		'view_categories'=>'Hiển thị theo danh mục',
-		'index'=>'Quản lý',
-		'create'=>'Tạo mới',
-		'manager_category'=>'Danh mục'
-	),
 	'menu'=>array(
 		'manager'=>'Quản lý',		
 	),
@@ -32,10 +25,5 @@ return array(
 	'user'=>array(
 		'index'=>'Quản lý',
 		'create'=>'Thêm mới'
-	),
-	'keyword'=>array(
-		'index'=>'Quản lý',
-		'create'=>'Tạo mới',
-		'manager_category'=>'Danh mục'
 	),
 );

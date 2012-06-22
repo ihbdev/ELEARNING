@@ -24,15 +24,13 @@ class Menu extends CActiveRecord
 	const DELETE_OK=1;
 	const DELETE_HAS_CHILD=2;
 	
-	const CONTROLLER_DEFAULT='news';
+	const CONTROLLER_DEFAULT='menu';
 	const ACTION_DEFAULT='index';
 	/**
 	 * Config code (id) of the main node groups which have parent_id=0
 	 */
-	const TYPE_ADVANCE_ADMIN_MENU=1;
-	const TYPE_USER_MENU=2;
-	const TYPE_ADMIN_MENU=3;
-	const TYPE_TEST_MENU=4;
+	const TYPE_ADMIN_MENU=2;
+	const TYPE_EMPLOYEE_MENU=1;
 		
 	private $config_other_attributes=array('params','action','controller','description','modified');	
 	private $list_other_attributes;
@@ -286,9 +284,17 @@ class Menu extends CActiveRecord
 	public function validatorParent($attributes,$params){
 		if($this->type>0 && $this->id>0){
 			$max_rank=$this->max_rank;
-			$parent=Menu::model()->findByPk($this->parent_id);
-			if(($parent->level+$this->rank)>=$max_rank){
-				$this->addError('parent_id', 'Vượt quá cấp quy định. Bạn không thể chuyển tới thư mục này.');
+			if($this->parent_id > 0){
+				$parent=Menu::model()->findByPk($this->parent_id);
+				if(($parent->level+$this->rank)>=$max_rank){
+					$this->addError('parent_id', 'Vượt quá cấp quy định. Bạn không thể chuyển tới thư mục này.');
+				}
+			}
+			else
+			{
+				if($this->rank>=$max_rank){
+					$this->addError('parent_id', 'Vượt quá cấp quy định. Bạn không thể chuyển tới thư mục này.');
+				}
 			}
 		}
 	}
