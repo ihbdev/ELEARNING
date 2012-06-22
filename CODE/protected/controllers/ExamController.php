@@ -92,6 +92,7 @@ class ExamController extends Controller
 		);
 	}
 	public function checkToDo($exam_id){
+		return true;
 		$exam=Exam::model()->findByPk($exam_id);
 		if(!in_array(Yii::app()->user->id,$exam->list_users))
 			return false;
@@ -240,7 +241,6 @@ class ExamController extends Controller
 			$model->list_users=array_diff(explode(',',$_POST['Exam']['users']),array(''));
 			
 			$test=ITest::model()->findByPk($model->test_id);
-			var_dump($model->test_id);
 			$model->type=$test->type;
 			if($model->save())
 			{

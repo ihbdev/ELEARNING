@@ -2,10 +2,10 @@
 	<div class="folder top">
 		<!--begin title-->
 		<div class="folder-header">
-			<h1>quản trị người dùng</h1>
+			<h1>Manager user</h1>
 			<div class="header-menu">
 				<ul>
-					<li><a class="header-menu-active new-icon" href=""><span>Thêm người dùng</span></a></li>					
+					<li><a class="header-menu-active new-icon" href=""><span>Add user</span></a></li>					
 				</ul>
 			</div>
 		</div>
@@ -30,8 +30,8 @@
                     </li>
                     </div>
                    		<li>
-                   		<input type="reset" class="button" value="Hủy thao tác" style="margin-left:153px; width:125px;" />
-                    	<input type="submit" class="button" value="Tạo" style="margin-left:20px; width:125px;" />					 
+                   		<input type="reset" class="button" value="Cancel" style="margin-left:153px; width:125px;" />
+                    	<input type="submit" class="button" value="Create" style="margin-left:20px; width:125px;" />					 
                     	</li>
 				</ul>
 			</div>

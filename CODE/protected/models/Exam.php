@@ -92,7 +92,7 @@ class Exam extends CActiveRecord
 	 */
 	public function getUrl()
  	{
- 		$url=Yii::app()->createUrl("exam/view",array('id'=>$this->id));
+ 		$url=Yii::app()->createUrl("exam/toDo",array('id'=>$this->id));
 		return $url;
  	}
 	/**

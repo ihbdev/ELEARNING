@@ -26,4 +26,27 @@ return array(
 			'menu' => array (
 				'manager' => Yii::app ()->user->checkAccess ('menu_index')?'menu':'', 				
 			),
+			'languageSkill'=>array(
+				'index'=>'languageSkill/index',
+				'create'=>'languageSkill/create'
+			),
+			'knowledgeSkill'=>array(
+				'index'=>'knowledgeSkill/index',
+				'create'=>'knowledgeSkill/create'
+			),
+			'markingUpSkill'=>array(
+				'index'=>'markingUpSkill/index',
+				'create'=>'markingUpSkill/create'
+			),
+			'codingSkill'=>array(
+				'index'=>'codingSkill/index',
+				'create'=>'codingSkill/create'
+			),
+			'exam'=>array(
+				'index'=>'exam/index',
+				'create'=>'exam/create'
+			),
+			'result'=>array(
+				'index'=>'result/index',
+			),
 		);

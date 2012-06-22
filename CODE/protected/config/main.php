@@ -104,7 +104,7 @@ return array(
 			'connectionString' => 'mysql:host=localhost;dbname=learning',
 			'emulatePrepare' => true,
 			'username' => 'root',
-			'password' => '',
+			'password' => 'thanhdaica',
 			'charset' => 'utf8',
 			'schemaCachingDuration' => 180,
 		),
