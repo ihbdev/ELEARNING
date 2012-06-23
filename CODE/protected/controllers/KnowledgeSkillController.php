@@ -179,10 +179,12 @@ class KnowledgeSkillController extends Controller
 			$test->catid = $_POST['TestKnowledgeSkill']['catid'];
 			$test->content = $temp_content;
 		}
+		
 		if($test->save())
 		{
 			Yii::app()->user->setFlash('success', Language::t('Knowledge created successfully'));
 		}		
+
 		$this->render ( 'create',array('test'=>$test));		
 	}
 	/**
@@ -292,24 +294,15 @@ class KnowledgeSkillController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$this->initCheckbox('checked-test-list');
-		$criteria = new CDbCriteria ();
-		$criteria->compare ( 'type', TestKnowledgeSkill::TYPE_KNOWLEDGE );
-		$list_tests= new CActiveDataProvider ( 'TestKnowledgeSkill', array (
-			'criteria' => $criteria, 
-			'pagination' => array ('pageSize' => Yii::app ()->user->getState ( 'pageSize', Setting::s('DEFAULT_PAGE_SIZE','System')  ) ), 
-			'sort' => array ('defaultOrder' => 'id DESC' )    		
-		));
-		
+		$this->initCheckbox('checked-test-list');		
 		$model=new TestKnowledgeSkill('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['TestKnowledgeSkill']))
 			$model->attributes=$_GET['TestKnowledgeSkill'];
 				
-		$this->render('index',array(
-			'list_tests'=>$list_tests,
+		$this->render('index',array(			
 			'model'=>$model
-		));
+		));		
 		
 	}
 	/**
@@ -318,6 +311,11 @@ class KnowledgeSkillController extends Controller
 	 */
 	public function actionReverseStatus($id)
 	{
+		$src=KnowledgeSkillTest::reverseStatus($id);
+		if($src) 
+			echo json_encode(array('success'=>true,'src'=>$src));
+		else 
+			echo json_encode(array('success'=>false));			
 	}
 	
 	/**
@@ -333,7 +331,63 @@ class KnowledgeSkillController extends Controller
 	 * @param string $name_params, name of section to work	 
 	 */
 	public function initCheckbox($name_params){
-	
+		if (! isset ( Yii::app ()->session [$name_params] ))
+			Yii::app ()->session [$name_params] = array ();
+		if (! Yii::app ()->getRequest ()->getIsAjaxRequest () && $name_params != 'checked-suggest-list')
+		{
+				Yii::app ()->session [$name_params] = array ();
+		}
+		else {
+			if (isset ( $_POST ['list-checked'] )) {
+				$list_new = array_diff ( explode ( ',', $_POST ['list-checked'] ), array ('' ) );
+				$list_old = Yii::app ()->session [$name_params];
+				$list = $list_old;
+				foreach ( $list_new as $id ) {
+					if (! in_array ( $id, $list_old ))
+						$list [] = $id;
+				}
+				Yii::app ()->session [$name_params] = $list;
+			}
+			if (isset ( $_POST ['list-unchecked'] )) {
+				$list_unchecked = array_diff ( explode ( ',', $_POST ['list-unchecked'] ), array ('' ) );
+				$list_old = Yii::app ()->session [$name_params];
+				$list = array ();
+				foreach ( $list_old as $id ) {
+					if (! in_array ( $id, $list_unchecked )) {
+						$list [] = $id;
+					}
+				}
+				Yii::app ()->session [$name_params] = $list;
+			}
+		}if (! isset ( Yii::app ()->session [$name_params] ))
+			Yii::app ()->session [$name_params] = array ();
+		if (! Yii::app ()->getRequest ()->getIsAjaxRequest () && $name_params != 'checked-suggest-list')
+		{
+				Yii::app ()->session [$name_params] = array ();
+		}
+		else {
+			if (isset ( $_POST ['list-checked'] )) {
+				$list_new = array_diff ( explode ( ',', $_POST ['list-checked'] ), array ('' ) );
+				$list_old = Yii::app ()->session [$name_params];
+				$list = $list_old;
+				foreach ( $list_new as $id ) {
+					if (! in_array ( $id, $list_old ))
+						$list [] = $id;
+				}
+				Yii::app ()->session [$name_params] = $list;
+			}
+			if (isset ( $_POST ['list-unchecked'] )) {
+				$list_unchecked = array_diff ( explode ( ',', $_POST ['list-unchecked'] ), array ('' ) );
+				$list_old = Yii::app ()->session [$name_params];
+				$list = array ();
+				foreach ( $list_old as $id ) {
+					if (! in_array ( $id, $list_unchecked )) {
+						$list [] = $id;
+					}
+				}
+				Yii::app ()->session [$name_params] = $list;
+			}
+		}
 	}
 	/*
 	 * List language suggest 

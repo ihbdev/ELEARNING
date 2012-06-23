@@ -43,11 +43,7 @@
 						</li>
 						<li>
                             <label>Chose Language:</label>
-                            <select style="width:258px;">
-                                <option>- Vietnamese -</option>
-                                <option>- German -</option>
-                                <option>- Chinese -</option>
-                            </select>
+                            <?php echo $form->dropDownList($model,'catid',Category::getLanguageOption(),array('style'=>'width:258px')); ?>                   	                             
                         </li>
 						<li>
                         <?php 
@@ -68,19 +64,11 @@
                 <div class="clear"></div>
                 <div class="line top bottom"></div>
             </div>
-            <!--end box search-->
-			<div>
-				<ul>
-					<li style="padding-top:0;">&nbsp;</li>
-					<li>
-                    	Show <b class="redfont">31/ 100</b> results
-                    </li>
-				</ul>
-			</div>            
+            <!--end box search-->           
 			<?php 
 			$this->widget('iPhoenixGridView', array(
   				'id'=>'test-list',
-  				'dataProvider'=>$list_tests,		
+  				'dataProvider'=>$model->search(),		
   				'columns'=>array(
 					array(
       					'class'=>'CCheckBoxColumn',

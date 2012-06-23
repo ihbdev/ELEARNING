@@ -108,14 +108,14 @@ class ExamController extends Controller
 		return true;
 	}
 	public function actionToDo($id) {
-		$model = Exam::model ()->findByPk ( $id );		
-		
+		$model = Exam::model ()->findByPk ( $id );				
 		if ($this->checkToDo ( $model->id )) {
+			var_dump('abc');exit;
 			$criteria = new CDbCriteria ();
 			$criteria->compare ( 'exam_id', $model->id );
 			$criteria->compare ( 'user_id', Yii::app ()->user->id );
 			$tmp_result = TmpResult::model ()->find ( $criteria );
-
+          	
 			switch ($model->type) {
 				case Exam::TYPE_LANGUAGE :
 					$test = TestLanguageSkill::model ()->findByPk ( $model->test_id );
@@ -196,6 +196,7 @@ class ExamController extends Controller
 		
 		$this->render ( $form, array ('model' => $model, 'test' => $test ) );
 	}
+	
 	public function actionStore($id) {
 		$model = Exam::model ()->findByPk ( $id );	
 		if (isset ( $_POST ['Result'] )) {
