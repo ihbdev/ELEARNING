@@ -92,8 +92,14 @@
                 
                 <div class="testpost-box">
 				<?php 
-				Yii::app()->clientScript->registerScript('search-test', "
+				Yii::app()->clientScript->registerScript('submit-search-test', "
 				$('#test-search').submit(function(){
+				$.fn.yiiGridView.update('test-list', {
+					data: $(this).serialize()});
+					return false;
+				});");
+				Yii::app()->clientScript->registerScript('dropdown-search-test', "
+				$('#ITest_type').change(function(){
 				$.fn.yiiGridView.update('test-list', {
 					data: $(this).serialize()});
 					return false;

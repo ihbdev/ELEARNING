@@ -537,6 +537,18 @@ class Menu extends CActiveRecord
 						return $result;
 				}
 				break;
+			case 'exam':
+				switch ($action) {
+					case 'list': 
+						$result=array(
+							json_encode(array('type'=>Exam::TYPE_LANGUAGE))=>'Language',
+							json_encode(array('type'=>Exam::TYPE_KNOWLEDGE))=>'Knowledge',
+							json_encode(array('type'=>Exam::TYPE_CODING))=>'Coding',
+							json_encode(array('type'=>Exam::TYPE_MARKINGUP))=>'Marking-up',
+						);						
+						return $result;
+				}
+				break;
 			case 'staticPage':
 				switch ($action) {
 					case 'view_page':

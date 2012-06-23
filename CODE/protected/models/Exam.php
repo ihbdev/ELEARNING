@@ -92,7 +92,25 @@ class Exam extends CActiveRecord
 	 */
 	public function getUrl()
  	{
+ 		$url=Yii::app()->createUrl("exam/view",array('id'=>$this->id));
+		return $url;
+ 	}
+	/**
+	 * Get url of this news
+	 * @return string $url, the absoluted path of this news
+	 */
+	public function getToDoUrl()
+ 	{
  		$url=Yii::app()->createUrl("exam/toDo",array('id'=>$this->id));
+		return $url;
+ 	}
+	/**
+	 * Get url of this news
+	 * @return string $url, the absoluted path of this news
+	 */
+	public function getCheckToDoUrl()
+ 	{
+ 		$url=Yii::app()->createUrl("exam/checkToDo",array('id'=>$this->id));
 		return $url;
  	}
 	/**
@@ -257,7 +275,8 @@ class Exam extends CActiveRecord
 		$criteria->compare ( 'title', $this->title, true );
 		$criteria->compare ( 'type',$this->type);
 		$criteria->compare ( 'office_id',$this->office_id);
-			
+		if (isset ( $_GET ['pageSize'] ))
+			Yii::app ()->user->setState ( 'pageSize', $_GET ['pageSize'] );	
 		$list_exams= new CActiveDataProvider ( 'Exam', array (
 			'criteria' => $criteria, 
 			'pagination' => array ('pageSize' => Yii::app ()->user->getState ( 'pageSize', Setting::s('DEFAULT_PAGE_SIZE','System')  ) ), 

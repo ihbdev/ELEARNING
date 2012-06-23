@@ -46,7 +46,7 @@ $cs->registerCssFile(Yii::app()->theme->baseUrl.'/css/jquery.alerts.css');
 			</div>
 			<!--begin right content-->
 			<div id="TP_right_panel" class="TP_toolbar_item">
-				<p><a href="#">www.MediaTenor.com</a> | <a href="<?php echo Yii::app()->request->getBaseUrl(true);?>">Policy</a> | <a href="<?php echo Yii::app()->createUrl('default/logout');?>">Logout</a> (<span style="color:#d9251d;"><?php echo Yii::app()->user->name;?></span>)</p>
+				<p><a href="http://www.mediatenor.com/">www.MediaTenor.com</a> | <a href="<?php echo Yii::app()->createUrl('user/changePassword');?>">Change password</a> | <a href="<?php echo Yii::app()->createUrl('default/logout');?>">Logout</a> (<span style="color:#d9251d;"><?php echo Yii::app()->user->name;?></span>)</p>
 			</div>
 			<!--end right content-->
 			<!--begin menuBar-->

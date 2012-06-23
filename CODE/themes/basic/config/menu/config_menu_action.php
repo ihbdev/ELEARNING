@@ -19,7 +19,7 @@ return array(
 		'index'=>'Manager'
 	),
 	'image'=>array(
-		'list'=>'Danh sách',
+		'list'=>'List',
 		'clear_image'=>'Clear'
 	),
 	'user'=>array(
@@ -44,9 +44,14 @@ return array(
 	),
 	'exam'=>array(
 		'index'=>'Manager',
-		'create'=>'Create'
+		'create'=>'Create',
+		'list'=>'List'
 	),
 	'result'=>array(
 		'index'=>'Manager',
+	),
+	'system'=>array(
+		'language'=>'Language',
+		'office'=>'Office'
 	)
 );

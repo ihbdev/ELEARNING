@@ -44,9 +44,14 @@ return array(
 			),
 			'exam'=>array(
 				'index'=>'exam/index',
-				'create'=>'exam/create'
+				'create'=>'exam/create',
+				'list'=>'exam/list'
 			),
 			'result'=>array(
 				'index'=>'result/index',
 			),
+			'system'=>array(
+				'language'=>'category/index',
+				'office'=>'category/index'
+			)
 		);

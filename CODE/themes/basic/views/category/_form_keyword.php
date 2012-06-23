@@ -27,7 +27,7 @@
                     <li>
                         <?php echo $form->labelEx($model,'parent_id'); ?>
                         <?php
-                        	$view_parent_nodes=array('0'=>'Gốc');
+                        	$view_parent_nodes=array('0'=>'Root');
                         	foreach ($model->parent_nodes as $id=>$level){
                         	 	$node=Category::model()->findByPk($id);
 								$view = "";

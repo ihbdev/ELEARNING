@@ -172,6 +172,20 @@
             					'label'=>'Reset password of user',
             					'imageUrl'=>Yii::app()->theme->baseUrl.'/images/reset_pwd.png',
             					'url'=>'Yii::app()->createUrl("user/resetPassword", array("id"=>$data->id))',
+    							'click'=>'function(){
+									var th=this;									
+									jQuery.ajax({
+										type:"POST",
+										dataType:"json",
+										url:$(this).attr("href"),
+										success:function(data) {
+											if(data.success==true){
+												jAlert("Reset successfully");
+												}
+										},
+										});
+									return false;
+								}',
         					),
         				),
 						'headerHtmlOptions'=>array('width'=>'20%','class'=>'table-title'),
