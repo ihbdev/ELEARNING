@@ -109,8 +109,8 @@
 						'headerHtmlOptions'=>array('width'=>'8%','class'=>'table-title'),			
 					),
 					array(
-						'name'=>'finish_time',
-						'value'=>'date("m/d/Y H:i",$data->finish_time)',
+						'name'=>'results',
+						'value'=>'$data->countResults',
 						'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),		
 					), 																   	   
 					array(

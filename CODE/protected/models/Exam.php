@@ -113,6 +113,13 @@ class Exam extends CActiveRecord
  		$url=Yii::app()->createUrl("exam/checkToDo",array('id'=>$this->id));
 		return $url;
  	}
+ 	public function getCountResults()
+ 	{
+ 		$criteria = new CDbCriteria ();
+ 		$criteria->compare('exam_id',$this->id);
+ 		$list_results=Result::model()->findAll($criteria);
+ 		return sizeof($list_results).' examinees';
+ 	}
 	/**
 	 * @return string the associated database table name
 	 */
