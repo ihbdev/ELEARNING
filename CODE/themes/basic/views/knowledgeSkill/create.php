@@ -19,7 +19,7 @@
             <div class="testpost-outer">
             	<div class="testpost-box">
 					<h2>Language</h2>
-					<?php echo $form->dropDownList($test,'catid',array('Western Europe'=>'-Western Europe-','Eastern Europe'=>'-Eastern Europe-','ZA'=>'- ZA -','Vietnam'=>'- Vietnam -','USA'=>'- USA -'),array('style'=>'width:200px;')); ?>
+					<?php echo $form->dropDownList($test,'catid',Category::getLanguageOption(),array('style'=>'width:200px;')); ?>
                     <?php echo $form->error($test, 'catid'); ?>
                 </div><!--testpost-box-->
                 <div class="testpost-box">
