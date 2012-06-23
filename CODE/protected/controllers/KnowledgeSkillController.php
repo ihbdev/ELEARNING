@@ -95,14 +95,14 @@ class KnowledgeSkillController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$test=new KnowledgeSkillTest();		
+		$test=new TestKnowledgeSkill();		
 		$test->title = 'Knowledskill test';
 		$temp_content = array('section_a'=>'','section_b'=>'','section_c'=>'');	
 		$temp_section = array('description'=>"",'questions'=>array());		
 		//var_dump($test->section_a['questions']); //exit;
 		if(isset($_POST['section_a']))
 		{		
-			$test->type=KnowledgeSkillTest::TYPE_KNOWLEDGE;	
+			$test->type=TestKnowledgeSkill::TYPE_KNOWLEDGE;	
 			for($i=1; $i<=17; $i++)
 			{
 				$question = new Question();
@@ -174,31 +174,15 @@ class KnowledgeSkillController extends Controller
 			$test->section_c = $temp_section;
 			$temp_content['section_c'] = $test->section_c;
 		}						
-		if(isset($_POST['KnowledgeSkillTest']['catid']))
+		if(isset($_POST['TestKnowledgeSkill']['catid']))
 		{
-			$test->catid = $_POST['KnowledgeSkillTest']['catid'];
+			$test->catid = $_POST['TestKnowledgeSkill']['catid'];
 			$test->content = $temp_content;
 		}
-		//var_dump($test->save());
 		if($test->save())
 		{
-			//$this->redirect(array('update','id'=>$test->id));
 			Yii::app()->user->setFlash('success', Language::t('Knowledge created successfully'));
-		}
-		//var_dump($test); exit;
-		/*
-		if(isset($_POST['ITest']))
-		{
-			$test->attributes=$_POST['ITest'];
-			$test->type=ITest::TYPE_KNOWLEDGE;		
-			$list_questions = array_diff ( explode ( ',', $_POST['ITest']['section_a']['questions'] ), array ('') );
-			$test->section_a->questions=$list_questions;
-			if($test->save())
-			{
-				$this->redirect(array('update','id'=>$test->id));
-			}	
-		}
-		*/
+		}		
 		$this->render ( 'create',array('test'=>$test));		
 	}
 	/**
@@ -239,16 +223,14 @@ class KnowledgeSkillController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-		$test=KnowledgeSkillTest::model()->findByPk($id);
-		if(isset($_POST['KnowledgeSkillTest']))
+		$test=TestKnowledgeSkill::model()->findByPk($id);
+		if(isset($_POST['TestKnowledgeSkill']))
 		{
-			$test->attributes=$_POST['KnowledgeSkillTest'];
-			$test->type=KnowledgeSkillTest::TYPE_KNOWLEDGE;			
-			//$list_questions = array_diff ( explode ( ',', $_POST['ITest']['questions'] ), array ('') );
-			//$test->content=$list_questions;
+			$test->attributes=$_POST['TestKnowledgeSkill'];
+			$test->type=TestKnowledgeSkill::TYPE_KNOWLEDGE;			
 			if($test->save())
 			{
-				$test=KnowledgeSkillTest::model()->findByPk($id);
+				$test=TestKnowledgeSkill::model()->findByPk($id);
 				Yii::app()->user->setFlash('success', Language::t('Update success'));
 			}	
 		}
@@ -288,7 +270,7 @@ class KnowledgeSkillController extends Controller
 			case 'delete' :
 				if (Yii::app ()->user->checkAccess ( 'test_delete')) {
 					foreach ( $list_checked as $id ) {
-						$item = KnowledgeSkillTest::model ()->findByPk ( (int)$id );
+						$item = TestKnowledgeSkill::model ()->findByPk ( (int)$id );
 						if (isset ( $item ))
 							if (! $item->delete ()) {
 								echo 'false';
@@ -312,17 +294,17 @@ class KnowledgeSkillController extends Controller
 	{
 		$this->initCheckbox('checked-test-list');
 		$criteria = new CDbCriteria ();
-		$criteria->compare ( 'type', KnowledgeSkillTest::TYPE_KNOWLEDGE );
-		$list_tests= new CActiveDataProvider ( 'KnowledgeSkillTest', array (
+		$criteria->compare ( 'type', TestKnowledgeSkill::TYPE_KNOWLEDGE );
+		$list_tests= new CActiveDataProvider ( 'TestKnowledgeSkill', array (
 			'criteria' => $criteria, 
 			'pagination' => array ('pageSize' => Yii::app ()->user->getState ( 'pageSize', Setting::s('DEFAULT_PAGE_SIZE','System')  ) ), 
 			'sort' => array ('defaultOrder' => 'id DESC' )    		
 		));
 		
-		$model=new KnowledgeSkillTest('search');
+		$model=new TestKnowledgeSkill('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['KnowledgeSkillTest']))
-			$model->attributes=$_GET['KnowledgeSkillTest'];
+		if(isset($_GET['TestKnowledgeSkill']))
+			$model->attributes=$_GET['TestKnowledgeSkill'];
 				
 		$this->render('index',array(
 			'list_tests'=>$list_tests,
@@ -380,22 +362,5 @@ class KnowledgeSkillController extends Controller
 	protected function performAjaxValidation($model)
 	{
 		
-	}
-	/**
-	 * 
-	 * function for tester doing the test
-	 */
-	public function actionTest()
-	{
-		//$employee = User::model()->findByPk($employee_id);
-		//$test = ITest::model()->findByPk($test_id);
-		//$exam = Exam::model()->findByPk($exam_id);
-		
-		$this->render('making_test', array(
-				//'test'=>$test,
-				//'employee'=>$employee,
-				//'exam'=>$exam,	
-			));
-			
 	}
 }

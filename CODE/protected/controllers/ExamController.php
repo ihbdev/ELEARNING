@@ -108,8 +108,7 @@ class ExamController extends Controller
 		return true;
 	}
 	public function actionToDo($id) {
-		$model = Exam::model ()->findByPk ( $id );
-		$test = ITest::model ()->findByPk ( $model->test_id );
+		$model = Exam::model ()->findByPk ( $id );		
 		
 		if ($this->checkToDo ( $model->id )) {
 			$criteria = new CDbCriteria ();
@@ -119,18 +118,22 @@ class ExamController extends Controller
 
 			switch ($model->type) {
 				case Exam::TYPE_LANGUAGE :
+					$test = TestLanguageSkill::model ()->findByPk ( $model->test_id );
 					$form = 'todo_language';
 					break;
 				case Exam::TYPE_KNOWLEDGE :
+					$test = TestKnowledgeSkill::model ()->findByPk ( $model->test_id );
 					$form = 'todo_knowledge';
 					break;
 				case Exam::TYPE_MARKINGUP :
+					$test = TestMarkingUpSkill::model ()->findByPk ( $model->test_id );
 					if ($test->level > 0)
 						$form = 'todo_marking_up';
 					else
 						$form = 'todo_marking_up';
 					break;
 				case Exam::TYPE_CODING :
+					$test = TestCodingSkill::model ()->findByPk ( $model->test_id );
 					$form = 'todo_coding';
 					break;
 			}
@@ -168,31 +171,33 @@ class ExamController extends Controller
 	}
 	public function actionView($id) {
 		$model = Exam::model ()->findByPk ( $id );
-		$test = ITest::model ()->findByPk ( $model->test_id );
 		
 		switch ($model->type) {
 			case Exam::TYPE_LANGUAGE :
-				$form = 'view_language';
-				break;
-			case Exam::TYPE_KNOWLEDGE :
-				$form = 'view_knowledge';
-				break;
-			case Exam::TYPE_MARKINGUP :
-				if ($test->level > 0)
-					$form = 'view_marking_up';
-				else
-					$form = 'view_marking_up';
-				break;
-			case Exam::TYPE_CODING :
-				$form = 'view_coding';
-				break;
+					$test = TestLanguageSkill::model ()->findByPk ( $model->test_id );
+					$form = 'todo_language';
+					break;
+				case Exam::TYPE_KNOWLEDGE :
+					$test = TestKnowledgeSkill::model ()->findByPk ( $model->test_id );
+					$form = 'todo_knowledge';
+					break;
+				case Exam::TYPE_MARKINGUP :
+					$test = TestMarkingUpSkill::model ()->findByPk ( $model->test_id );
+					if ($test->level > 0)
+						$form = 'todo_marking_up';
+					else
+						$form = 'todo_marking_up';
+					break;
+				case Exam::TYPE_CODING :
+					$test = TestCodingSkill::model ()->findByPk ( $model->test_id );
+					$form = 'todo_coding';
+					break;
 		}
 		
 		$this->render ( $form, array ('model' => $model, 'test' => $test ) );
 	}
 	public function actionStore($id) {
-		$model = Exam::model ()->findByPk ( $id );
-		$test = ITest::model ()->findByPk ( $model->test_id );		
+		$model = Exam::model ()->findByPk ( $id );	
 		if (isset ( $_POST ['Result'] )) {
 			$criteria = new CDbCriteria ();
 			$criteria->compare ( 'exam_id',$model->id);		
