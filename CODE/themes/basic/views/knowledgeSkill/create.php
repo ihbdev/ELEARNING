@@ -11,12 +11,12 @@
 		<!--end title-->
 		<div class="folder-content">
 		<?php $form=$this->beginWidget('CActiveForm', array('method'=>'post','enableAjaxValidation'=>true, 'id'=>'add_test')); ?>
-            <div class="testpost-outer">
             <?php
     			foreach(Yii::app()->user->getFlashes() as $key => $message) {
         			echo '<div class="flash-' . $key . '">' . $message . "</div>\n";
     			}
 			?>
+            <div class="testpost-outer">
             	<div class="testpost-box">
 					<h2>Language</h2>
 					<?php echo $form->dropDownList($test,'catid',array('Western Europe'=>'-Western Europe-','Eastern Europe'=>'-Eastern Europe-','ZA'=>'- ZA -','Vietnam'=>'- Vietnam -','USA'=>'- USA -'),array('style'=>'width:200px;')); ?>
@@ -303,7 +303,7 @@
                                                 <td width="14%"><label><b>D</b></label>&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][9][answer][D]" style="width:30px;"></td>
                                                 <td width="14%"><label><b>E</b></label>&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][9][answer][E]" style="width:30px;"></td>
                                                 <td width="14%"><label><b>F</b></label>&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][9][answer][F]" style="width:30px;"></td>
-                                                <td width="14%"><label><b>G</b></label>&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][9][answer][G]" style="width:30px;"></td>
+                                                <td width="14%"><label><b>G</b></label>&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][9][answer][G]" style="width:30px;"></td>                                                
                                             </tr>
                                         </tbody>
                                     </table>

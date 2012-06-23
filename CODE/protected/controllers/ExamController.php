@@ -151,7 +151,11 @@ class ExamController extends Controller
 					}
 					$list_answer [$question_id] = $tmp;
 				}
+				if($model->type == Exam::TYPE_KNOWLEDGE){
+					$result->answer = $_POST['Result'];
+				} else {			
 				$result->answer = $list_answer;
+				}
 				if ($result->save())
 					{
 						$tmp_result->delete();
