@@ -31,7 +31,7 @@ class DefaultController extends Controller
 	
 	public function actionIndex()
 	{
-		$this->redirect(array('news/index'));
+		$this->redirect(array('exam/index'));
 	}
 	/**
 	 * Displays the login page, redirect to index page if login successfully 
@@ -50,42 +50,19 @@ class DefaultController extends Controller
 			$model->attributes=$_POST['LoginForm'];
 			// validate user input and redirect to the previous page if valid
 			if($model->validate() && $model->login()) {
-				if (Yii::app ()->user->checkAccess ( 'news_index'))
-				{
-					$url = 'http://'.Yii::app()->getRequest()->serverName .Yii::app()->createUrl('news/index');			
-					$this->redirect($url);
-				}
-				if (Yii::app ()->user->checkAccess ( 'product_index'))
-				{
-					$url = 'http://'.Yii::app()->getRequest()->serverName .Yii::app()->createUrl('product/index');			
-					$this->redirect($url);
-				}
-				if (Yii::app ()->user->checkAccess ( 'video_index'))
-				{
-					$url = 'http://'.Yii::app()->getRequest()->serverName .Yii::app()->createUrl('galleryVideo/index');			
-					$this->redirect($url);
-				}
-				if (Yii::app ()->user->checkAccess ( 'album_index'))
-				{
-					$url = 'http://'.Yii::app()->getRequest()->serverName .Yii::app()->createUrl('album/index');			
-					$this->redirect($url);
-				}
-				if (Yii::app ()->user->checkAccess ( 'static_page_index'))
-				{
-					$url = 'http://'.Yii::app()->getRequest()->serverName .Yii::app()->createUrl('staticPage/index');			
-					$this->redirect($url);
-				}
+					$url = 'http://'.Yii::app()->getRequest()->serverName .Yii::app()->createUrl('exam/index');			
+					$this->redirect($url);				
 			}
 			else {
 				$login_incorrect=Yii::app()->session['login_incorrect'];
 				$login_incorrect++;
 				Yii::app()->session['login_incorrect']=$login_incorrect;
-				Yii::app ()->user->setFlash ( 'error', 'Username/Password không chính xác.' );
+				Yii::app ()->user->setFlash ( 'error', 'Username/Password incorrect.' );
 			}
 		}
 		}
 		else {
-			Yii::app ()->user->setFlash ( 'error', 'Bạn đã đăng nhập sai 5 lần liên tiếp. Vui lòng thử lại sau.' );
+			Yii::app ()->user->setFlash ( 'error', 'Please try again after 5 minitues.' );
 		}
 		//The username or password that you entered is incorrect.
 		// display the login form

@@ -1,41 +1,57 @@
 <?php
 return array(
 	'role'=>array(
-		'manager_operation'=>'Chức năng',
-		'manager_task'=>'Nhóm chức năng',
-		'manager_role'=>'Quyền'
-	),
-	'news'=>array(
-		'view_all'=>'Hiển thị tất cả',
-		'view_categories'=>'Hiển thị theo danh mục',
-		'index'=>'Quản lý',
-		'create'=>'Tạo mới',
-		'manager_category'=>'Danh mục'
+		'manager_operation'=>'Manager Operations',
+		'manager_task'=>'Manager Task',
+		'manager_role'=>'Manager Role'
 	),
 	'menu'=>array(
-		'manager'=>'Quản lý',		
+		'manager'=>'Manager',		
 	),
 	'language'=>array(
-		'create'=>'Tạo mới',
-		'edit'=>'Cập nhật',
-		'delete'=>'Xóa',
-		'import'=>'Nhập dữ liệu từ file excel',
-		'export'=>'Xuất dữ liệu ra file excel'
+		'create'=>'Create',
+		'edit'=>'Edit',
+		'delete'=>'Delete',
+		'import'=>'Import',
+		'export'=>'Export'
 	),
 	'setting'=>array(
-		'index'=>'Quản lý'
+		'index'=>'Manager'
 	),
 	'image'=>array(
-		'list'=>'Danh sách',
-		'clear_image'=>'Dọn dẹp'
+		'list'=>'List',
+		'clear_image'=>'Clear'
 	),
 	'user'=>array(
-		'index'=>'Quản lý',
-		'create'=>'Thêm mới'
+		'index'=>'Manager',
+		'create'=>'Create'
 	),
-	'keyword'=>array(
-		'index'=>'Quản lý',
-		'create'=>'Tạo mới',
-		'manager_category'=>'Danh mục'
+	'languageSkill'=>array(
+		'index'=>'Manager',
+		'create'=>'Create'
 	),
+	'knowledgeSkill'=>array(
+		'index'=>'Manager',
+		'create'=>'Create'
+	),
+	'markingUpSkill'=>array(
+		'index'=>'Manager',
+		'create'=>'Create'
+	),
+	'codingSkill'=>array(
+		'index'=>'Manager',
+		'create'=>'Create'
+	),
+	'exam'=>array(
+		'index'=>'Manager',
+		'create'=>'Create',
+		'list'=>'List'
+	),
+	'result'=>array(
+		'index'=>'Manager',
+	),
+	'system'=>array(
+		'language'=>'Language',
+		'office'=>'Office'
+	)
 );

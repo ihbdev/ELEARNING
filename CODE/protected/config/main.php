@@ -18,6 +18,7 @@ return array(
 		'application.components.core.*',
 		'application.components.*',
 		'application.models.*',
+		'application.extensions.yii-mail.*'
 	),
 	'defaultController'=>'default/login',
 	'modules'=>array(
@@ -104,9 +105,20 @@ return array(
 			'connectionString' => 'mysql:host=localhost;dbname=learning',
 			'emulatePrepare' => true,
 			'username' => 'root',
-			'password' => '',
+			'password' => 'thanhdaica',
 			'charset' => 'utf8',
 			'schemaCachingDuration' => 180,
+		),
+		'mail'=>array(
+			'class'=>'application.extensions.yii-mail.YiiMail',
+			'transportType'=>'smtp',
+			'transportOptions'=>array(
+			'host'=>'mail.ihbvietnam.com',
+			'username'=>'bien.vo@ihbvietnam.com',
+			'password'=>'vohoangbien',
+			//'encryption'=>'ssl',
+			),
+			//'viewPath'=>'application.views.mail'
 		),
 		/*
 		'cache' => array(

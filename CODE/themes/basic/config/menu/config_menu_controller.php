@@ -1,11 +1,16 @@
 <?php
 return array(
-	'setting'=>'Cấu hình',
-	'keyword'=>'Keyword',
+	'setting'=>'Setting',
 	'menu'=>'Menu',
-	'language'=>'Ngôn ngữ',
-	'role'=>'Quản lý quyền',
-	'news'=>'Tin tức',	
+	'language'=>'Language',
+	'role'=>'Authentication',
 	'user'=>'User',
-	'image'=>'Image'
+	'image'=>'Image',
+	'languageSkill'=>'Language Skill',
+	'knowledgeSkill'=>'Knowledge Skill',
+	'markingUpSkill'=>'Marking-up Skill',
+	'codingSkill'=>'Coding Skill',
+	'exam'=>'Exam',
+	'result'=>'Result',
+	'system'=>'System'
 );

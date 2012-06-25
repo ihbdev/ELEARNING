@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link href="<?php echo Yii::app()->theme->baseUrl?>/css/standard.css" rel="stylesheet" type="text/css" media="screen, projection"  />
-<title>.:: Trang quản trị | IHB Việt Nam::.</title>
+<title>.:: Mediatenor! Coding Profile - Training - Protagonists ::.</title>
 </head>
 <body id="home">
 <!--begin top panel-->
@@ -35,7 +35,7 @@
 <div class="clear"></div>
 	<!--begin footer-->
 	<div id="footer" class="top">
-		<p>© 2012 <a href="">IHB Việt Nam</a>. All rights reserved</p>
+		<p>© 2012 <a href="">Media Tenor International</a>. All rights reserved</p>
 	</div>
 	<!--end footer-->
 </div>

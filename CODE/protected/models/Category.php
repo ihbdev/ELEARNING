@@ -685,4 +685,14 @@ class Category extends CActiveRecord
 			$result=array();
 		return $result;
 	}
+	
+	/**
+ 	* create Language array to make dropdownList
+ 	*/
+	public static function getLanguageOption(){
+		$list_lang = array();
+	 	$list_cat=Category::model()->findAll('type ='.Category::TYPE_ITEST_LANG.'');
+	 	foreach ($list_cat as $cat) $list_lang[$cat->id] = $cat->name;
+	 	return $list_lang;
+	}
 }

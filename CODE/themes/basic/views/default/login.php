@@ -3,7 +3,7 @@
 		<div id="adminBox" class="fl">
 			<div class="icon fl" style="background-position:-46px -92px;"></div>
 			<div class="listContent fr">
-				<h1>Đăng nhập</h1>				
+				<h1>Login</h1>				
 			</div>
 			<?php
     		foreach(Yii::app()->user->getFlashes() as $key => $message) {

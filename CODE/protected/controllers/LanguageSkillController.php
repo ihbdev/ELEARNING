@@ -102,7 +102,6 @@ class LanguageSkillController extends Controller
 		if(isset($_POST['TestLanguageSkill']))
 		{
 			$test->attributes=$_POST['TestLanguageSkill'];
-			$test->type=TestLanguageSkill::TYPE_LANGUAGE;
 			/*
 			 * Update material
 			 */
@@ -155,7 +154,6 @@ class LanguageSkillController extends Controller
 		if(isset($_POST['TestLanguageSkill']))
 		{
 			$test->attributes=$_POST['TestLanguageSkill'];
-			$test->type=TestLanguageSkill::TYPE_LANGUAGE;
 
 			/*
 			 * Update material
@@ -232,22 +230,7 @@ class LanguageSkillController extends Controller
 		if(isset($_GET['TestLanguageSkill']))
 			$model->attributes=$_GET['TestLanguageSkill'];
 			
-		$criteria = new CDbCriteria ();
-		$criteria->compare ( 'type', TestLanguageSkill::TYPE_LANGUAGE );
-		if($model->title != '')
-			$criteria->compare ( 'title', $model->title, true );
-		if($model->group_level === '0')
-			$criteria->compare ( 'level',0);
-		if($model->group_level === '1')
-			$criteria->addCondition( 'level <> 0');	
-			
-		$list_tests= new CActiveDataProvider ( 'TestLanguageSkill', array (
-			'criteria' => $criteria, 
-			'pagination' => array ('pageSize' => Yii::app ()->user->getState ( 'pageSize', Setting::s('DEFAULT_PAGE_SIZE','System')  ) ), 
-			'sort' => array ('defaultOrder' => 'id DESC' )    		
-		));
 		$this->render('index',array(
-			'list_tests'=>$list_tests,
 			'model'=>$model
 		));
 	}

@@ -17,7 +17,7 @@ $cs = Yii::app()->getClientScript();
 $cs->registerScriptFile(Yii::app()->theme->baseUrl.'/js/jquery.alerts.js');
 $cs->registerCssFile(Yii::app()->theme->baseUrl.'/css/jquery.alerts.css');
 ?>
-<title>.:: Trang quản trị | IHB Việt Nam ::.</title>
+<title>.:: Mediatenor! Coding Profile - Training - Protagonists ::.</title>
 <!--[if IE]>
 <style type="text/css" media="screen, projection">
 #menu ul li {float: left; width:100%;}
@@ -46,7 +46,7 @@ $cs->registerCssFile(Yii::app()->theme->baseUrl.'/css/jquery.alerts.css');
 			</div>
 			<!--begin right content-->
 			<div id="TP_right_panel" class="TP_toolbar_item">
-				<p><a href="#">www.MediaTenor.com</a> | <a href="<?php echo Yii::app()->request->getBaseUrl(true);?>">Policy</a> | <a href="<?php echo Yii::app()->createUrl('default/logout');?>">Logout</a> (<span style="color:#d9251d;"><?php echo Yii::app()->user->name;?></span>)</p>
+				<p><a href="http://www.mediatenor.com/">www.MediaTenor.com</a> | <a href="<?php echo Yii::app()->createUrl('user/changePassword');?>">Change password</a> | <a href="<?php echo Yii::app()->createUrl('default/logout');?>">Logout</a> (<span style="color:#d9251d;"><?php echo Yii::app()->user->name;?></span>)</p>
 			</div>
 			<!--end right content-->
 			<!--begin menuBar-->
@@ -62,7 +62,7 @@ $cs->registerCssFile(Yii::app()->theme->baseUrl.'/css/jquery.alerts.css');
 <div class="clear"></div>
 	<!--begin footer-->
 	<div id="footer" class="top">
-		<p>© 2012 <a href="">IHB Việt Nam</a>. All rights reserved</p>
+		<p>© 2012 <a href="">Media Tenor International</a>. All rights reserved</p>
 	</div>
 	<!--end footer-->
 </div>

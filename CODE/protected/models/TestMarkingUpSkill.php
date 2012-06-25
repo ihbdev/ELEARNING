@@ -15,21 +15,18 @@
 class TestMarkingUpSkill extends CActiveRecord
 {
 	/**
+	 * Config scope of news
+	 */
+	public function defaultScope(){
+		return array(
+			'condition'=>'type = '.ITest::TYPE_MARKINGUP,
+		);	
+	}
+	/**
 	 * Config status of news
 	 */
 	const STATUS_PENDING=0;
 	const STATUS_ACTIVE=1;
-	const TYPE_LANGUAGE=1;
-	const TYPE_KNOWLEDGE=2;
-	const TYPE_MARKINGUP=3;
-	const TYPE_CODING=4;
-	
-	static $list_type=array(
-			TestMarkingUpSkill::TYPE_LANGUAGE=>'Language Skill',
-			TestMarkingUpSkill::TYPE_KNOWLEDGE=>'Knowledge Skill',
-			TestMarkingUpSkill::TYPE_MARKINGUP=>'Marking-up Skill',
-			TestMarkingUpSkill::TYPE_CODING=>'Coding Skill'
-	);
 	
 	const MARKINGUP_MAX_LEVEL=9;
 	/**
@@ -268,14 +265,15 @@ class TestMarkingUpSkill extends CActiveRecord
 	 */
 	public function search(){
 		$criteria = new CDbCriteria ();
-		$criteria->compare ( 'type', TestMarkingUpSkill::TYPE_MARKINGUP );
+		$criteria->compare ( 'type', ITest::TYPE_MARKINGUP );
 		if($this->title != '')
 			$criteria->compare ( 'title', $this->title, true );
 		if($this->group_level === '0')
 			$criteria->compare ( 'level',0);
 		if($this->group_level === '1')
 			$criteria->addCondition( 'level <> 0');	
-			
+		if (isset ( $_GET ['pageSize'] ))
+			Yii::app ()->user->setState ( 'pageSize', $_GET ['pageSize'] );	
 		$list_tests= new CActiveDataProvider ( 'TestMarkingUpSkill', array (
 			'criteria' => $criteria, 
 			'pagination' => array ('pageSize' => Yii::app ()->user->getState ( 'pageSize', Setting::s('DEFAULT_PAGE_SIZE','System')  ) ), 

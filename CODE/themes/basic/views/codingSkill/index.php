@@ -2,18 +2,18 @@
 	<div class="folder top">
 		<!--begin title-->
 		<div class="folder-header">
-			<h1><?php echo Language::t('List test Marking-up')?></h1>
+			<h1><?php echo Language::t('List test')?></h1>
 			<div class="header-menu">
 				<ul>
-					<li class="ex-show"><a class="activities-icon" href=""><span><?php echo Language::t('List test Marking-up')?></span></a></li>
+					<li class="ex-show"><a class="activities-icon" href=""><span><?php echo Language::t('List test')?></span></a></li>
 				</ul>
 			</div>
 		</div>
 		<!--end title-->
 		<div class="folder-content">
             <div>
-            	<input type="button" class="button" value="<?php echo Language::t('Add new test marking-up final')?>" style="width:180px;" onClick="parent.location='<?php echo Yii::app()->createUrl('markingUpSkill/create',array('group_level'=>0))?>'"/>
-                <input type="button" class="button" value="<?php echo Language::t('Add new test marking-up level')?>" style="width:180px;" onClick="parent.location='<?php echo Yii::app()->createUrl('markingUpSkill/create',array('group_level'=>1))?>'"/>
+            	<input type="button" class="button" value="<?php echo Language::t('Add new test coding detail')?>" style="width:220px;" onClick="parent.location='<?php echo Yii::app()->createUrl('codingSkill/create',array('type'=>'detail'))?>'"/>
+                <input type="button" class="button" value="<?php echo Language::t('Add new test coding profile')?>" style="width:220px;" onClick="parent.location='<?php echo Yii::app()->createUrl('codingSkill/create',array('type'=>'profile'))?>'"/>
                 <div class="line top bottom"></div>	
             </div>
              <!--begin box search-->
@@ -26,7 +26,7 @@
 				});");
 		?>
             <div class="box-search">            
-                <h2>Tìm kiếm</h2>
+                <h2>Search</h2>
                 <?php $form=$this->beginWidget('CActiveForm', array('method'=>'get','id'=>'test-search')); ?>
                 <!--begin left content-->
                 <div class="fl" style="width:480px;">

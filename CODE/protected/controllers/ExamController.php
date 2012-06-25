@@ -91,45 +91,72 @@ class ExamController extends Controller
 			),
 		);
 	}
-	public function checkToDo($exam_id){
-		$exam=Exam::model()->findByPk($exam_id);
+	public function actionCheckToDo($id){
+		$exam=Exam::model()->findByPk($id);
 		if(!in_array(Yii::app()->user->id,$exam->list_users))
+		{			
+			if(Yii::app()->getRequest()->getIsAjaxRequest()){
+				$result=array('success'=>false,'message'=>'Không trong danh sách làm bài test này');
+				echo json_encode($result);
+				Yii::app()->end();
+			}
 			return false;
+		}
 		if(time() < $exam->start_time && time() > $exam->finish_time)	
+		{
+			if(Yii::app()->getRequest()->getIsAjaxRequest()){
+				$result=array('success'=>false,'message'=>'Hết thời gian làm bài');
+				echo json_encode($result);
+				Yii::app()->end();
+			}
 			return false;
-			
+		}
 		$criteria = new CDbCriteria ();
 		$criteria->compare ( 'exam_id',$exam->id);		
 		$criteria->compare ( 'user_id',Yii::app()->user->id);
 		$result=Result::model()->find($criteria);
 		if(isset($result))
-			return false;		
+		{
+			if(Yii::app()->getRequest()->getIsAjaxRequest()){
+				$result=array('success'=>false,'message'=>'Đã nộp bài. Bạn không có quyền thay đổi.');
+				echo json_encode($result);
+				Yii::app()->end();
+			}
+			return false;	
+		}	
+		if(Yii::app()->getRequest()->getIsAjaxRequest()){
+				$result=array('success'=>true,'url'=>$exam->getToDoUrl());
+				echo json_encode($result);
+				Yii::app()->end();
+			}
 		return true;
 	}
 	public function actionToDo($id) {
-		$model = Exam::model ()->findByPk ( $id );
-		$test = ITest::model ()->findByPk ( $model->test_id );
-
-		if ($this->checkToDo ( $model->id )) {
+		$model = Exam::model ()->findByPk ( $id );				
+		if ($this->actionCheckToDo ( $model->id )) {
 			$criteria = new CDbCriteria ();
 			$criteria->compare ( 'exam_id', $model->id );
 			$criteria->compare ( 'user_id', Yii::app ()->user->id );
 			$tmp_result = TmpResult::model ()->find ( $criteria );
-
+          	
 			switch ($model->type) {
 				case Exam::TYPE_LANGUAGE :
+					$test = TestLanguageSkill::model ()->findByPk ( $model->test_id );
 					$form = 'todo_language';
 					break;
 				case Exam::TYPE_KNOWLEDGE :
+					$test = TestKnowledgeSkill::model ()->findByPk ( $model->test_id );
 					$form = 'todo_knowledge';
 					break;
 				case Exam::TYPE_MARKINGUP :
+					$test = TestMarkingUpSkill::model ()->findByPk ( $model->test_id );
 					if ($test->level > 0)
 						$form = 'todo_marking_up';
 					else
 						$form = 'todo_marking_up';
 					break;
 				case Exam::TYPE_CODING :
+					$test = TestCodingSkill::model ()->findByPk ( $model->test_id );
 					$form = 'todo_coding';
 					break;
 			}
@@ -150,7 +177,11 @@ class ExamController extends Controller
 					}
 					$list_answer [$question_id] = $tmp;
 				}
+				if($model->type == Exam::TYPE_KNOWLEDGE){
+					$result->answer = $_POST['Result'];
+				} else {			
 				$result->answer = $list_answer;
+				}
 				if ($result->save())
 					{
 						$tmp_result->delete();
@@ -162,31 +193,34 @@ class ExamController extends Controller
 	}
 	public function actionView($id) {
 		$model = Exam::model ()->findByPk ( $id );
-		$test = ITest::model ()->findByPk ( $model->test_id );
 		
 		switch ($model->type) {
 			case Exam::TYPE_LANGUAGE :
-				$form = 'view_language';
-				break;
-			case Exam::TYPE_KNOWLEDGE :
-				$form = 'view_knowledge';
-				break;
-			case Exam::TYPE_MARKINGUP :
-				if ($test->level > 0)
-					$form = 'view_marking_up';
-				else
-					$form = 'view_marking_up';
-				break;
-			case Exam::TYPE_CODING :
-				$form = 'view_coding';
-				break;
+					$test = TestLanguageSkill::model ()->findByPk ( $model->test_id );
+					$form = 'todo_language';
+					break;
+				case Exam::TYPE_KNOWLEDGE :
+					$test = TestKnowledgeSkill::model ()->findByPk ( $model->test_id );
+					$form = 'todo_knowledge';
+					break;
+				case Exam::TYPE_MARKINGUP :
+					$test = TestMarkingUpSkill::model ()->findByPk ( $model->test_id );
+					if ($test->level > 0)
+						$form = 'todo_marking_up';
+					else
+						$form = 'todo_marking_up';
+					break;
+				case Exam::TYPE_CODING :
+					$test = TestCodingSkill::model ()->findByPk ( $model->test_id );
+					$form = 'todo_coding';
+					break;
 		}
 		
 		$this->render ( $form, array ('model' => $model, 'test' => $test ) );
 	}
+	
 	public function actionStore($id) {
-		$model = Exam::model ()->findByPk ( $id );
-		$test = ITest::model ()->findByPk ( $model->test_id );		
+		$model = Exam::model ()->findByPk ( $id );	
 		if (isset ( $_POST ['Result'] )) {
 			$criteria = new CDbCriteria ();
 			$criteria->compare ( 'exam_id',$model->id);		
@@ -239,7 +273,6 @@ class ExamController extends Controller
 			$model->list_users=array_diff(explode(',',$_POST['Exam']['users']),array(''));
 			
 			$test=ITest::model()->findByPk($model->test_id);
-			var_dump($model->test_id);
 			$model->type=$test->type;
 			if($model->save())
 			{
@@ -340,7 +373,7 @@ class ExamController extends Controller
 		$new_list_choicing_user=array();
 		foreach ($old_list_choicing_user as $index=>$choicing_user){
 			if($choicing_user != $user_id)
-				$new_list_choicing_user[]=$user_id;				
+				$new_list_choicing_user[]=$choicing_user;				
 		}	
 		Yii::app()->session["list-choicing-user"]=$new_list_choicing_user;	
 		echo json_encode(array('success'=>true,'value'=>implode(',',Yii::app()->session["list-choicing-user"])));				
@@ -570,6 +603,26 @@ class ExamController extends Controller
 		}
 		echo 'true';
 		Yii::app()->end();
+	}
+	/**
+	 * Lists all models.
+	 */
+	public function actionList($type)
+	{
+		$this->initCheckbox('checked-exam-list');
+		
+		$model=new Exam('search');
+		$model->unsetAttributes();  // clear any default values
+		$model->type=$type;
+		$user=User::model()->findByPk(Yii::app()->user->id);
+		$model->office_id=$user->office_id;
+		
+		if(isset($_GET['Exam']))
+			$model->attributes=$_GET['Exam'];
+			
+		$this->render('list',array(
+			'model'=>$model,
+		));
 	}
 	/**
 	 * Lists all models.

@@ -147,7 +147,9 @@ class Result extends CActiveRecord
 	public function search() {
 		$criteria = new CDbCriteria ();
 		$criteria->compare ( 'exam_id',$this->exam_id);		
-		$criteria->compare ( 'user_id',$this->user_id);		
+		$criteria->compare ( 'user_id',$this->user_id);	
+		if (isset ( $_GET ['pageSize'] ))
+			Yii::app ()->user->setState ( 'pageSize', $_GET ['pageSize'] );
 		$list_results= new CActiveDataProvider ( 'Result', array (
 			'criteria' => $criteria, 
 			'pagination' => array ('pageSize' => Yii::app ()->user->getState ( 'pageSize', Setting::s('DEFAULT_PAGE_SIZE','System')  ) ), 

@@ -2,10 +2,10 @@
 	<div class="folder top">
 		<!--begin title-->
 		<div class="folder-header">
-			<h1>quản trị người dùng</h1>
+			<h1>Manager users</h1>
 			<div class="header-menu">
 				<ul>
-					<li><a class="header-menu-active new-icon" href=""><span>Chỉnh sửa thông tin của <?php echo $model->username;?></span></a></li>					
+					<li><a class="header-menu-active new-icon" href=""><span>Edit <?php echo $model->username;?></span></a></li>					
 				</ul>
 			</div>
 		</div>
@@ -37,8 +37,8 @@
                     </li>
                     </div>
                    		<li>
-                   		<input type="reset" class="button" value="Hủy thao tác" style="margin-left:153px; width:125px;" />
-                    	<input type="submit" class="button" value="Cập nhật" style="margin-left:20px; width:125px;" />					 
+                   		<input type="reset" class="button" value="Cancal" style="margin-left:153px; width:125px;" />
+                    	<input type="submit" class="button" value="Update" style="margin-left:20px; width:125px;" />					 
                     	</li>
 				</ul>
 			</div>

@@ -77,7 +77,7 @@ class UserController extends Controller
 			),
 			array('allow',  
 				'actions'=>array('changePassword'),
-				'roles'=>array('user_changePassword'),
+				'users'=>array('@'),
 			),
 			array('allow',  
 				'actions'=>array('resetPassword'),
@@ -121,8 +121,16 @@ class UserController extends Controller
 			if($model->save()){
 				$model=User::model()->findByPk($model->id);
 				$model->username=$model->generateUsername(User::LENGTH_USERNAME);
-				if($model->save())
+				if($model->save()){
+					//Send information account
+					$email= new YiiMailMessage();
+					$email->setTo($model->email); 
+					$email->from='thanhlx0204@gmail.com';
+					$email->setSubject('Information account');
+					$email->setBody('Username: '.$model->username.' & Password: '.$clear_password);
+					Yii::app()->mail->send($email);
 					$this->redirect(array('update','id'=>$model->id));	
+				}
 			}		
 		}
 		
@@ -219,32 +227,27 @@ class UserController extends Controller
 			if($src) 
 				echo json_encode(array('success'=>true,'src'=>$src));
 			else 
-				echo json_encode(array('success'=>false));		
+				echo json_encode( array ('success' => false ) );
 	}
 	/**
 	 * Reset User password
 	 * @param integer $id the ID of user to reset password
 	 */
-	public function actionResetPassword($id)
-	{
-		$model = $this->loadModel ( $id );
-		$model->scenario = 'reset_password';
-		// Ajax validate
-		$this->performAjaxValidation($model);
-		if(isset($_POST['User']))
-		{
-			$model->attributes=$_POST['User'];		
-			//Create password and salt
-			if($model->validate()){
-				$model->salt=$model->generateSalt();
-				$model->password=$model->hashPassword($model->clear_password,$model->salt);
+	public function actionResetPassword($id) {
+		$model = $this->loadModel ( $id );	
+		$clear_password = $model->generatePassword ( User::LENGTH_PASSWORD );
+		$model->salt = $model->generateSalt ();
+		$model->password = $model->hashPassword ( $clear_password, $model->salt );
+		if ($model->save ()) {
+			$result= array('success'=>true);
+			echo json_encode($result);
+			$email = new YiiMailMessage ();
+			$email->setTo ( $model->email );
+			$email->from = 'thanhlx0204@gmail.com';
+			$email->setSubject ( 'Information account' );
+			$email->setBody('Username: '.$model->username.' & Password: '.$clear_password);
+			Yii::app()->mail->send($email);
 			}
-			if($model->save())
-				$this->redirect(array('index'));			
-		}
-		$this->render('reset-password',array(
-			'model'=>$model,
-		));
 	}
 	/**
 	 * Change password

@@ -76,7 +76,7 @@
            <?php 
 			$this->widget('iPhoenixGridView', array(
   				'id'=>'test-list',
-  				'dataProvider'=>$list_tests,		
+  				'dataProvider'=>$model->search(),		
   				'columns'=>array(
 					array(
       					'class'=>'CCheckBoxColumn',

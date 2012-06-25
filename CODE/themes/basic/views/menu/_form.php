@@ -13,7 +13,7 @@
                     <li>
                         <?php echo $form->labelEx($model,'parent_id',array('style'=>'width:200px;')); ?>
                         <?php
-                        	$view_parent_nodes=array('0'=>'Gốc');
+                        	$view_parent_nodes=array('0'=>'Root');
                         	 foreach ($model->parent_nodes as $id=>$level){
                         	 	$node=Menu::model()->findByPk($id);
 								$view = "";

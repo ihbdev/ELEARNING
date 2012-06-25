@@ -5,21 +5,9 @@ return array(
 				'manager_task'=>Yii::app ()->user->checkAccess ('role_index')?'role/index':'',
 				'manager_role'=>Yii::app ()->user->checkAccess ('role_index')?'role/index':'',
 			),			
-			'news'=>array(
-				'index'=>Yii::app ()->user->checkAccess ('news_index')?'news/index':'',
-				'create'=>Yii::app ()->user->checkAccess ('news_create')?'news/create':'',
-				'manager_category'=>Yii::app ()->user->checkAccess ('category_index')?'category':'',
-				'view_categories'=>'/news/list',
-				'view_all'=>'/news/index',
-			),
 			'user'=>array(
 				'index'=>Yii::app ()->user->checkAccess ('user_index')?'user/index':'',
 				'create'=>Yii::app ()->user->checkAccess ('user_create')?'user/create':'',
-			),
-			'keyword'=>array(
-				'index'=>Yii::app ()->user->checkAccess ('keyword_index')?'keyword/index':'',
-				'create'=>Yii::app ()->user->checkAccess ('keyword_create')?'keyword/create':'',
-				'manager_category'=>Yii::app ()->user->checkAccess ('category_index')?'category':'',
 			),
 			'setting'=>array(
 				'index'=>Yii::app ()->user->checkAccess ('setting_index')?'setting/index':'',
@@ -38,4 +26,32 @@ return array(
 			'menu' => array (
 				'manager' => Yii::app ()->user->checkAccess ('menu_index')?'menu':'', 				
 			),
+			'languageSkill'=>array(
+				'index'=>'languageSkill/index',
+				'create'=>'languageSkill/create'
+			),
+			'knowledgeSkill'=>array(
+				'index'=>'knowledgeSkill/index',
+				'create'=>'knowledgeSkill/create'
+			),
+			'markingUpSkill'=>array(
+				'index'=>'markingUpSkill/index',
+				'create'=>'markingUpSkill/create'
+			),
+			'codingSkill'=>array(
+				'index'=>'codingSkill/index',
+				'create'=>'codingSkill/create'
+			),
+			'exam'=>array(
+				'index'=>'exam/index',
+				'create'=>'exam/create',
+				'list'=>'exam/list'
+			),
+			'result'=>array(
+				'index'=>'result/index',
+			),
+			'system'=>array(
+				'language'=>'category/index',
+				'office'=>'category/index'
+			)
 		);

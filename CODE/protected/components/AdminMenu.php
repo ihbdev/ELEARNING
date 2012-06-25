@@ -9,7 +9,10 @@ class AdminMenu extends CPortlet
 	protected function renderContent()
 	{
 		$model=new Menu();				
-		$model->type=Menu::TYPE_ADVANCE_ADMIN_MENU;		
+		if(Yii::app ()->user->checkAccess ('Admin'))
+			$model->type=Menu::TYPE_ADMIN_MENU;	
+		else	
+			$model->type=Menu::TYPE_EMPLOYEE_MENU;
 		//Create list menu which are used when view menu
 		$list_nodes=$model->list_nodes;
 		foreach ($list_nodes as $id=>$level) {

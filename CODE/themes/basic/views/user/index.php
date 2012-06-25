@@ -2,17 +2,17 @@
 	<div class="folder top">
 		<!--begin title-->
 		<div class="folder-header">
-			<h1>quản trị người dùng</h1>
+			<h1>Manager users</h1>
 			<div class="header-menu">
 				<ul>
-					<li class="ex-show"><a class="activities-icon" href=""><span>Danh sách người dùng</span></a></li>
+					<li class="ex-show"><a class="activities-icon" href=""><span>List users</span></a></li>
 				</ul>
 			</div>
 		</div>
 		<!--end title-->
 		<div class="folder-content">
             <div>
-            	<input type="button" class="button" value="Thêm người dùng" style="width:180px;" onClick="parent.location='<?php echo Yii::app()->createUrl('user/create')?>'"/>
+            	<input type="button" class="button" value="Add user" style="width:180px;" onClick="parent.location='<?php echo Yii::app()->createUrl('user/create')?>'"/>
                 <div class="line top bottom"></div>	
             </div>
              <!--begin box search-->
@@ -43,7 +43,7 @@
                         </li>
                         <li>
                         <?php 
-							echo CHtml::submitButton('Lọc kết quả',
+							echo CHtml::submitButton('Search',
     						array(
     							'class'=>'button',
     							'style'=>'margin-left:153px; width:95px;',
@@ -130,7 +130,7 @@
 						'headerHtmlOptions'=>array('width'=>'15%','class'=>'table-title'),		
 					),	
 					array(
-						'header'=>'Trạng thái',
+						'header'=>'Status',
 						'class'=>'iPhoenixButtonColumn',
     					'template'=>'{reverse}',
     					'buttons'=>array
@@ -158,13 +158,13 @@
 						'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),
 					),   		   	   
 					array(
-						'header'=>'Công cụ',
+						'header'=>'Tools',
 						'class'=>'CButtonColumn',
     					'template'=>'{password}{update}{delete}',
     					'buttons'=>array
     					(
     						'update' => array(
-    							'label'=>'Chỉnh sửa thông tin của user',
+    							'label'=>'Edituser',
 								'imageUrl'=>Yii::app()->theme->baseUrl.'/images/edit.png',
     						),
         					'password' => array
@@ -172,13 +172,27 @@
             					'label'=>'Reset password of user',
             					'imageUrl'=>Yii::app()->theme->baseUrl.'/images/reset_pwd.png',
             					'url'=>'Yii::app()->createUrl("user/resetPassword", array("id"=>$data->id))',
+    							'click'=>'function(){
+									var th=this;									
+									jQuery.ajax({
+										type:"POST",
+										dataType:"json",
+										url:$(this).attr("href"),
+										success:function(data) {
+											if(data.success==true){
+												jAlert("Reset successfully");
+												}
+										},
+										});
+									return false;
+								}',
         					),
         				),
 						'headerHtmlOptions'=>array('width'=>'20%','class'=>'table-title'),
 					),    				
  	 			),
  	 			'template'=>'{displaybox}{checkbox}{summary}{items}{pager}',
-  				'summaryText'=>'Có tổng cộng {count} user',
+  				'summaryText'=>'{count} user',
  	 			'pager'=>array('class'=>'CLinkPager','header'=>'','prevPageLabel'=>'< Trước','nextPageLabel'=>'Sau >','htmlOptions'=>array('class'=>'pages fr')),
  	 			'actions'=>array(
 					'delete'=>array(
