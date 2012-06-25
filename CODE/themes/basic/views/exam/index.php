@@ -108,6 +108,11 @@
 						'headerHtmlOptions'=>array('width'=>'8%','class'=>'table-title'),		
 					),
 					array(
+						'name'=>'course_id',
+    					'value'=>'$data->course->title',
+						'headerHtmlOptions'=>array('width'=>'8%','class'=>'table-title'),		
+					),
+					array(
 						'name'=>'type',
     					'value'=>'Exam::$list_type[$data->type]',
 						'headerHtmlOptions'=>array('width'=>'8%','class'=>'table-title'),			

@@ -52,6 +52,10 @@ return array(
 			),
 			'system'=>array(
 				'language'=>'category/index',
-				'office'=>'category/index'
+				'office'=>'category/index',				
+			),
+			'course'=>array(
+				'index'=>'course/index',
+				'create'=>'course/create'
 			)
 		);

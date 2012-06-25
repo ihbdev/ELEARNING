@@ -1,49 +1,29 @@
 <?php
 /**
  * 
- * Test class file 
+ * Course class file 
  * @author ihbvietnam <hotro@ihbvietnam.com>
  * @link http://iphoenix.vn
  * @copyright Copyright &copy; 2012 IHB Vietnam
  * @license http://iphoenix.vn/license
  *
  */
-
 /**
- * Test includes attributes and methods of Test class  
+ * This is the model class for table "course".
  */
-class TestCodingSkill extends CActiveRecord
+class Course extends CActiveRecord
 {
-	/**
-	 * Config scope of news
-	 */
-	public function defaultScope(){
-		return array(
-			'condition'=>'type = '.ITest::TYPE_CODING,
-		);	
-	}
 	/**
 	 * Config status of news
 	 */
 	const STATUS_PENDING=0;
 	const STATUS_ACTIVE=1;
-	
 	/**
 	 * @var array config list other attributes of the banner
 	 * this attribute no need to search	 
-	 */
-	private $config_other_attributes=array('modified','description','content','type_coding');	
+	 */	
+	private $config_other_attributes=array('modified','description');	
 	private $list_other_attributes;
-	public $section_a;
-	public $section_b;
-	public $section_c;
-	
-	public $group_level;
-	
-	public static function model($className=__CLASS__)
-	{
-		return parent::model($className);
-	}
 	/**
 	 * PHP setter magic method for other attributes
 	 * @param $name the attribute name
@@ -73,37 +53,16 @@ class TestCodingSkill extends CActiveRecord
 		else
 			return parent::__get($name);
 	}
-	/**
-	 * Get image url which display status of contact
-	 * @return string path to enable.png if this status is STATUS_ACTIVE
-	 * path to disable.png if status is STATUS_PENDING
-	 */
- 	public function getImageStatus()
- 	{
- 		switch ($this->status) {
- 			case self::STATUS_ACTIVE: 
- 				return Yii::app()->theme->baseUrl.'/images/enable.png';
- 				break;
- 			case self::STATUS_PENDING:
- 				return Yii::app()->theme->baseUrl.'/images/disable.png';
- 				break;
- 		}	
- 	}
-	/**
-	 * Get url of this news
-	 * @return string $url, the absoluted path of this news
-	 */
-	public function getUrl()
- 	{
- 		$url=Yii::app()->createUrl("markingUpSkill/view",array('id'=>$this->id));
-		return $url;
- 	}
+	public static function model($className=__CLASS__)
+	{
+		return parent::model($className);
+	}
 	/**
 	 * @return string the associated database table name
-	 */
+	 */	
 	public function tableName()
 	{
-		return 'tbl_test';
+		return 'tbl_course';
 	}
 	/**
 	 * @return array validation rules for model attributes.
@@ -111,32 +70,8 @@ class TestCodingSkill extends CActiveRecord
 	public function rules()
 	{
 		return array(
-			array('title,content','required'),
-			array('type', 'numerical'),
-			array('title,group_level,catid','safe','on'=>'search'),
-			array('catid,description,type_coding','safe')
-		);
-	}
-	public function validatorContent($attributes,$params){
-		if(sizeof($this->content)==0){
-			$this->addError('content', 'Chưa có câu hỏi');
-		}
-	}
-	/**
-	 * @return array customized attribute labels (name=>label)
-	 */
-	public function attributeLabels()
-	{
-		return array(
-			'type' => 'Type',
-			'level' => 'Level',
-			'catid'=>'Group',
-			'title'=>'Title',
-			'content'=>'List questions',
-			'created_by' => 'Author',
-			'created_date' => 'Created Time',
-			'description' => 'Description',
-			'type_coding' => 'Type of Coding'
+			array('title,office_id','required'),
+			array('description','safe')
 		);
 	}
 	/**
@@ -147,11 +82,21 @@ class TestCodingSkill extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'author'=>array(self::BELONGS_TO,'User','created_by'),
-			'cat'=>array(self::BELONGS_TO,'Category','catid'),
+			'office'=>array(self::BELONGS_TO,'Category','office_id'),
+			'author'=>array(self::BELONGS_TO,'User','created_by')
 		);
 	}
 	/**
+	 * @return array customized attribute labels (name=>label)
+	 */	
+	public function attributeLabels()
+	{
+		return array(
+			'title' => 'Title',
+			'office_id' => 'Office',
+		);
+	}
+/**
 	 * This event is raised after the record is instantiated by a find method.
 	 * @param CEvent $event the event parameter
 	 */
@@ -164,12 +109,6 @@ class TestCodingSkill extends CActiveRecord
 			$this->list_other_attributes['modified']=(array)json_decode($this->list_other_attributes['modified']);
 		else 
 			$this->list_other_attributes['modified']=array();
-			
-		//Decode content
-		if(isset($this->list_other_attributes['content']))
-			$this->list_other_attributes['content']=(array)json_decode($this->list_other_attributes['content']);
-		else 
-			$this->list_other_attributes['content']=array();
 		return parent::afterFind();
 	}
 		
@@ -189,34 +128,42 @@ class TestCodingSkill extends CActiveRecord
 			if($this->isNewRecord)
 			{
 				$this->created_date=time();
-				$this->created_by=Yii::app()->user->id;		
-				$this->status=TestCodingSkill::STATUS_ACTIVE;		
+				$this->created_by=Yii::app()->user->id;
+				$this->status=self::STATUS_ACTIVE;				
 			}
 			else {
 				$modified=$this->modified;
 				$modified[time()]=Yii::app()->user->id;
-				$this->modified=json_encode($modified);				
-			}
-			//Encode content
-			$content=$this->content;
-			$this->content=json_encode($this->content);
-			
+				$this->modified=json_encode($modified);
+			}			
 			$this->other=json_encode($this->list_other_attributes);
 			return true;
 		}
 		else
 			return false;
 	}
-	
 	/**
-	 * Suggests a list of existing titles matching the specified keyword.
+	 * Retrieves a list of models based on the current search/filter conditions.
+	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+	 */
+	public function search() {
+		$criteria = new CDbCriteria ();
+		$criteria->compare ( 'title', $this->title );
+		$criteria->compare ( 'office_id', $this->office_id );
+		if (isset ( $_GET ['pageSize'] ))
+			Yii::app ()->user->setState ( 'pageSize', $_GET ['pageSize'] );
+		return new CActiveDataProvider ( $this, array ('criteria' => $criteria, 'pagination' => array ('pageSize' => Yii::app ()->user->getState ( 'pageSize', Setting::s('DEFAULT_PAGE_SIZE','System') ) ), 'sort' => array ('defaultOrder' => 'id DESC' )    		
+		));
+	}
+	/**
+	 * Suggests a list of existing names matching the specified keyword.
 	 * @param string the keyword to be matched
 	 * @param integer maximum number of tags to be returned
 	 * @return array list of matching username names
 	 */
 	public function suggestTitle($keyword,$limit=20)
 	{
-		$list_test=$this->findAll(array(
+		$list_courses=$this->findAll(array(
 			'condition'=>'title LIKE :keyword',
 			'order'=>'title DESC',
 			'limit'=>$limit,
@@ -225,18 +172,18 @@ class TestCodingSkill extends CActiveRecord
 			),
 		));
 		$titles=array();
-		foreach($list_test as $test)
-			$titles[]=$test->title;
+		foreach($list_courses as $course)
+			$titles[]=$course->title;
 			return $titles;
 	}
-	/**
+/**
 	 * Change status of image
 	 * @param integer $id, the ID of contact model
 	 */
 	static function reverseStatus($id){
 		$command=Yii::app()->db->createCommand()
 		->select('status')
-		->from('tbl_test')
+		->from('tbl_course')
 		->where('id=:id',array(':id'=>$id))
 		->queryRow();
 		switch ($command['status']){
@@ -247,41 +194,19 @@ class TestCodingSkill extends CActiveRecord
 				$status=self::STATUS_PENDING;
 				break;
 		}
-		$sql='UPDATE tbl_test SET status = '.$status.' WHERE id = '.$id;
+		$sql='UPDATE tbl_course SET status = '.$status.' WHERE id = '.$id;
 		$command=Yii::app()->db->createCommand($sql);
 		if($command->execute()) {
 			switch ($status) {
  			case self::STATUS_ACTIVE: 
- 				$src=Yii::app()->theme->baseUrl.'/images/enable.png';
+ 				$src=Yii::app()->request->getBaseUrl(true).'/images/admin/enable.png';
  				break;
  			case self::STATUS_PENDING:
- 				$src=Yii::app()->theme->baseUrl.'/images/disable.png';
+ 				$src=Yii::app()->request->getBaseUrl(true).'/images/admin/disable.png';
  				break;
  		}	
 			return $src;
 		}
 		else return false;
-	}
-	
-	/*
-	 * Encode content
-	 */
-	public function search(){
-		$criteria = new CDbCriteria ();
-		$criteria->compare ( 'type', ITest::TYPE_CODING );
-		if($this->title != '')
-			$criteria->compare ( 'title', $this->title, true );
-		if($this->group_level === '0')
-			$criteria->compare ( 'level',0);
-		if($this->group_level === '1')
-			$criteria->addCondition( 'level <> 0');	
-		if (isset ( $_GET ['pageSize'] ))
-			Yii::app ()->user->setState ( 'pageSize', $_GET ['pageSize'] );	
-		$list_tests= new CActiveDataProvider ( 'TestCodingSkill', array (
-			'criteria' => $criteria, 
-			'pagination' => array ('pageSize' => Yii::app ()->user->getState ( 'pageSize', Setting::s('DEFAULT_PAGE_SIZE','System')  ) ), 
-			'sort' => array ('defaultOrder' => 'id DESC' )    		
-		));
-		return $list_tests;
-	}
+	}	
 }

@@ -103,7 +103,7 @@ class MarkingUpSkillController extends Controller
 		if(isset($_POST['TestMarkingUpSkill']))
 		{
 			$test->attributes=$_POST['TestMarkingUpSkill'];
-			$test->type=TestMarkingUpSkill::TYPE_MARKINGUP;			
+			$test->type=ITest::TYPE_MARKINGUP;			
 			$list_questions = array_diff ( explode ( ',', $_POST['TestMarkingUpSkill']['questions'] ), array ('') );
 			$test->content=$list_questions;
 			if($test->save())

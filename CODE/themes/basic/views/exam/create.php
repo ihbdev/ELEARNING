@@ -15,7 +15,7 @@
             	<input type="button" class="button" value="<?php echo Language::t('List exams')?>" style="width:180px;" onClick="parent.location='<?php echo Yii::app()->createUrl('exam/index')?>'"/>
                 <div class="line top bottom"></div>	
         </div>
-		<?php $form=$this->beginWidget('CActiveForm', array('method'=>'post','enableAjaxValidation'=>true, 'id'=>'add_exam')); ?>
+		<?php $form=$this->beginWidget('CActiveForm', array('method'=>'post','enableAjaxValidation'=>false, 'id'=>'add_exam')); ?>
             <input value="" name="Exam[test_id]" id="Exam_test_id" type="hidden">
             <input value="" id="Exam_users" name="Exam[users]" type="hidden">
             <div class="testpost-outer">
@@ -42,11 +42,47 @@
 							$list[$id]=$view." ".$cat->name." ".$view;
 						}
 						?>
-						<?php echo $form->dropDownList($model,'office_id',$list,array('style'=>'width:200px')); ?>
+						<?php 
+						echo $form->dropDownList(
+							$model,
+							'office_id',
+							$list,
+							array(
+								'ajax' => array(
+									'type'=>'POST', 
+									'url'=>CController::createUrl('course/ListCourses'),
+									'update'=>'#Exam_course_id',
+								),
+								'style'=>'width:200px'
+							)
+						); 
+						?>
 						<?php echo $form->error($model, 'office_id'); ?>
                     </div>
                 </div><!--testpost-box-->
                 <div class="testpost-box">
+					<h2>Choose Course</h2>
+                    <div class="row">
+                        <label style="width:66px;">Course:</label>
+                        <?php 
+                        $list=array();
+						foreach ($list_courses as $i=>$course){
+							$list[$course->id]=$course->title;
+						}
+						?>
+						<?php 
+						echo $form->dropDownList(
+							$model,
+							'course_id',
+							$list,
+							array(
+								'style'=>'width:200px'
+							)
+						); 
+						?>
+						<?php echo $form->error($model, 'course_id'); ?>
+                    </div>
+                </div><!--testpost-box-->               
 					<h2>Time</h2>
                     <div class="row">
                         <label style="width:70px;">Start:</label>   
@@ -205,6 +241,12 @@
                 <?php 
 				Yii::app()->clientScript->registerScript('search-user', "
 				$('#user-search').submit(function(){
+				$.fn.yiiGridView.update('user-list', {
+					data: $(this).serialize()});
+					return false;
+				});");
+				Yii::app()->clientScript->registerScript('dropdown-search-user', "
+				$('#User_office_id').change(function(){
 				$.fn.yiiGridView.update('user-list', {
 					data: $(this).serialize()});
 					return false;

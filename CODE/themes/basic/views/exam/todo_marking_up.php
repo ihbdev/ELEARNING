@@ -63,21 +63,15 @@
         	<li><label>ID Test:</label><span><?php echo $user->username;?></span></li>
             <li><label>Employee:</label><span><b><?php echo $user->fullname;?></b></span></li>
 			<li><label>Email:</label><span><b><?php echo $user->email;?></b></span></li>
-            <li><label>Office:</label><span><?php echo $user->address;?></span></li>
+            <li><label>Office:</label><span><?php echo $user->office->name;?></span></li>
         </ul>
         <div class="text-info">
         	<h5>Your marking-up test level infomation</h5>
         	<ul>
                 <li>
-                	<a href="#" class="text-item greenbg">Level1: 85%</a>
-					<a href="#" class="text-item greenbg">Level2: 90%</a>
-					<a href="#" class="text-item greenbg">Level3: 90%</a>
-					<a href="#" class="text-item greenbg">Level4: 90%</a>
-					<a href="#" class="text-item greenbg">Level5: 90%</a>
-					<a href="#" class="text-item greenbg">Level6: 90%</a>
-					<a href="#" class="text-item greenbg">Level7: 90%</a>
-					<a href="#" class="text-item">Level8</a>
-            		<a href="#" class="text-item">Level9</a>
+                <?php for($i=1;$i<TestMarkingUpSkill::MARKINGUP_MAX_LEVEL;$i++):?>
+                	<a href="#" class="text-item greenbg">Level <?php echo $i?>: 85%</a>
+            	<?php endfor;?>
                 </li>
             </ul>
         </div><!--text-info-->

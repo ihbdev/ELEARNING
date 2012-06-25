@@ -13,6 +13,6 @@ return array (
 	),	
 	'system'=>array(
 		'language'=>array('type'=>Category::TYPE_ITEST_LANG),
-		'office'=>array('type'=>Category::TYPE_OFFICE),
-	)		
+		'office'=>array('type'=>Category::TYPE_OFFICE),		
+	),		
 );
