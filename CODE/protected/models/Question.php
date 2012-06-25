@@ -112,9 +112,9 @@ class Question extends CActiveRecord
 	public function afterFind()
 	{
 		//Decode content
-		$this->content=(array)json_decode($this->content);
+		$this->content=(array)json_decode($this->content);		
 		//Decode answer
-		$this->answer=(array)json_decode($this->answer);
+		$this->answer=(array)json_decode($this->answer);		
 		//Decode attribute other to set other attributes
 		$this->list_other_attributes=(array)json_decode($this->other);	
 			

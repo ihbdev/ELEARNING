@@ -109,8 +109,7 @@ class ExamController extends Controller
 	}
 	public function actionToDo($id) {
 		$model = Exam::model ()->findByPk ( $id );				
-		if ($this->checkToDo ( $model->id )) {
-			var_dump('abc');exit;
+		if ($this->checkToDo ( $model->id )) {			
 			$criteria = new CDbCriteria ();
 			$criteria->compare ( 'exam_id', $model->id );
 			$criteria->compare ( 'user_id', Yii::app ()->user->id );

@@ -149,7 +149,8 @@ class TestKnowledgeSkill extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'author'=>array(self::BELONGS_TO,'User','created_by')
+			'author'=>array(self::BELONGS_TO,'User','created_by'),
+			'cat'=>array(self::BELONGS_TO,'Category','catid'),
 		);
 	}
 	/**
@@ -269,7 +270,7 @@ class TestKnowledgeSkill extends CActiveRecord
 	 */
 	public function search(){
 		$criteria = new CDbCriteria ();
-		$criteria->compare ( 'type', TestKnowledgeSkill::TYPE_MARKINGUP );
+		$criteria->compare ( 'type', TestKnowledgeSkill::TYPE_KNOWLEDGE );
 		if($this->title != '')
 			$criteria->compare ( 'title', $this->title, true );
 		if($this->group_level === '0')

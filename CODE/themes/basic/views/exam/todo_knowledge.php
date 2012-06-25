@@ -9,7 +9,7 @@
 			?>
     	<h2>Knowledge Skills</h2>
         <ul class="main-test-ul">
-            <li><label>Language:</label><span><?php echo $test->catid?></span></li>
+            <li><label>Language:</label><span><?php echo $test->cat->name?></span></li>
         </ul>
         <div class="today"><?php echo date('d/m/Y')?></div>
         <div class="line"></div>
@@ -17,12 +17,12 @@
             <h4>Section A</h4>            
             <h5><?php echo $test->content['section_a']->description?></h5>
             <div class="text-box">   
-            	<?php $question_index=1;?>        	
+            	<?php $question_index=1;?>       	
             	<?php foreach($test->content['section_a']->questions as $question_id):?>
             	<?php $question=Question::model()->findByPk($question_id);?>          	            	
             	<div class="text-question">
                 	<div class="text-title"><?php echo $question_index.'. '.$question->title;?></div>
-                	<?php if($question->type == Question::TYPE_FILL):?>                	                	
+                	<?php if($question->type == Question::TYPE_FILL):?>               	                	
                     <div class="table">
                         <table border="0" cellpadding="0" cellspacing="0" width="100%">
                             <tbody>
@@ -42,7 +42,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <?php elseif($question->type == Question::TYPE_MATCHING):?>              
+                    <?php elseif($question->type == Question::TYPE_MATCHING):?>             
                     <div class="table">
                         <table border="0" cellpadding="0" cellspacing="0" width="100%">
                             <tbody>
@@ -64,7 +64,7 @@
                                     <?php $Char_index = 65?>
                             		<?php foreach($question->content as $index=>$content):?>
                                     <td width="14%"><label><b><?php echo chr($Char_index+$index-1)?></b></label>&nbsp;&nbsp;&nbsp;<input type="input" name="Result[<?php echo $question_id?>][<?php echo chr($Char_index+$index-1)?>]" style="width:30px;"></td>
-                                    <?php endforeach;?>                                    
+                                    <?php endforeach;?>                 
                                 </tr>
                             </tbody>
                         </table>
@@ -81,6 +81,7 @@
                 <?php endforeach;?>                
             </div><!--text-box-->
         </div><!--text-content-->
+        
 		<div class="line"></div>
 		<div class="text-content">
             <h4>Section B</h4>            
@@ -97,7 +98,7 @@
             <div class="text-box">
             	<div class="text-question">
                 	<div class="text-title"><?php echo $qindex.'. '.$question->title?></div>
-                	<?php if($question->type == Question::TYPE_FILL):?>                	                	
+                	<?php if($question->type == Question::TYPE_FILL):?>              	                	
                     <div class="table">
                         <table border="0" cellpadding="0" cellspacing="0" width="100%">
                             <tbody>
@@ -177,7 +178,7 @@
 	<div class="fr sidebar-test">
     	<ul class="employee-ul">
     		<?php 
-    		$user=User::model()->findByPk(Yii::app()->user->id);
+    		$user=User::model()->findByPk(Yii::app()->user->id);    		
     		?>
         	<li><label>ID Test:</label><span><?php echo $user->username?></span></li>
             <li><label>Employee:</label><span><b><?php echo $user->fullname;?></b></span></li>

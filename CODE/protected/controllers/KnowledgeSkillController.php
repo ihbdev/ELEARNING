@@ -97,7 +97,7 @@ class KnowledgeSkillController extends Controller
 	{
 		$test=new TestKnowledgeSkill();		
 		$test->title = 'Knowledskill test';
-		$temp_content = array('section_a'=>'','section_b'=>'','section_c'=>'');	
+		$temp_content = array('section_a'=>'','section_b'=>'','section_c'=>'');
 		$temp_section = array('description'=>"",'questions'=>array());		
 		//var_dump($test->section_a['questions']); //exit;
 		if(isset($_POST['section_a']))
@@ -225,17 +225,55 @@ class KnowledgeSkillController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-		$test=TestKnowledgeSkill::model()->findByPk($id);
+		$test=TestKnowledgeSkill::model()->findByPk($id);		
+		$section_a = (array)$test->content['section_a'];
+		$section_b = $test->content['section_b'];
+		$section_c = $test->content['section_c'];				
+		//$temp_content = array('section_a'=>'','section_b'=>'','section_c'=>'');
 		if(isset($_POST['TestKnowledgeSkill']))
 		{
-			$test->attributes=$_POST['TestKnowledgeSkill'];
-			$test->type=TestKnowledgeSkill::TYPE_KNOWLEDGE;			
-			if($test->save())
+			// update Section A question
+			foreach ($section_a->questions as $index=>$question_id)
+			{			
+				$question = Question::model()->findByPk($question_id);
+				$question->attributes = $_POST['section_a']['questions'][$index];
+				//Need to add error message
+				$question->save();
+			}
+			// update Section B question
+			foreach ($section_b->questions as $index=>$question_id)
 			{
-				$test=TestKnowledgeSkill::model()->findByPk($id);
-				Yii::app()->user->setFlash('success', Language::t('Update success'));
-			}	
-		}
+				$question = Question::model()->findByPk($question_id);
+				if($index == 1)
+				{
+					//Update material
+					$material = Material::model()->findByPk($question->material_id);
+					$material->content = $_POST['materials']['B'];
+					//Need to add error message
+					$material->save();
+				}
+				$question->attributes = $_POST['section_b']['questions'][$index];
+				//Need to add error message
+				$question->save();				
+			}
+			// update Section C question
+			foreach ($section_c->questions as $index=>$question_id)
+			{
+				$question = Question::model()->findByPk($question_id);
+				if($index == 1)
+				{
+					//Update material
+					$material = Material::model()->findByPk($question->material_id);
+					$material->content = $_POST['materials']['C'];
+					//Need to add error message
+					$material->save();
+				}
+				$question->attributes = $_POST['section_c']['questions'][$index];
+				//Need to add error message
+				$question->save();				
+			}
+						
+		}	
 		$this->render ( 'update',array('test'=>$test));	
 	}
 
