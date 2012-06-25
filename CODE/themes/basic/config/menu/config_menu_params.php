@@ -10,5 +10,9 @@ return array (
 	),		
 	'codingSkill'=>array(
 		'create'=>array('type'=>'detail')
-	),			
+	),	
+	'system'=>array(
+		'language'=>array('type'=>Category::TYPE_ITEST_LANG),
+		'office'=>array('type'=>Category::TYPE_OFFICE),
+	)		
 );

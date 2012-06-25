@@ -15,23 +15,19 @@
 class TestCodingSkill extends CActiveRecord
 {
 	/**
+	 * Config scope of news
+	 */
+	public function defaultScope(){
+		return array(
+			'condition'=>'type = '.ITest::TYPE_CODING,
+		);	
+	}
+	/**
 	 * Config status of news
 	 */
 	const STATUS_PENDING=0;
 	const STATUS_ACTIVE=1;
-	const TYPE_LANGUAGE=1;
-	const TYPE_KNOWLEDGE=2;
-	const TYPE_MARKINGUP=3;
-	const TYPE_CODING=4;
 	
-	static $list_type=array(
-			TestCodingSkill::TYPE_LANGUAGE=>'Language Skill',
-			TestCodingSkill::TYPE_KNOWLEDGE=>'Knowledge Skill',
-			TestCodingSkill::TYPE_MARKINGUP=>'Marking-up Skill',
-			TestCodingSkill::TYPE_CODING=>'Coding Skill'
-	);
-	
-	const MARKINGUP_MAX_LEVEL=9;
 	/**
 	 * @var array config list other attributes of the banner
 	 * this attribute no need to search	 
@@ -279,7 +275,8 @@ class TestCodingSkill extends CActiveRecord
 			$criteria->compare ( 'level',0);
 		if($this->group_level === '1')
 			$criteria->addCondition( 'level <> 0');	
-			
+		if (isset ( $_GET ['pageSize'] ))
+			Yii::app ()->user->setState ( 'pageSize', $_GET ['pageSize'] );	
 		$list_tests= new CActiveDataProvider ( 'TestCodingSkill', array (
 			'criteria' => $criteria, 
 			'pagination' => array ('pageSize' => Yii::app ()->user->getState ( 'pageSize', Setting::s('DEFAULT_PAGE_SIZE','System')  ) ), 

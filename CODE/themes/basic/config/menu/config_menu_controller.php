@@ -1,9 +1,9 @@
 <?php
 return array(
-	'setting'=>'Cấu hình',
+	'setting'=>'Setting',
 	'menu'=>'Menu',
-	'language'=>'Ngôn ngữ',
-	'role'=>'Quản lý quyền',
+	'language'=>'Language',
+	'role'=>'Authentication',
 	'user'=>'User',
 	'image'=>'Image',
 	'languageSkill'=>'Language Skill',
@@ -11,5 +11,6 @@ return array(
 	'markingUpSkill'=>'Marking-up Skill',
 	'codingSkill'=>'Coding Skill',
 	'exam'=>'Exam',
-	'result'=>'Result'
+	'result'=>'Result',
+	'system'=>'System'
 );

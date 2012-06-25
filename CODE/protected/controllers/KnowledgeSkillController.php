@@ -441,7 +441,7 @@ class KnowledgeSkillController extends Controller
 	 */
 	public function loadModel($id)
 	{
-		$model=LanguageSkill::model()->findByPk($id);
+		$model=TestKnowledgeSkill::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
