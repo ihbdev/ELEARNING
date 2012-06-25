@@ -5,7 +5,7 @@
 		<?php 
 		$list_style=array('color:red','color:blue','color:black');
 		foreach ($list_nodes as $id=>$level){
-			$node=Category::model()->findByPk($id);
+			$node=Document::model()->findByPk($id);
 			$blank = "&nbsp";
 			$prefix = "--";
 			$style = $list_style[$level-1];

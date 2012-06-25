@@ -6,10 +6,10 @@ $cs->registerCssFile(Yii::app()->theme->baseUrl.'/css/sprite.css');
 	<div class="folder top">
 		<!--begin title-->
 		<div class="folder-header">
-			<h1>Create Training Document</h1>
+			<h1><?php echo $model->config_type[$type]['label']?></h1>
 			<div class="header-menu">
 				<ul>
-					<li><a class="header-menu-active new-icon" href=""><span>Create Training Document</span></a></li>					
+					<li><a class="header-menu-active new-icon" href=""><span><?php echo $model->config_type[$type]['label']?></span></a></li>					
 				</ul>
 			</div>
 		</div>
@@ -17,13 +17,13 @@ $cs->registerCssFile(Yii::app()->theme->baseUrl.'/css/sprite.css');
 		<div class="folder-content form">
 			<!--begin left content-->
 			<?php 
-			//$form=$model->config_type[$type]['form'];
-			echo $this->renderPartial('_form', array('model'=>$model,'action'=>$action)); 
+			$form=$model->config_type[$type]['form'];
+			echo $this->renderPartial($form, array('model'=>$model,'action'=>$action)); 
 			?>
 			<!--end left content-->
 			<!--begin right content-->
 			<?php			
-			echo $this->renderPartial('_tree', array('list_nodes'=>$model->getNodes($model->id)));			 		
+			echo $this->renderPartial('_tree', array('list_nodes'=>$model->list_nodes)); 			
 			?>
 			<!--end right content-->
 			<div class="clear"></div>

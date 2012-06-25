@@ -1,3 +1,23 @@
+<?php 
+$cs = Yii::app()->getClientScript();
+$cs->registerCssFile(Yii::app()->theme->baseUrl.'/css/sprite.css');
+?>
+<!--begin inside content-->
+	<div class="folder top">
+		<!--begin title-->
+		<div class="folder-header">
+			<h1>Create Training Document</h1>
+			<div class="header-menu">
+				<ul>
+					<li><a class="header-menu-active new-icon" href=""><span>Create Training Document</span></a></li>					
+				</ul>
+			</div>
+		</div>
+		<!--end title-->	
+		<div class="folder-content form">
+		
+	
+
 <?php $form=$this->beginWidget('CActiveForm', array('id'=>'category-form','enableAjaxValidation'=>true,'clientOptions'=>array('validationUrl'=>$this->createUrl('document/validate',array('type'=>$model->type))))); ?>	
 <input type="hidden" name="id" id="current_id" value="<?php echo isset($model->id)?$model->id:'0';?>" /> 
 			<div class="fl" style="width:580px;">
@@ -21,15 +41,7 @@
                     <li>
                         <?php echo $form->labelEx($model,'parent_id'); ?>
                         <?php
-                        	$view_parent_nodes=array('0'=>'Gốc');
-                        	foreach ($model->parent_nodes as $id=>$level){
-                        	 	$node=Document::model()->findByPk($id);
-								$view = "";
-								for($i=1;$i<$level;$i++){
-									$view .="--";
-								}
-								$view_parent_nodes[$id]=$view." ".$node->name." ".$view;
-							}
+                        	$view_parent_nodes=array('0'=>'Training Document');                        	
                         	echo $form->dropDownList($model,'parent_id',$view_parent_nodes,array('style'=>'width:200px'));
                         ?>
                   		<?php echo $form->error($model, 'parent_id'); ?>
@@ -62,9 +74,9 @@
                     	<?php 
                     	if($action=="update") 
                     	{ 
-                    		$label_button="Cập nhật danh mục";     
+                    		$label_button="Update Document";     
                     	}
-                    	else $label_button="Thêm danh mục";
+                    	else $label_button="Add Document";
                     	
 						echo '<input type="submit" value="'.$label_button.'" style="margin-left:153px; width:125px;" id="write-category" class="button">';  
     					if($action=="update") 
@@ -76,6 +88,9 @@
 				</ul>
 			</div>
 			<?php $this->endWidget(); ?>
+</div>
+</div>			
+			
 <?php 
 $cs = Yii::app()->getClientScript(); 
 // Script load form update 

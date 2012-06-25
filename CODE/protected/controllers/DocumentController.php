@@ -1,7 +1,7 @@
 <?php
 /**
  * 
- * DocumentController class file 
+ * CategoryController class file 
  * @author ihbvietnam <hotro@ihbvietnam.com>
  * @link http://iphoenix.vn
  * @copyright Copyright &copy; 2012 IHB Vietnam
@@ -10,12 +10,12 @@
  */
 
 /**
- * CategoryController includes actions relevant to Document:
- *** create new Document
- *** update information of a Document
- *** delete Document
- *** validate Document
- *** index Document
+ * CategoryController includes actions relevant to Category:
+ *** create new Category
+ *** update information of a Category
+ *** delete Category
+ *** validate category
+ *** index category
  *** write 
  *** update list order view
  *** load model Banner from banner's id
@@ -41,6 +41,7 @@ class DocumentController extends Controller
 	public function accessRules()
 	{
 		return array(
+			/*
 			array('allow',  
 				'actions'=>array('index'),
 				'roles'=>array('category_index'),
@@ -77,7 +78,8 @@ class DocumentController extends Controller
 				'actions'=>array('setActiveAdminMenu'),
 				'roles'=>array('category_setActiveAdminMenu'),
 			),
-			array('deny', 
+			*/
+			array('allow', 
 				'users'=>array('*'),
 			),
 		);
@@ -87,7 +89,7 @@ class DocumentController extends Controller
 	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
-	 * @param $type type of Document, like below constant
+	 * @param $type type of category, like below constant
 	 */
 	public function actionCreate($type)
 	{
@@ -221,18 +223,40 @@ class DocumentController extends Controller
 	 * @param integer $type, id of menu type
 	 * @return
 	 */
-	public function actionIndex($type)
+	public function actionIndex()
 	{
 		$model=new Document();
-		$model->type=$type;	
+		$model->type = Document::TYPE_LONG_DOCUMENT;	
 		$this->render('index',array(
 			'model'=>$model,
-			'type'=>$type,
+			'type'=>Document::TYPE_LONG_DOCUMENT,
 			'action'=>'create'
 		));
 	}
+	
+	public function actionCreatecontent()
+	{
+		$model=new Document();		
+		//$model->type = Document::TYPE_LONG_DOCUMENT;	
+		$this->render('index',array(
+			'model'=>$model,
+			//'type'=>Document::TYPE_LONG_DOCUMENT,
+			'action'=>'create'
+		));
+	}
+	public function actionXcreate()
+	{
+			$action="create";
+			$model=new Document();			
+			
+			Yii::app()->clientScript->scriptMap['jquery.js'] = false;						
+			$html_form = $this->render('create',array(
+					'model'=>$model,'action'=>$action,
+				)); 
+			echo $html_form;	
+	}
 	/**
-	 * Creates and updates a new Category model.
+	 * Creates and updates a new Document model.
 	 * @param integer $type, id of menu type
 	 * @return 
 	 */
@@ -281,7 +305,7 @@ class DocumentController extends Controller
 	
 	/**
 	 * Updates list order view.
-	 * @param integer $parent_id id of parent Document
+	 * @param integer $parent_id id of parent category
 	 */
 	public function actionUpdateListOrderView($parent_id)
 	{	

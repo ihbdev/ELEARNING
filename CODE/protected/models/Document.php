@@ -10,14 +10,14 @@
  */
 
 /**
- * Category includes attributes and methods of Category class  
+ * Document includes attributes and methods of Document class  
  */
 class Document extends CActiveRecord
 {	
 	/**
 	 * Config maximun rank in a group
 	 */
-	const MAX_RANK=4;	
+	const MAX_RANK=5;	
 	/**
 	 * Config code error when delete category
 	 */
@@ -28,11 +28,7 @@ class Document extends CActiveRecord
 	 * Config code (id) of the main category groups which have parent_id=0
 	 */
 
-	const TYPE_ITEST=1;
-	const TYPE_NEWS=2;
-	const TYPE_OFFICE=3;
-	const TYPE_KEYWORD=7;
-	const TYPE_ITEST_LANG=12;
+	const TYPE_LONG_DOCUMENT = 3;
 
 	/**
 	 * Config special
@@ -65,14 +61,14 @@ class Document extends CActiveRecord
 	public function init(){
 			parent::init();
 			//Get list all language
-			$configFile = Yii::app ()->theme->basePath.'/config/config_categories.php';
+			$configFile = Yii::app ()->theme->basePath.'/config/config_documents.php';
     		$this->config_type=require($configFile); 
 	}
 	/**
   	 * Get max rank
   	 */
 	public function getMax_rank(){
-		return $this->config_type[$this->type]['max_rank'];
+		return Document::MAX_RANK;
 	}
 	/**
 	 * Get all specials of class Category
@@ -127,7 +123,7 @@ class Document extends CActiveRecord
 		$result=array();
 		$criteria=new CDbCriteria;
 		$criteria->compare('type', $this->type);
-		$criteria->compare('parent_id', 0);
+		$criteria->compare('parent_id', $this->id);
 		$criteria->order='order_view';
 		$list_nodes=self::model()->findAll($criteria);	
 		foreach ($list_nodes as $node){
@@ -135,6 +131,24 @@ class Document extends CActiveRecord
 			$this->tmp_list=array();
 			$this->treeTraversal($node->id, 1, $this->max_rank);
 			$result += $this->tmp_list;
+		}
+		return $result;
+	}
+	
+	public function getNodes($parent_id){			
+		$result=array();
+		if($parent_id != null){
+			$criteria=new CDbCriteria;
+			//$criteria->compare('type', $this->type);
+			$criteria->compare('parent_id', $parent_id);
+			$criteria->order='order_view';
+			$list_nodes=self::model()->findAll($criteria);	
+			foreach ($list_nodes as $node){
+				$result += array($node->id => 1);
+				$this->tmp_list=array();
+				$this->treeTraversal($node->id, 1, $this->max_rank);
+				$result += $this->tmp_list;
+			}
 		}
 		return $result;
 	}
@@ -313,7 +327,7 @@ class Document extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'tbl_category';
+		return 'tbl_document';
 	}
 
 	/**
@@ -490,9 +504,9 @@ class Document extends CActiveRecord
 			return false;
 	}
 	/**
-	 * Change order view of a Document
+	 * Change order view of a category
 	 * @return boolean false if it is not changed successfully
-	 * otherwise, it changed the order of this Document
+	 * otherwise, it changed the order of this category
 	 */
 	
 	public function changeOrderView() {
@@ -616,7 +630,7 @@ class Document extends CActiveRecord
 		*/
 		$class=$this->config_type[$this->type]['class'];
 		$object= new $class;
-		$list=$object->findAll('catid = '. $id);
+		$list=$object->findAll('type = '. $id);
 		if(sizeof($list)>0) 
 			return self::DELETE_HAS_ITEMS;
 		return self::DELETE_OK;
