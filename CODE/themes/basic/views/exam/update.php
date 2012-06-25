@@ -33,7 +33,7 @@
 						<?php echo $form->error($model, 'title'); ?>
                     </div>
                 </div><!--testpost-box-->
-            	<div class="testpost-box">
+            		<div class="testpost-box">
 					<h2>Choose Office</h2>
                     <div class="row">
                         <label style="width:66px;">Office:</label>
@@ -48,10 +48,47 @@
 							$list[$id]=$view." ".$cat->name." ".$view;
 						}
 						?>
-						<?php echo $form->dropDownList($model,'office_id',$list,array('style'=>'width:200px')); ?>
+						<?php 
+						echo $form->dropDownList(
+							$model,
+							'office_id',
+							$list,
+							array(
+								'ajax' => array(
+									'type'=>'POST', 
+									'url'=>CController::createUrl('course/ListCourses'),
+									'update'=>'#Exam_course_id',
+								),
+								'style'=>'width:200px'
+							)
+						); 
+						?>
 						<?php echo $form->error($model, 'office_id'); ?>
                     </div>
                 </div><!--testpost-box-->
+                <div class="testpost-box">
+					<h2>Choose Course</h2>
+                    <div class="row">
+                        <label style="width:66px;">Course:</label>
+                        <?php 
+                        $list=array();
+						foreach ($list_courses as $i=>$course){
+							$list[$course->id]=$course->title;
+						}
+						?>
+						<?php 
+						echo $form->dropDownList(
+							$model,
+							'course_id',
+							$list,
+							array(
+								'style'=>'width:200px'
+							)
+						); 
+						?>
+						<?php echo $form->error($model, 'course_id'); ?>
+                    </div>
+                </div><!--testpost-box-->   
                 <div class="testpost-box">
 					<h2>Time</h2>
                     <div class="row">
@@ -97,9 +134,15 @@
                 <?php $this->endWidget(); ?>
                 
                 <div class="testpost-box">
-                       <?php 
+                <?php 
 				Yii::app()->clientScript->registerScript('search-test', "
 				$('#test-search').submit(function(){
+				$.fn.yiiGridView.update('test-list', {
+					data: $(this).serialize()});
+					return false;
+				});");
+				Yii::app()->clientScript->registerScript('dropdown-search-test', "
+				$('#ITest_type').change(function(){
 				$.fn.yiiGridView.update('test-list', {
 					data: $(this).serialize()});
 					return false;
@@ -214,6 +257,13 @@
 					data: $(this).serialize()});
 					return false;
 				});");
+				Yii::app()->clientScript->registerScript('dropdown-search-user', "
+				$('#User_office_id').change(function(){
+				$.fn.yiiGridView.update('user-list', {
+					data: $(this).serialize()});
+					return false;
+				});");
+				?>
 				?>
                 <?php $form=$this->beginWidget('CActiveForm', array('method'=>'get','id'=>'user-search')); ?>
 					<h2>Add employees</h2>
