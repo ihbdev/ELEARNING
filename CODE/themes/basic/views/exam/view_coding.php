@@ -1,6 +1,5 @@
 <!--begin page content-->
 <div id="shell" class="forShell">
-	<?php $form=$this->beginWidget('CActiveForm', array('method'=>'post','enableAjaxValidation'=>true, 'id'=>'add_exam')); ?>
 	<div class="fl main-test">
     	<h2>Language Skills</h2>
         <ul class="main-test-ul">
@@ -43,10 +42,10 @@
     </div><!--main-test-->
 	<div class="fr sidebar-test">
     	<ul class="employee-ul">
-        	<li><label>ID Test:</label><span>352VN</span></li>
-            <li><label>Employee:</label><span><b>Truong Van Hieu</b></span></li>
-			<li><label>Email:</label><span><b>hieutv101@gmail.com</b></span></li>
-            <li><label>Test Local:</label><span>Officer - Viet Nam</span></li>
+        	<li><label>ID Test:</label><span>---</span></li>
+            <li><label>Employee:</label><span><b>--------------</b></span></li>
+			<li><label>Email:</label><span><b>----------------</b></span></li>
+            <li><label>Test Local:</label><span>---------------</span></li>
         </ul>
         <div class="text-info">
         	<h5>Final test English skills infomation</h5>
@@ -70,8 +69,7 @@
         </div><!--text-note-->
         <div class="text-finish">
         	<h5>Click to finish test.</h5>
-        	<input name="" type="submit" class="btn-submit" value="Finish" />
+        	<input disable="disabled" name="" type="submit" class="btn-submit" value="Finish" />
         </div><!--text-finish-->
 	</div><!--sidebar-test-->
-	<?php $this->endWidget(); ?>
 </div>

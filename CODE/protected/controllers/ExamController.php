@@ -109,7 +109,7 @@ class ExamController extends Controller
 	public function actionToDo($id) {
 		$model = Exam::model ()->findByPk ( $id );
 		$test = ITest::model ()->findByPk ( $model->test_id );
-		
+
 		if ($this->checkToDo ( $model->id )) {
 			$criteria = new CDbCriteria ();
 			$criteria->compare ( 'exam_id', $model->id );
@@ -133,8 +133,8 @@ class ExamController extends Controller
 					$form = 'todo_coding';
 					break;
 			}
-			
-			if (isset ( $_POST ['Result'] )) {
+
+			if (isset ( $_POST ['Result'] )){
 				$result = new Result ();
 				$result->exam_id = $id;
 				$result->user_id = Yii::app ()->user->id;
@@ -155,11 +155,10 @@ class ExamController extends Controller
 					{
 						$tmp_result->delete();
 						$this->redirect(array('result/view','id'=>$result->id));
-					}	
-				}
-				
-				$this->render ( $form, array ('tmp_result'=>$tmp_result,'model' => $model, 'test' => $test ) );
-			} 
+					}
+			}
+			$this->render ( $form, array ('tmp_result'=>$tmp_result,'model' => $model, 'test' => $test ) );
+		}
 	}
 	public function actionView($id) {
 		$model = Exam::model ()->findByPk ( $id );
