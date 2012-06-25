@@ -133,7 +133,7 @@ class Exam extends CActiveRecord
 	public function rules()
 	{
 		return array(
-			array('title,office_id,test_id,type,list_users','required'),
+			array('title,course_id,office_id,test_id,type,list_users','required'),
 			array('start_time', 'compare', 'operator'=>'<','compareAttribute'=>'finish_time','message'=>'Start time must be less than Finish time'),
 			array('start_time,finish_time','safe'),
 		);
@@ -147,6 +147,7 @@ class Exam extends CActiveRecord
 			'type' => 'Type',
 			'level' => 'Level',
 			'office_id'=>'Office',
+			'course_id'=>'Course',
 			'start_time'=>'Start time',
 			'finish_time'=>'Finish time',
 			'created_by' => 'Author',
@@ -164,6 +165,7 @@ class Exam extends CActiveRecord
 			'author'=>array(self::BELONGS_TO,'User','created_by'),
 			'office'=>array(self::BELONGS_TO,'Category','office_id'),
 			'test'=>array(self::BELONGS_TO,'ITest','test_id'),
+			'course'=>array(self::BELONGS_TO,'Course','course_id'),
 		);
 	}
 	/**

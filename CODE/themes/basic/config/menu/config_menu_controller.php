@@ -12,5 +12,6 @@ return array(
 	'codingSkill'=>'Coding Skill',
 	'exam'=>'Exam',
 	'result'=>'Result',
-	'system'=>'System'
+	'system'=>'System',
+	'course'=>'Course'
 );

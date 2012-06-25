@@ -60,11 +60,11 @@
                 <div class="fl" style="width:480px;">
                     <ul>
                     <?php 
-					$list=array(''=>'All','0'=>'Final','1'=>'Level');
+					$list=array(''=>'All','0'=>'Profile','1'=>'Detail');
 					?>
 					<li>
-						<?php echo $form->labelEx($model,'group_level'); ?>
-						<?php echo $form->dropDownList($model,'group_level',$list,array('style'=>'width:200px')); ?>
+						<?php echo $form->labelEx($model,'type'); ?>
+						<?php echo $form->dropDownList($model,'type',$list,array('style'=>'width:200px')); ?>
 					</li>				
                     </ul>
                 </div>

@@ -274,6 +274,9 @@ class ExamController extends Controller
 			
 			$test=ITest::model()->findByPk($model->test_id);
 			$model->type=$test->type;
+			
+			$course=Course::model()->findByPk($model->course_id);
+			$model->office_id=$course->office_id;
 			if($model->save())
 			{
 				$this->redirect(array('update','id'=>$model->id));
@@ -282,7 +285,16 @@ class ExamController extends Controller
 		//List office
 		$group=new Category();		
 		$group->type=Category::TYPE_OFFICE;
-		$list_office=$group->list_nodes;
+		$list_office=$group->list_nodes;	
+			
+		if(!isset($model->office_id) || $model->office_id <= 0)
+			$model->office_id=array_shift(array_keys($list_office));
+
+		//List course
+		$criteria = new CDbCriteria ();
+		$criteria->compare('status',Course::STATUS_ACTIVE);
+		$criteria->compare('office_id',$model->office_id);
+  		$list_courses=Course::model()->findAll($criteria);
 		
 		//Get form search test
 		$this->initCheckbox('checked-test-list');
@@ -341,10 +353,12 @@ class ExamController extends Controller
     		),
     		'sort' => array ('defaultOrder' => 'id DESC')
 		));
-				
+
+		
 		$this->render ( 'create',array(
 			'model'=>$model,
 			'list_office'=>$list_office,
+			'list_courses'=>$list_courses,
 			'user'=>$user,
 			'list_user'=>$list_user,
 			'test'=>$test,
@@ -484,6 +498,12 @@ class ExamController extends Controller
 		$group->type=Category::TYPE_OFFICE;
 		$list_office=$group->list_nodes;
 		
+		//List course
+		$criteria = new CDbCriteria ();
+		$criteria->compare('status',Course::STATUS_ACTIVE);
+		$criteria->compare('office_id',$model->office_id);
+  		$list_courses=Course::model()->findAll($criteria);
+		
 		//Get form search test
 		$this->initCheckbox('checked-test-list');
 		$test=new ITest('search');
@@ -545,6 +565,7 @@ class ExamController extends Controller
 		$this->render ( 'update',array(
 			'model'=>$model,
 			'list_office'=>$list_office,
+			'list_courses'=>$list_courses,
 			'user'=>$user,
 			'list_user'=>$list_user,
 			'test'=>$test,
@@ -640,7 +661,7 @@ class ExamController extends Controller
 		$group=new Category();		
 		$group->type=Category::TYPE_OFFICE;
 		$list_office=$group->list_nodes;
-		//var_dump($list_office);exit;
+
 		$this->render('index',array(
 			'model'=>$model,
 			'list_office'=>$list_office
