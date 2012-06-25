@@ -70,7 +70,7 @@ class iPhoenixGridView extends CGridView
 		if(isset($action['imageUrl']) && is_string($action['imageUrl']))
 			echo 
 			CHtml::link(
-				CHtml::image(Yii::app()->request->getBaseUrl(true).$action['imageUrl'],$label),
+				CHtml::image($action['imageUrl'],$label),
 				$url,
 				array(
 					'class'=>'action-checkbox'

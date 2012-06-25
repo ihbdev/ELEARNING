@@ -662,10 +662,16 @@ class ExamController extends Controller
 		$group=new Category();		
 		$group->type=Category::TYPE_OFFICE;
 		$list_office=$group->list_nodes;
-
+		
+		//List course
+		$criteria = new CDbCriteria ();
+		$criteria->compare('status',Course::STATUS_ACTIVE);
+  		$list_courses=Course::model()->findAll($criteria);
+  		
 		$this->render('index',array(
 			'model'=>$model,
-			'list_office'=>$list_office
+			'list_office'=>$list_office,
+			'list_courses'=>$list_courses
 		));
 	}
 	/**

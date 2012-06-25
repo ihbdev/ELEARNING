@@ -264,7 +264,6 @@
 					return false;
 				});");
 				?>
-				?>
                 <?php $form=$this->beginWidget('CActiveForm', array('method'=>'get','id'=>'user-search')); ?>
 					<h2>Add employees</h2>
                     <div class="row"><h4>Search:</h4></div>

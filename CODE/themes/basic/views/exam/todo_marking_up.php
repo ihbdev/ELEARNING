@@ -4,7 +4,11 @@
 	<?php $form=$this->beginWidget('CActiveForm', array('method'=>'post','enableAjaxValidation'=>true, 'id'=>'view_exam')); ?>
     	<h2>Marking-up test</h2>
         <ul class="main-test-ul">
+        	<?php if($test->level > 0):?>
         	<li><h5>Marking-up test level: Level <?php echo $test->level?></h5></li>
+        	<?php else:?>
+        	<li><h5>Marking-up final test</h5></li>
+        	<?php endif;?>
             <li><label>Office:</label><span> <?php echo $model->office->name?></span></li>
         </ul>
         <div class="today">Today: <?php echo date('m/d/Y',time())?></div>
@@ -69,8 +73,15 @@
         	<h5>Your marking-up test level infomation</h5>
         	<ul>
                 <li>
-                <?php for($i=1;$i<TestMarkingUpSkill::MARKINGUP_MAX_LEVEL;$i++):?>
-                	<a href="#" class="text-item greenbg">Level <?php echo $i?>: 85%</a>
+                <?php for($i=1;$i<=TestMarkingUpSkill::MARKINGUP_MAX_LEVEL;$i++):?>
+                	<?php 
+                	$result=$model->getResultMarkingUp($i);
+                	?>
+                	<?php if(isset($result)):?>
+                	<a href="<?php echo $result->url;?>" class="text-item greenbg">Level <?php echo $i?>: <?php echo $result->getResult();?></a>
+                	<?php else:?>
+                	<a href="" class="text-item">Level <?php echo $i?></a>
+                	<?php endif;?>
             	<?php endfor;?>
                 </li>
             </ul>

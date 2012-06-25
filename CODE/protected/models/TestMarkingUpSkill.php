@@ -259,7 +259,6 @@ class TestMarkingUpSkill extends CActiveRecord
 		}
 		else return false;
 	}
-	
 	/*
 	 * Encode content
 	 */

@@ -205,7 +205,8 @@ class Exam extends CActiveRecord
 			if($this->isNewRecord)
 			{
 				$this->created_date=time();
-				$this->created_by=Yii::app()->user->id;				
+				$this->created_by=Yii::app()->user->id;			
+				$this->status=Exam::STATUS_ACTIVE;	
 			}
 			else {
 				$modified=$this->modified;
@@ -284,6 +285,7 @@ class Exam extends CActiveRecord
 		$criteria->compare ( 'title', $this->title, true );
 		$criteria->compare ( 'type',$this->type);
 		$criteria->compare ( 'office_id',$this->office_id);
+		$criteria->compare ( 'course_id',$this->course_id);
 		if (isset ( $_GET ['pageSize'] ))
 			Yii::app ()->user->setState ( 'pageSize', $_GET ['pageSize'] );	
 		$list_exams= new CActiveDataProvider ( 'Exam', array (
@@ -292,6 +294,22 @@ class Exam extends CActiveRecord
 			'sort' => array ('defaultOrder' => 'id DESC' )    		
 		));
 		return $list_exams;
+	}
+	public function getResultMarkingUp($level){
+		
+		$criteria = new CDbCriteria ();
+		$criteria->compare('course_id',$this->course_id);
+		$criteria->compare('type',ITest::TYPE_MARKINGUP);
+		$list_exams=Exam::model()->findAll($criteria);
+		foreach ($list_exams as $exam){
+			if($exam->test->level ==$level) {
+				$criteria = new CDbCriteria ();
+				$criteria->compare('exam_id',$exam->id);
+				$criteria->compare('user_id',Yii::app()->user->id);
+				$result=Result::model()->find($criteria);		
+				return $result;
+			}
+		}
 	}
 }
 
