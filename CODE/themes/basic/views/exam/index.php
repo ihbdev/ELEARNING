@@ -77,7 +77,37 @@
 						?>
 					<li>
 						<?php echo $form->labelEx($model,'office_id'); ?>
-						<?php echo $form->dropDownList($model,'office_id',$list,array('style'=>'width:200px')); ?>
+						<?php echo $form->dropDownList(
+							$model,
+							'office_id',
+							$list,
+							array(
+								'ajax' => array(
+									'type'=>'POST', 
+									'url'=>CController::createUrl('course/SearchCourses'),
+									'update'=>'#Exam_course_id',
+								),
+								'style'=>'width:200px'
+							)); ?>
+					</li>	
+					 <?php 
+                        $list=array(''=>'All');
+						foreach ($list_courses as $i=>$course){
+							$list[$course->id]=$course->title;
+						}
+					?>
+					<li>
+						<?php echo $form->labelEx($model,'course_id'); ?>
+						<?php 
+						echo $form->dropDownList(
+							$model,
+							'course_id',
+							$list,
+							array(
+								'style'=>'width:200px'
+							)
+						); 
+						?>
 					</li>		
                     </ul>
                 </div>

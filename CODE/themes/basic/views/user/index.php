@@ -199,7 +199,7 @@
 						'action'=>'delete',
 						'label'=>'Delete all',
 						'imageUrl' => Yii::app()->theme->baseUrl.'/images/delete.png',
-						'url'=>'admin/user/checkbox'
+						'url'=>'user/checkbox'
 					),
 				),
 				)); ?>

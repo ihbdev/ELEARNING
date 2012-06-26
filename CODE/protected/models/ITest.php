@@ -102,6 +102,25 @@ class ITest extends CActiveRecord
  		$url=Yii::app()->createUrl("markingUpSkill/view",array('id'=>$this->id));
 		return $url;
  	}
+ 	/**
+ 	 *Get label sub group
+ 	 */
+ 	public function getSubGroup(){
+ 		switch($this->type){
+ 			case ITest::TYPE_MARKINGUP:
+ 				return ($this->level > 0) ? "Test Level ".$this->level : "Final Test";
+ 				break;
+ 			case ITest::TYPE_LANGUAGE:
+ 				$lang=Category::model()->findByPk($this->catid);
+ 				return $lang->name;
+ 				break;
+ 			case ITest::TYPE_KNOWLEDGE:
+ 				$lang=Category::model()->findByPk($this->catid);
+ 				return $lang->name;
+ 				break;
+ 				
+ 		}
+ 	}
 	/**
 	 * @return string the associated database table name
 	 */
@@ -123,7 +142,7 @@ class ITest extends CActiveRecord
 	}
 	public function validatorContent($attributes,$params){
 		if(sizeof($this->content)==0){
-			$this->addError('content', 'Chưa có câu hỏi');
+			$this->addError('content', 'ChÆ°a cÃ³ cÃ¢u há»�i');
 		}
 	}
 	/**
@@ -161,16 +180,16 @@ class ITest extends CActiveRecord
 	public function afterFind()
 	{
 		//Decode attribute other to set other attributes
-		$this->list_other_attributes=(array)json_decode($this->other);	
+		$this->list_other_attributes=json_decode($this->other,true);	
 			
 		if(isset($this->list_other_attributes['modified']))
-			$this->list_other_attributes['modified']=(array)json_decode($this->list_other_attributes['modified']);
+			$this->list_other_attributes['modified']=json_decode($this->list_other_attributes['modified'],true);
 		else 
 			$this->list_other_attributes['modified']=array();
 			
 		//Decode content
 		if(isset($this->list_other_attributes['content']))
-			$this->list_other_attributes['content']=(array)json_decode($this->list_other_attributes['content']);
+			$this->list_other_attributes['content']=json_decode($this->list_other_attributes['content'],true);
 		else 
 			$this->list_other_attributes['content']=array();
 		return parent::afterFind();

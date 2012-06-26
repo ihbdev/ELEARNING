@@ -255,6 +255,26 @@ class CourseController extends Controller
 	}
 	
 	/**
+	 * Suggests list course of search form
+	 */
+	public function actionSearchCourses()
+	{
+		$office_id=$_POST['Exam']['office_id'];
+		$criteria = new CDbCriteria ();
+		$criteria->compare('status',Course::STATUS_ACTIVE);
+		$criteria->compare('office_id',$office_id);
+  		$data=Course::model()->findAll($criteria);
+    	$data=CHtml::listData($data,'id','title');
+    	echo CHtml::tag('option',
+                   array('value'=>''),CHtml::encode('All'),true);
+   		foreach($data as $value=>$title)
+    	{
+        	echo CHtml::tag('option',
+                   array('value'=>$value),CHtml::encode($title),true);
+    	}
+	}
+	
+	/**
 	 * Init checkbox selection
 	 * @param string $name_params, name of section to work	 
 	 */

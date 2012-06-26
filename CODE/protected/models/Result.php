@@ -114,9 +114,10 @@ class Result extends CActiveRecord
 	public function afterFind()
 	{
 		//Decode attribute other to set other attributes
-		$this->list_other_attributes=(array)json_decode($this->other);	
-		//Decode answer
-		$this->answer=(array)json_decode($this->answer);				
+		$this->list_other_attributes=json_decode($this->other,true);	
+		//Decode answer		
+		$this->answer=json_decode($this->answer,true);				
+
 		return parent::afterFind();
 	}
 		
@@ -156,5 +157,22 @@ class Result extends CActiveRecord
 			'sort' => array ('defaultOrder' => 'id DESC' )    		
 		));
 		return $list_results;
+	}
+	/*
+	 * get final result 
+	 */
+	public function getResult(){
+		switch ($this->exam->type){
+			case Exam::TYPE_MARKINGUP:
+                  $num_correct=0;
+                  $index=1;
+                  foreach ($this->answer as $id=>$answer){
+                  	$question=Question::model()->findByPk($id);
+                    $check=$question->check($answer);
+                    if($check) $num_correct++;
+                  }
+            break;
+		}
+		return $num_correct.'/'.sizeof($this->answer);
 	}
 }

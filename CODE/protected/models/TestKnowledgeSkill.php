@@ -145,7 +145,8 @@ class TestKnowledgeSkill extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'author'=>array(self::BELONGS_TO,'User','created_by')
+			'author'=>array(self::BELONGS_TO,'User','created_by'),
+			'cat'=>array(self::BELONGS_TO,'Category','catid'),
 		);
 	}
 	/**
@@ -155,16 +156,16 @@ class TestKnowledgeSkill extends CActiveRecord
 	public function afterFind()
 	{
 		//Decode attribute other to set other attributes
-		$this->list_other_attributes=(array)json_decode($this->other);	
+		$this->list_other_attributes=json_decode($this->other,true);	
 			
 		if(isset($this->list_other_attributes['modified']))
-			$this->list_other_attributes['modified']=(array)json_decode($this->list_other_attributes['modified']);
+			$this->list_other_attributes['modified']=json_decode($this->list_other_attributes['modified'],true);
 		else 
 			$this->list_other_attributes['modified']=array();
 			
 		//Decode content
 		if(isset($this->list_other_attributes['content']))
-			$this->list_other_attributes['content']=(array)json_decode($this->list_other_attributes['content']);
+			$this->list_other_attributes['content']=json_decode($this->list_other_attributes['content'],true);
 		else 
 			$this->list_other_attributes['content']=array();
 		return parent::afterFind();
@@ -266,6 +267,7 @@ class TestKnowledgeSkill extends CActiveRecord
 	 */
 	public function search(){
 		$criteria = new CDbCriteria ();
+		$criteria->compare ( 'type', ITest::TYPE_KNOWLEDGE );
 		if($this->title != '')
 			$criteria->compare ( 'title', $this->title, true );
 		if($this->group_level === '0')

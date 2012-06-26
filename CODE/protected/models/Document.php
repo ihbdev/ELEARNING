@@ -1,7 +1,7 @@
 <?php
 /**
  * 
- * Menu class file 
+ * Document class file 
  * @author ihbvietnam <hotro@ihbvietnam.com>
  * @link http://iphoenix.vn
  * @copyright Copyright &copy; 2012 IHB Vietnam
@@ -10,42 +10,61 @@
  */
 
 /**
- * Menu includes attributes and methods of Menu class  
+ * Document includes attributes and methods of Category class  
  */
-class Menu extends CActiveRecord
+class Document extends CActiveRecord
 {	
 	/**
 	 * Config maximun rank in a group
 	 */
 	const MAX_RANK=4;	
 	/**
-	 * Config code error when delete node
+	 * Config code error when delete category
 	 */
 	const DELETE_OK=1;
 	const DELETE_HAS_CHILD=2;
-	
-	const CONTROLLER_DEFAULT='menu';
-	const ACTION_DEFAULT='index';
+	const DELETE_HAS_ITEMS=3;
 	/**
-	 * Config code (id) of the main node groups which have parent_id=0
+	 * Config code (id) of the main category groups which have parent_id=0
 	 */
-	const TYPE_ADMIN_MENU=2;
-	const TYPE_EMPLOYEE_MENU=1;
-		
-	private $config_other_attributes=array('params','action','controller','description','modified');	
-	private $list_other_attributes;
 
+	const TYPE_MARKING_UP=1;
+	const TYPE_KNOWLEDGE_SKILL=2;
+	const TYPE_LANGUAGE_SKILL=3;
+	const TYPE_CODING_GUIDE=4;
+
+	/**
+	 * Config special
+	 * SPECIAL_REMARK when group is news, category news is viewed at homepage
+	 */
+	const SPECIAL_REMARK=0;
+
+	/**
+	 * @var array config list other attributes of the banner
+	 * these attributes is stored in other field of article table	 
+	 */
+	
+	const META_LENGTH=30;	
+	private $config_other_attributes=array('amount','introimage','description','modified','metadesc');	
+	private $list_other_attributes;
+	
+	public $list_special;
+	// Template var that store data when tree traversal
 	public $tmp_list;
 	// Store old order view
 	public $old_order_view;
 	// Store old parent id
 	public $old_parent_id;
+	//Store name
+	public $old_name;
+	//Store keyword
+	public $old_keyword;
 	
 	public $config_type;
 	public function init(){
 			parent::init();
 			//Get list all language
-			$configFile = Yii::app ()->theme->basePath.'/config/config_menu.php';
+			$configFile = Yii::app ()->theme->basePath.'/config/config_documents.php';
     		$this->config_type=require($configFile); 
 	}
 	/**
@@ -54,6 +73,50 @@ class Menu extends CActiveRecord
 	public function getMax_rank(){
 		return $this->config_type[$this->type]['max_rank'];
 	}
+	/**
+	 * Get all specials of class Category
+	 * Use in drop select when create, update banner
+	 */
+	static function getList_label_specials()
+ 	{
+	return array(
+			self::SPECIAL_REMARK=>'Hiển thị ở trang chủ',
+		);
+ 	}
+ 	/**
+ 	 * Get specials attributes of a category object
+ 	 * Used in page list admin views
+ 	 */
+	public function getLabel_specials()
+ 	{
+		$label_specials=array();
+		foreach ($this->list_special as $special) {
+			$list_label_specials=self::getList_label_specials();
+			$label_specials[]= $list_label_specials[$special];
+		}
+		return $label_specials;
+ 	}
+ 	
+ 	/**
+ 	 * Special attributes are encoded before save in database
+ 	 * Function get all code of the special
+ 	 */
+	static function getCode_special($index=null)
+ 	{
+ 		$result=array();
+ 		$full=range(0,pow(2,sizeof(self::getList_label_specials()))-1);
+ 		if($index === null){
+ 			$result=$full;
+ 		}
+ 		else {			
+ 			foreach ($full as $num){
+ 				if(in_array($index, iPhoenixStatus::decodeStatus($num))){
+ 					$result[]=$num;
+ 				}
+ 			}
+ 		}
+ 		return $result;
+ 	}
  	
 	/**
 	 * Returns all nodes in the type
@@ -88,14 +151,14 @@ class Menu extends CActiveRecord
 	/**
 	 * Return ancestor nodes of the node 
 	 * Used in bread crumb
-	 * @return array ancestor array of this node
+	 * @return array $bread_crumb ancestor array of this node
 	 */
 	public function getAncestor_nodes(){
 		$bread_crumb=array();
 		$check=true;
 		$current_id=$this->id;
 		while ($check){
-			$current=Menu::model()->findByPk($current_id);
+			$current=self::model()->findByPk($current_id);
 			$bread_crumb[]=$current_id;
 			if($current->parent_id==0){
 				$check=false;
@@ -114,7 +177,7 @@ class Menu extends CActiveRecord
 		$check=true;
 		$current_id=$this->id;
 		while ($check){
-			$current=Menu::model()->findByPk($current_id);
+			$current=self::model()->findByPk($current_id);
 			if($current->parent_id==0)
 			{
 				$check=false;
@@ -137,7 +200,7 @@ class Menu extends CActiveRecord
 		return $result;
 	}
 	
-	/**
+/**
 	 * Returns order view of brother nodes
 	 * @return array $result, the array sibling of this node
 	 */
@@ -146,7 +209,7 @@ class Menu extends CActiveRecord
 		$criteria=new CDbCriteria;
 		$criteria->compare('parent_id', $this->parent_id);
 		$criteria->compare('type',$this->type);
-		$list=Menu::model()->findAll($criteria);
+		$list=self::model()->findAll($criteria);
 		
 		foreach ($list as $cat){
 			$result[$cat->id]=$cat->order_view;
@@ -172,7 +235,7 @@ class Menu extends CActiveRecord
 		}
 		foreach ($black_list as $node_id) {
 			unset($result[$node_id]);
-		}		
+		}	
 		return $result;
 	}
 	/**
@@ -184,7 +247,7 @@ class Menu extends CActiveRecord
 			$criteria=new CDbCriteria;
 			$criteria->compare('parent_id', $node_id);
 			$criteria->order='order_view';
-			$list_menu=Menu::model()->findAll($criteria);
+			$list_menu=self::model()->findAll($criteria);
 			foreach ($list_menu as $menu){
 				//Get route and params if type is menu
 				$this->tmp_list[$menu->id]=$new_level;
@@ -237,7 +300,7 @@ class Menu extends CActiveRecord
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return Menu the static model class
+	 * @return Category the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -249,7 +312,7 @@ class Menu extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'tbl_menu';
+		return 'tbl_document';
 	}
 
 	/**
@@ -261,14 +324,13 @@ class Menu extends CActiveRecord
 			array('name,parent_id', 'required'),
 			array('parent_id','validatorParent'),
 			array('name', 'length', 'max'=>256),
-			array('description', 'safe'),
+			array('description,metadesc,keyword,introimage','safe'),
 			array('order_view','numerical'),
-			array('controller,action','required'),
-			array('params','safe'),
+			array('list_special,lang','safe')
 		);
 	}
 	
-	/**
+/**
 	 * Function validator role
 	 */
 	public function validatorMaxRank($attributes,$params){
@@ -282,19 +344,11 @@ class Menu extends CActiveRecord
 	 * Function validator role
 	 */
 	public function validatorParent($attributes,$params){
-		if($this->type>0 && $this->id>0){
+		if($this->type>0 && $this->id>0 && $this->parent_id !=0){
 			$max_rank=$this->max_rank;
-			if($this->parent_id > 0){
-				$parent=Menu::model()->findByPk($this->parent_id);
-				if(($parent->level+$this->rank)>=$max_rank){
-					$this->addError('parent_id', 'Vượt quá cấp quy định. Bạn không thể chuyển tới thư mục này.');
-				}
-			}
-			else
-			{
-				if($this->rank>=$max_rank){
-					$this->addError('parent_id', 'Vượt quá cấp quy định. Bạn không thể chuyển tới thư mục này.');
-				}
+			$parent=self::model()->findByPk($this->parent_id);
+			if(($parent->level+$this->rank)>=$max_rank){
+				$this->addError('parent_id', 'Vượt quá cấp quy định. Bạn không thể chuyển tới thư mục này.');
 			}
 		}
 	}
@@ -320,12 +374,10 @@ class Menu extends CActiveRecord
 			'parent_id'	=> 'Thuộc',
 			'max_rank'=>'Mức cấp con',
 			'order_view'=>'Thứ tự hiển thị',
-			'params'=>'Cấu hình tham số 3 cho URL',
-			'controller'=>'Cấu hình tham số 1 cho URL',
-			'action'=>'Cấu hình tham số 2 cho URL',
 			'list_special' => 'Nhóm hiển thị',
 			'lang'=>'Ngôn ngữ',
-			'amount'=>'Số đối tượng chứa các từ khóa trên'
+			'amount'=>'Số đối tượng chứa các từ khóa trên',
+			'introimage'=>'Ảnh đại diện'
 		);
 	}
 	
@@ -343,10 +395,18 @@ class Menu extends CActiveRecord
 		if($this->parent_id != ""){
 			$this->old_parent_id=$this->parent_id;
 		}
+		//Store old name
+		$this->old_name=$this->name;
+		//Store old keyword
+		$this->old_keyword=$this->keyword;
+		//Get list special
+		if($this->special != ""){
+			$this->list_special=iPhoenixStatus::decodeStatus($this->special);	
+		}
 		//Decode attribute other to set other attributes
-		$this->list_other_attributes=json_decode($this->other,true);	
+		$this->list_other_attributes=(array)json_decode($this->other);	
 		if(isset($this->list_other_attributes['modified']))
-			$this->list_other_attributes['modified']=json_decode($this->list_other_attributes['modified'],true);
+			$this->list_other_attributes['modified']=(array)json_decode($this->list_other_attributes['modified']);
 		else 
 			$this->list_other_attributes['modified']=array();
 		return parent::afterFind();
@@ -370,13 +430,58 @@ class Menu extends CActiveRecord
 				$this->created_date=time();
 				$this->created_by=Yii::app()->user->id;
 				//Set order view
-				$this->order_view=sizeof($this->list_order_view)+1;								
+				$this->order_view=sizeof($this->list_order_view)+1; 
+				$this->list_special=array(Document::SPECIAL_REMARK); 
+				$alias=iPhoenixString::createAlias($this->name);
+				if(sizeof(Document::model()->findAll('alias ="'.$alias.'"'))>0)
+				{
+					$parent=Document::model()->findByPk($this->parent_id);
+					if(isset($parent))	$alias = $alias.'-'.$parent->alias;
+				}
+				while(sizeof(Document::model()->findAll('alias ="'.$alias.'"'))>0){
+					$suffix=rand(1,9);
+					$alias =$alias.'-'.$suffix;
+				}
+				$this->alias=$alias;				
 			}	
 			else {
 				$modified=$this->modified;
 				$modified[time()]=Yii::app()->user->id;
-				$this->modified = json_encode ( $modified );				
+				$this->modified = json_encode ( $modified );
+				if ($this->name != $this->old_name) {
+					$alias = iPhoenixString::createAlias ( $this->name );
+					if (sizeof ( Document::model ()->findAll ( 'alias ="' . $alias . '"' ) ) > 0) {
+						$parent = Document::model ()->findByPk ( $model->parent_id );
+						if (isset ( $parent ))
+							$alias = $alias.'-'.$parent->alias;
+					}
+					while ( sizeof ( Document::model ()->findAll ( 'alias ="' . $alias . '"' ) ) > 0 ) {
+						$suffix = rand ( 1, 9 );
+						$alias = $alias . '-' . $suffix;
+					}
+					$this->alias = $alias;
+				}
 			}
+			if($this->metadesc == ''){
+					$description=$this->description;
+					$this->metadesc=iPhoenixString::createIntrotext($description,self::META_LENGTH);
+			}
+			//Handler keyword
+			if($this->old_keyword != $this->keyword || $this->isNewRecord){
+				$old_category=Document::model()->findByPk($this->old_keyword);
+				if(isset($old_category)){
+					$old_category->amount=$old_category->amount-1;
+					if($old_category->amount < 0) $old_category->amount=0;
+					$old_category->save();	
+				}
+				$new_category=Document::model()->findByPk($this->keyword);
+				if(isset($new_category)){
+					$new_category->amount=$new_category->amount+1;
+					$new_category->save();	
+				}
+			}
+			//Encode special
+			$this->special=iPhoenixStatus::encodeStatus($this->list_special);
 			//Encode other attributes  		
 			$this->other = json_encode ( $this->list_other_attributes );
 			return true;
@@ -384,9 +489,9 @@ class Menu extends CActiveRecord
 			return false;
 	}
 	/**
-	 * Change order view of a node
+	 * Change order view of a category
 	 * @return boolean false if it is not changed successfully
-	 * otherwise, it changed the order of this node
+	 * otherwise, it changed the order of this category
 	 */
 	
 	public function changeOrderView() {
@@ -398,28 +503,29 @@ class Menu extends CActiveRecord
 			if ($this->order_view < $this->old_order_view) {
 				foreach ( $this->list_order_view as $id => $order ) {
 					if ($id != $this->id && $order >= $this->order_view) {
-						$node = Menu::model ()->findByPk ( $id );
-						if ($node->order_view < $this->old_order_view )
-							$node->order_view = $order + 1;
-						if (! $node->save ())
+						$category = Document::model ()->findByPk ( $id );
+						if ($category->order_view < $this->old_order_view )
+							$category->order_view = $order + 1;
+						if (! $category->save ()){
 							return false;
+						}
 					}
 				}
 			}
-			if ($this->order_view > $this->old_order_view) {				
+			if ($this->order_view > $this->old_order_view) {
 				foreach ( $this->list_order_view as $id => $order ) {
 					if ($id != $this->id && $order <= $this->order_view) {
-						$node = Menu::model ()->findByPk ( $id );
-						if ($node->order_view > $this->old_order_view )
-							$node->order_view = $order - 1;
-						if (! $node->save ())
+						$category = Document::model ()->findByPk ( $id );
+						if ($category->order_view > $this->old_order_view )
+							$category->order_view = $order - 1;
+						if (! $category->save ())
 							return false;
 					}
 				}
 			}
 		} else {
-			//Fix order view in old parent node
-			$list = Menu::model ()->findAll ( 'parent_id=' . $this->old_parent_id );
+			//Fix order view in old parent category
+			$list = Document::model ()->findAll ( 'parent_id=' . $this->old_parent_id );
 			foreach ( $list as $cat ) {
 				if ($cat->order_view > $this->old_order_view) {
 					$cat->order_view = $cat->order_view - 1;
@@ -427,12 +533,12 @@ class Menu extends CActiveRecord
 						return false;
 				}
 			}
-			//Fix order view in new parent node
+			//Fix order view in new parent category
 			foreach ( $this->list_order_view as $id => $order ) {
 				if ($id != $this->id && $order >= $this->order_view) {
-					$node = Menu::model ()->findByPk ( $id );
-					$node->order_view = $order + 1;
-					if (! $node->save ())
+					$category = Document::model ()->findByPk ( $id );
+					$category->order_view = $order + 1;
+					if (! $category->save ())
 						return false;
 				}
 			}
@@ -466,164 +572,126 @@ class Menu extends CActiveRecord
 	 * Recursive algorithms for tree traversals
 	 */
 	public function checkDelete($id){
-		$list_node=Menu::model()->findAll('parent_id = '.$id);
-		if(sizeof($list_node)>0){
+		$list_category=Document::model()->findAll('parent_id = '.$id);
+		if(sizeof($list_category)>0){
 			return self::DELETE_HAS_CHILD;
 		}
+		/*
+		switch($this->type){
+			case self::TYPE_NEWS:
+				$list_news=News::model()->findAll('catid = '. $id);
+				if(sizeof($list_news)>0) return self::DELETE_HAS_ITEMS;
+				break;
+			case self::TYPE_PRODUCT:
+				$list_product=Product::model()->findAll('catid = '. $id);
+				if(sizeof($list_product)>0) return self::DELETE_HAS_ITEMS;
+				break;
+			case self::TYPE_STATICPAGE:
+				$list_page=StaticPage::model()->findAll('catid = '. $id);
+				if(sizeof($list_page)>0) return self::DELETE_HAS_ITEMS;
+				break;
+			case self::TYPE_ALBUM:
+				$list_album=Album::model()->findAll('catid = '. $id);
+				if(sizeof($list_album)>0) return self::DELETE_HAS_ITEMS;
+				break;
+			case self::TYPE_GALLERYVIDEO:
+				$list_video=GalleryVideo::model()->findAll('catid = '. $id);
+				if(sizeof($list_video)>0) return self::DELETE_HAS_ITEMS;
+				break;
+			case self::TYPE_QA:
+				$list_qa=QA::model()->findAll('catid = '. $id);
+				if(sizeof($list_qa)>0) return self::DELETE_HAS_ITEMS;
+				break;
+			case self::TYPE_SUPPORT:
+				$list_support=Support::model()->findAll('catid = '. $id);
+				if(sizeof($list_support)>0) return self::DELETE_HAS_ITEMS;
+				break;
+			case self::TYPE_RECRUITMENT:
+				$list_recuitment=Recruitment::model()->findAll('catid = '. $id);
+				if(sizeof($list_recruitment)>0) return self::DELETE_HAS_ITEMS;
+				break;
+			
+		}
+		*/
+		$class=$this->config_type[$this->type]['class'];
+		$object= new $class;
+		$list=$object->findAll('catid = '. $id);
+		if(sizeof($list)>0) 
+			return self::DELETE_HAS_ITEMS;
 		return self::DELETE_OK;
 	}
+
 	/**
-	 * Config menu of node, each menu have corresponding controller/action
-	 * @param string $type, controller or action
-	 * @param array $value, the information of corresponding url
-	 * @return array
+	 * Get url update f album
+	 * @return album's url
 	 */
-	public function codeUrl($type,$value=array()){
-		$configFile = Yii::app ()->theme->basePath.'/config/menu/config_menu_controller.php';
-    	$config_controller=require($configFile); 
-    	$configFile = Yii::app ()->theme->basePath.'/config/menu/config_menu_action.php';
-    	$config_action=require($configFile); 		
-		switch ($type) {
-			case 'controller': 
-				return $config_controller;
-				break;
-			case 'action':
-				return $config_action[$value['controller']];				
-				break;			
-		}
-	}
-	/**
-	 * Get list params for menu
-	 * @param string $controller, the controller of menu
-	 * @param string $action, the action of menu
-	 */
-	static function getListParams($controller, $action) {
-		
-		//Get params for action view_categories
-		$configFile = Yii::app ()->theme->basePath.'/config/config_categories.php';
-    	$config_categories=require($configFile); 
-		$result = array ();
-		if ($action == 'view_categories') {
-			$group = new Category ();
-			foreach ($config_categories as $index=>$info){
-				if($info['code']==$controller)
-					$group->type=$index;
-			}
-			$list_node = $group->list_nodes;
-			foreach ( $list_node as $id => $level ) {
-				$cat = Category::model ()->findByPk ( $id );
-				$index = json_encode ( array ('cat_alias' => $cat->alias ) );
-				$view = "";
-				for($i = 1; $i < $level; $i ++) {
-					$view .= "---";
-				}
-				$label = $view . " " . $cat->name . " " . $view;
-				$result [$index] = $label;
-			}
-			return $result;	
-		}
-		$result=array();
-		switch ($controller){
-			case 'menu':
-				switch ($action) {
-					case 'manager': 
-						$result=array();
-						$configFile = Yii::app ()->theme->basePath.'/config/config_menu.php';
-    					$config_menu=require($configFile); 
-    					foreach ($config_menu as $index=>$info){
-    						$value=json_encode(array('type'=>$index));
-    						$result[$value]=$info['label'];
-    					}
-						return $result;
-				}
-				break;
-			case 'exam':
-				switch ($action) {
-					case 'list': 
-						$result=array(
-							json_encode(array('type'=>Exam::TYPE_LANGUAGE))=>'Language',
-							json_encode(array('type'=>Exam::TYPE_KNOWLEDGE))=>'Knowledge',
-							json_encode(array('type'=>Exam::TYPE_CODING))=>'Coding',
-							json_encode(array('type'=>Exam::TYPE_MARKINGUP))=>'Marking-up',
-						);						
-						return $result;
-				}
-				break;
-			case 'staticPage':
-				switch ($action) {
-					case 'view_page':
-						$criteria=new CDbCriteria;
-						$group=new Category();		
-						$group->type=Category::TYPE_STATICPAGE;
-						$list_category = array ();
-						//Set itself
-						$list_child_id [] = $cat->id;
-						foreach ( $group->list_nodes as $id => $content ) {
-								$list_category [] = $id;
-						}
-						$criteria->addInCondition('catid',$list_category);
-						$criteria->compare('status',StaticPage::STATUS_ACTIVE);
-						$list_page=StaticPage::model()->findAll($criteria);
-						foreach ($list_page as $page){
-							$index=json_encode(array('cat_alias'=>$page->category->alias,'staticPage_alias'=>$page->alias));
-							$result[$index]=$page->title;
-						}
-						return $result;	
-						break;			
-					default:
-						return $result;
-				}
-				break;
-			default:
-				return $result;
-		}
-		return $result;
-	}
-	
-	/**
-	 * Create route for url of menu
-	 * @return string the corresponding url of this controller/action
-	 */	
-	public function getRoute(){
-		$configFile = Yii::app ()->theme->basePath.'/config/menu/config_menu_route.php';
-    	$config_route=require($configFile); 
-		if(isset($config_route [$this->controller] [$this->action]))
-			return $config_route [$this->controller] [$this->action];
-		else
-			return '/site/home';
-	}
-	/**
+	public function getUpdate_url()
+ 	{
+ 		$url=Yii::app()->createUrl("admin/document/index");
+		return $url;
+ 	}
+/**
 	 * Create params for url of menu
 	 * @return string, the url of menu
 	 */
-	public function getUrl() {	
-		$configFile = Yii::app ()->theme->basePath.'/config/menu/config_menu_params.php';
-    	$config_params=require($configFile);	
-			if ($this->params != "") {
-				$params = ( array ) json_decode ( $this->params );
-			} elseif (isset ( $config_params [$this->controller] [$this->action] ))
-				$params = $config_params [$this->controller] [$this->action];
-			if (isset ( $params ))
-				$url = Yii::app ()->createUrl ( $this->route, $params );
-			else
-				$url = Yii::app ()->createUrl ( $this->route );				
+	public function getUrl() {
+		/*
+		switch ($this->type){
+			case Category::TYPE_NEWS:		
+ 			$cat_alias=$this->alias;
+ 			$url=Yii::app()->createUrl("/news/list",array('cat_alias'=>$cat_alias));
+ 			break;
+			case Category::TYPE_STATICPAGE:			
+ 			$cat_alias=$this->alias;
+ 			$url=Yii::app()->createUrl("/staticPage/index",array('cat_alias'=>$cat_alias));
+			break;
+			case Category::TYPE_ALBUM:			
+ 			$cat_alias=$this->alias;
+ 			$url=Yii::app()->createUrl("/album/index",array('album_alias'=>$cat_alias));
+			break;
+			case Category::TYPE_GALLERYVIDEO:			
+ 			$cat_alias=$this->alias;
+ 			$url=Yii::app()->createUrl("/galleryVideo/index",array('galleryVideo_alias'=>$cat_alias));
+			break;
+			case Category::TYPE_PRODUCT:
+ 			$cat_alias=$this->alias;
+ 			$url=Yii::app()->createUrl("/product/list",array('cat_alias'=>$cat_alias));
+			break;
+			case Category::TYPE_APP:
+ 			$cat_alias=$this->alias;
+ 			$url=Yii::app()->createUrl("/app/list",array('cat_alias'=>$cat_alias));
+			break;
+			case Category::TYPE_QA:
+ 			$cat_alias=$this->alias;
+ 			$url=Yii::app()->createUrl("/qA/list",array('cat_alias'=>$cat_alias));
+			break;
+		}
+		*/
+		$cat_alias=$this->alias;
+		$url=Yii::app()->createUrl("/".$this->config_type[$this->type]['code']."/list",array('cat_alias'=>$cat_alias));
 		return $url;
 	}
 	/**
 	 * Get active menu
 	 * @return array $result, the active menu in admin board
 	 */
-	public function findActiveMenu(){
-		$list=$this->list_nodes;	
-		$result=array();
-		foreach ($list as $id=>$level){
-			$menu=Menu::model()->findByPk($id);
-			if($menu->url== Yii::app()->request->requestUri)
-			{
-				$current=Menu::model()->findByPk($id);
-				$result=$current->ancestor_nodes;
-			}
-		}
+	public function findActiveMenu($current_catid) {
+		$result = array ();
+		$cat = Document::model ()->findByPk ( $current_catid );
+		if(isset($cat))
+			$result = $cat->ancestor_nodes;
+		else
+			$result=array();
 		return $result;
+	}
+	
+	/**
+ 	* create Language array to make dropdownList
+ 	*/
+	public static function getLanguageOption(){
+		$list_lang = array();
+	 	$list_cat=Document::model()->findAll('type ='.Document::TYPE_ITEST_LANG.'');
+	 	foreach ($list_cat as $cat) $list_lang[$cat->id] = $cat->name;
+	 	return $list_lang;
 	}
 }
