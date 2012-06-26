@@ -3,6 +3,11 @@
 		<!--begin title-->
 		<div class="folder-header">
 			<h1><?php echo Language::t('Coding')?></h1>
+			<div class="header-menu">
+				<ul>
+					<li class="ex-show"><a class="activities-icon" href=""><span><?php echo Language::t('Language Skills');?></span></a></li>
+				</ul>
+			</div>
 		</div>
 
 		<!--end title-->
@@ -16,7 +21,7 @@
             	<input type="button" class="button" value="<?php echo Language::t('List tests')?>" style="width:220px;" onClick="parent.location='<?php echo Yii::app()->createUrl('codingSkill/index')?>'"/>
                 <div class="line top bottom"></div>
         </div>
-		<?php $form=$this->beginWidget('CActiveForm', array('method'=>'post','enableAjaxValidation'=>false, 'id'=>'add_test')); ?>	
+		<?php $form=$this->beginWidget('CActiveForm', array('method'=>'post','enableAjaxValidation'=>false, 'id'=>'add_test','htmlOptions'=>array('enctype' => 'multipart/form-data'))); ?>	
             <div class="testpost-outer">
             <?php
     			foreach(Yii::app()->user->getFlashes() as $key => $message) {
@@ -36,15 +41,26 @@
                  <?php if($type == 'detail'):?>
                 <div class="testpost-box">
 					<h2><?php echo Language::t('Material for test')?></h2>
+					<input type="radio" name="group1" value="Text" checked id="Materials_text"> Internal Article &nbsp &nbsp
+					<input type="radio" name="group1" value="Url" id="Materials_url"> External Url &nbsp &nbsp
+					<input type="radio" name="group1" value="Upload" id="Materials_upload"> Upload File <br /><br />
                     <!-- Material for question -->
 					<label style="width:66px;"><?php echo Language::t('Material');?>:</label>
-					<textarea  name="TestCodingSkill[materials]"  style="width:610px; height:550px;"></textarea>
+					<textarea  id ="material_1" name="TestCodingSkill[materials][1]" style="width:610px; height:350px;"></textarea>
+					<input id = "material_2" type="text" value ="" name="TestCodingSkill[materials][2]" style="width:610px;display:none">
+
+					<input id ="material_3" style="display:none;" type="file" name="TestCodingSkill[materials][3]">
                 </div><!--testpost-box-->
                 <?php else:?>
                 	Not complete yet!
                 <?php endif;?>
+
                 <div class="testpost-box">
 					<h2><?php echo Language::t('List questions')?></h2>
+					<input type="radio" name="group2" value="Text" checked id="question_editor"> Internal Article &nbsp &nbsp
+					<input type="radio" name="group2" value="Url" id="question_upload"> Upload question sheet &nbsp &nbsp <br /><br />
+
+					<div id="testpost-box-1">
 					<?php foreach ($test->content as $question_id):?>
                     	<?php $question=Question::model()->findByPk($question_id);?>
                          <div class="text-question">
@@ -98,6 +114,15 @@
                             <div class="row"><label style="width:70px;">&nbsp;</label><input id="add_question" type="submit" class="button" value="<?php echo Language::t('Add question')?>" style="width:100px;" /></div>
                         </div><!--q-post-->
                     </div><!--markingup-question-->	
+                    </div>
+                    <div id="testpost-box-2" style="display:none">
+                    	<div class="q-post">
+                    		<div class="row"><h3>Upload Question sheet</h3></div>
+							<input type="file" name="Question[upload]" id="btn_upload">
+                            <label style="width:70px;">&nbsp;</label>
+                            <input id="add_question_2" type="submit" class="button" value="<?php echo Language::t('Add question')?>" style="width:100px;" />
+						</div>
+                    </div>
                 </div><!--testpost-box-->
                 <div class="testpost-button"><input type="submit" class="big-button" value="<?php echo Language::t('Create')?>" style="width:100px;" /></div>		
 			</div>
@@ -291,4 +316,88 @@ function(){
 		return false;
 		});
 ");
+Yii::app()->clientScript->registerScript(
+'add_question_2', 
+"$('body').on('click','#add_question_2',
+function(){
+	jQuery.ajax({
+		type:'POST',
+		contentType:'multipart/form-data',
+		dataType:'json',
+		url:'".Yii::app()->createUrl('codingSkill/addQuestion_2')."',
+		data: $(this).parent().parent().find('input[id=btn_upload]').serialize(),
+		success:function(data) {
+			if(data.success){										
+				var current_list_question=$('#list_questions').val();
+				if (data.id > 0)  
+        			{
+               			if(current_list_question != ''){
+               				$('#list_questions').val(current_list_question+','+data.id);
+               			}
+               			else {
+               				$('#list_questions').val(data.id);
+               			}
+               		}
+												
+					$(data.view).insertBefore($('.q-post'));
+				}
+				else{
+					jAlert(data.message);
+				}
+			},
+		});
+		return false;
+		});
+");
 ?>
+<?php
+$url = 'http://image.mp3.zdn.vn/thumb/94_94/covers/d/9/d97dd3f58734975a9518e499b4d7b973_1339952157.jpg';
+
+//$content_type = get_headers($url, 1);
+
+//print_r($content_type['Content-Type']);
+?>
+<script type="text/javascript">
+	$("#Materials_text").click(
+		function()
+		{
+			$("#material_1").show();
+			$("#material_2").hide();
+			$("#material_2").val('http://');
+			$("#material_3").hide();
+		}
+	);
+	$("#Materials_url").click(
+		function()
+		{
+			$("#material_1").hide();
+			$("#material_1").val('');
+			$("#material_2").show();
+			$("#material_3").hide();
+		}
+	);
+	$("#Materials_upload").click(
+		function()
+		{
+			$("#material_1").hide();
+			$("#material_1").val('');
+			$("#material_2").hide();
+			$("#material_2").val('http://');
+			$("#material_3").show();
+		}
+	);
+	$("#question_editor").click(
+		function()
+		{
+			$("#testpost-box-1").show();
+			$("#testpost-box-2").hide();
+		}
+	);
+	$("#question_upload").click(
+		function()
+		{
+			$("#testpost-box-1").hide();
+			$("#testpost-box-2").show();
+		}
+	);
+</script>

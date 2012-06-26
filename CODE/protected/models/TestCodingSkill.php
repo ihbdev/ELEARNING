@@ -111,10 +111,10 @@ class TestCodingSkill extends CActiveRecord
 	public function rules()
 	{
 		return array(
-			array('title,content','required'),
+			array('title','required'),
 			array('type', 'numerical'),
 			array('title,group_level,catid','safe','on'=>'search'),
-			array('catid,description,type_coding','safe')
+			array('catid,description,type_coding,content','safe')
 		);
 	}
 	public function validatorContent($attributes,$params){

@@ -3,6 +3,11 @@
 		<!--begin title-->
 		<div class="folder-header">
 			<h1><?php echo Language::t('Coding Test')?></h1>
+			<div class="header-menu">
+				<ul>
+					<li class="ex-show"><a class="activities-icon" href=""><span><?php echo Language::t('Language Skills');?></span></a></li>
+				</ul>
+			</div>
 		</div>
 		<!--end title-->
 		<div class="folder-content">
@@ -31,18 +36,40 @@
                 </div><!--testpost-box-->
                  <?php if($test->type_coding == 'detail'):?>
                	<div class="testpost-box">
+               		<?php
+						$material = array('index1'=>'','index2'=>'','index3'=>'');
+						$style = array(1=>'',2=>'none',3=>'none');
+						$check = array(1=>'checked',2=>'',3=>'');
+						if(isset($test->content[0]))
+							if(Question::model()->findByPk($test->content[0])->material_id != 0)
+							{
+								$material = Question::model()->findByPk($test->content[0])->material->content;
+							}
+						if($material["index2"]!="") {
+							$style[1]='none';$style[2]='';$style[3]='none';
+							$check[1]='';$check[2]='checked';$check[3]='';
+						}
+					?>
 					<h2><?php echo Language::t('Material for test')?></h2>
+					<input type="radio" name="group1" value="Text" <?php echo $check[1];?> id="Materials_text"> Internal Article &nbsp &nbsp
+					<input type="radio" name="group1" value="Url" <?php echo $check[2];?> id="Materials_url"> External Url &nbsp &nbsp
+					<input type="radio" name="group1" value="Upload" id="Materials_upload"> Upload File <br /><br />
                     <!-- Material for question -->
+                    
 					<label style="width:66px;"><?php echo Language::t('Material');?>:</label>
-					<textarea  name="TestCodingSkill[materials]"  style="width:610px; height:550px;"><?php if(isset($test->content[0])) if(Question::model()->findByPk($test->content[0])->material_id != 0){
-								echo Question::model()->findByPk($test->content[0])->material->content;
-							}?></textarea>
-                </div><!--testpost-box-->
+					<textarea  id ="material_1" name="TestCodingSkill[materials][1]" style="width:610px; height:350px;display:<?php echo $style[1]?>"><?php echo $material['index1']?></textarea>
+					<input id = "material_2" type="text" value ="<?php echo $material['index2']?>" name="TestCodingSkill[materials][2]" style="width:610px;display:<?php echo $style[2]?>">
+					<?php echo CHtml::form('','post',array('enctype'=>'multipart/form-data')); ?>
+					<input id ="material_3" style="display:none;" type="file" name="TestCodingSkill[materials][3]">
                  <?php else:?>
                 	<input name="TestCodingSkill[level]" type="hidden" value="0"/>
                 <?php endif;?>
+                <br /><br />
                 <div class="testpost-box">
 					<h2><?php echo Language::t('List questions')?></h2>
+					<input type="radio" name="group2" value="Text" checked id="question_editor"> Internal Article &nbsp &nbsp
+					<input type="radio" name="group2" value="Url" id="question_upload"> Upload question sheet &nbsp &nbsp <br /><br />
+					<div id="testpost-box-1">
 					<?php foreach ($test->content as $question_id):?>
                     	<?php $question=Question::model()->findByPk($question_id);?>
                          <div class="text-question">
@@ -56,6 +83,20 @@
                             	<div id="<?php echo $css_id.'_form';?>" style="display: none;">
                             		<input type="text" name ="UpdateQuestion[title]" style="width:600px;" value="<?php echo $question->title;?>">
                             		<a class="i16 i16-checkblue" href="<?php echo Yii::app()->createUrl('codingSkill/updateQuestion',array('id'=>$question_id,'test_id'=>$test->id))?>"></a>
+                            		<a class="i16 i16-removered"></a>
+                            	</div>
+                            </div>
+							<div class="text-title">
+                            	<?php $css_id='question'.$question->id.'_'.'supplement';?>
+                            	<label style="width:70px;"><?php echo Language::t('File')?>:</label>
+                            	<div id="<?php echo $css_id;?>">
+                            		<?php echo $question->supplement?>
+                            		<a class="i16 i16-statustext"></a>
+                            		<a class="i16 i16-trashgray" href="<?php echo Yii::app()->createUrl('codingSkill/removeQuestion',array('question_id'=>$question->id))?>"></a>
+                            	</div>
+                            	<div id="<?php echo $css_id.'_form';?>" style="display: none;">
+                            		<input type="text" name ="UpdateQuestion[supplement]" style="width:600px;" value="<?php echo $question->title;?>">
+                            		<a class="i16 i16-checkblue" href="<?php echo Yii::app()->createUrl('codingSkill/updateQuestion',array('id'=>$question->id))?>"></a>
                             		<a class="i16 i16-removered"></a>
                             	</div>
                             </div>
@@ -95,7 +136,15 @@
                             <br />
                             <div class="row"><label style="width:70px;">&nbsp;</label><input id="add_question" type="submit" class="button" value="<?php echo Language::t('Add question')?>" style="width:100px;" /></div>
                         </div><!--q-post-->
-                    </div><!--markingup-question-->	
+                    </div><!--markingup-question-->
+                    </div>
+					<div id="testpost-box-2" style="display:none">
+                    	<div class="q-post">
+                    		<div class="row"><h3>Upload Question sheet</h3></div>
+                    		<?php echo CHtml::form('','post',array('enctype'=>'multipart/form-data')); ?>
+							<input type="file" name="TestCodingSkill[upload]">
+						</div>
+                    </div>
                 </div><!--testpost-box-->
                 <div class="testpost-button"><input type="submit" class="big-button" value="<?php echo Language::t('Update')?>" style="width:100px;" /></div>		
 			</div>
@@ -290,3 +339,43 @@ function(){
 		});
 ");
 ?>
+<script type="text/javascript">
+	$("#Materials_text").click(
+		function()
+		{
+			$("#material_1").show();
+			$("#material_2").hide();
+			$("#material_3").hide();
+		}
+	);
+	$("#Materials_url").click(
+		function()
+		{
+			$("#material_1").hide();
+			$("#material_2").show();
+			$("#material_3").hide();
+		}
+	);
+	$("#Materials_upload").click(
+		function()
+		{
+			$("#material_1").hide();
+			$("#material_2").hide();
+			$("#material_3").show();
+		}
+	);
+	$("#question_editor").click(
+		function()
+		{
+			$("#testpost-box-1").show();
+			$("#testpost-box-2").hide();
+		}
+		);
+	$("#question_upload").click(
+		function()
+		{
+			$("#testpost-box-1").hide();
+			$("#testpost-box-2").show();
+		}
+		);
+</script>
