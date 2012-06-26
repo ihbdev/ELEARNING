@@ -114,9 +114,9 @@ class TmpResult extends CActiveRecord
 	public function afterFind()
 	{
 		//Decode attribute other to set other attributes
-		$this->list_other_attributes=(array)json_decode($this->other);	
+		$this->list_other_attributes=json_decode($this->other,true);	
 		//Decode answer
-		$this->answer=(array)json_decode($this->answer);				
+		$this->answer=json_decode($this->answer,true);				
 		return parent::afterFind();
 	}
 		

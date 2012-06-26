@@ -175,15 +175,15 @@ class Exam extends CActiveRecord
 	public function afterFind()
 	{
 		//Decode attribute other to set other attributes
-		$this->list_other_attributes=(array)json_decode($this->other);	
+		$this->list_other_attributes=json_decode($this->other,true);	
 			
 		if(isset($this->list_other_attributes['modified']))
-			$this->list_other_attributes['modified']=(array)json_decode($this->list_other_attributes['modified']);
+			$this->list_other_attributes['modified']=json_decode($this->list_other_attributes['modified'],true);
 		else 
 			$this->list_other_attributes['modified']=array();
 			
 		if(isset($this->list_other_attributes['list_users']))
-			$this->list_other_attributes['list_users']=(array)json_decode($this->list_other_attributes['list_users']);
+			$this->list_other_attributes['list_users']=json_decode($this->list_other_attributes['list_users'],true);
 		else 
 			$this->list_other_attributes['list_users']=array();
 		return parent::afterFind();
