@@ -322,12 +322,12 @@ class Role extends CActiveRecord
 			$this->old_parent_id=$this->parent_id;
 		}
 		//Decode attribute other to set other attributes
-		$this->list_other_attributes=(array)json_decode($this->other);
+		$this->list_other_attributes=json_decode($this->other,true);
 		$this->old_value=$this->value;
 		$this->old_name=$this->name;	
 		$this->old_bizRule=$this->bizRule;
 		if(isset($this->list_other_attributes['modified']))
-			$this->list_other_attributes['modified']=(array)json_decode($this->list_other_attributes['modified']);
+			$this->list_other_attributes['modified']=json_decode($this->list_other_attributes['modified'],true);
 		else 
 			$this->list_other_attributes['modified']=array();
 		return parent::afterFind();

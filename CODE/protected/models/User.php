@@ -282,7 +282,7 @@ class User extends CActiveRecord
 	public function afterFind()
 	{
 		//Decode attribute other to set other attributes
-		$this->list_other_attributes=(array)json_decode($this->other);	
+		$this->list_other_attributes=json_decode($this->other,true);	
 		//Set role of user
 		$list_roles=Yii::app()->authManager->getRoles($this->id);
 		foreach ($list_roles as $name=>$role){
