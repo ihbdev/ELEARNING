@@ -46,8 +46,8 @@
                 <div class="testpost-box">
 					<h2>Write part</h2>
                     Section A
-                    <br /><br />
-                    <?php echo $test->content['section_a']->description;?>                    
+                    <br /><br />                    
+                    <?php echo $test['content']['section_a']['description'];?>                    
                 </div><!--testpost-box-->
                 <div class="testpost-box">
                 <?php $question_index=1;?>                                     	
@@ -78,8 +78,8 @@
 			                            	<?php foreach ($result as $i=>$tmpresult):?>
 			                            	<?php if ($i==$index):?>                                             
 	                                            <tr align="center">
-	                                                <td><?php echo $content?></td>
-	                                                <td><?php echo $tmpresult?></td>
+	                                                <td width="30%"><?php echo $content?></td>
+	                                                <td width="70%"><?php echo $tmpresult?></td>
 	                                            </tr>
                                             <?php endif;?>
                                             <?php endforeach;?>
@@ -95,8 +95,8 @@
                                             <?php $Char_index = 65?>                             	                  	
                             				<?php foreach($question->content as $index=>$content):?>
                                             <tr align="center">			                                                                                
-                                                <td width="50%"><?php echo chr($Char_index+$index-1).'.'?>&nbsp;&nbsp;&nbsp;<?php echo $content->A?></td>
-                                                <td width="50%"><?php echo $index.'.'?>&nbsp;&nbsp;&nbsp;<?php echo $content->B?></td>
+                                                <td width="50%"><?php echo chr($Char_index+$index-1).'.'?>&nbsp;&nbsp;&nbsp;<?php echo $content['A']?></td>
+                                                <td width="50%"><?php echo $index.'.'?>&nbsp;&nbsp;&nbsp;<?php echo $content['B']?></td>
                                             </tr>
                                             <?php endforeach;?>
                                         </tbody>
