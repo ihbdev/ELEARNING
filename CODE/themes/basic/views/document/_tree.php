@@ -1,6 +1,6 @@
-<div class="fl menu-tree" style="width: 370px;">
+<div class="fl menu-tree" style="width: 300px;">
 <ul>
-	<li><label><b>Cấu trúc cây</b></label></li>
+	<li><label><b>Document's Tree structure</b></label></li>
 	<li>
 		<?php 
 		$list_style=array('color:red','color:blue','color:black');

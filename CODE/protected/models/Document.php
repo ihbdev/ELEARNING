@@ -1,7 +1,7 @@
 <?php
 /**
  * 
- * Category class file 
+ * Document class file 
  * @author ihbvietnam <hotro@ihbvietnam.com>
  * @link http://iphoenix.vn
  * @copyright Copyright &copy; 2012 IHB Vietnam
@@ -10,14 +10,14 @@
  */
 
 /**
- * Document includes attributes and methods of Document class  
+ * Document includes attributes and methods of Category class  
  */
 class Document extends CActiveRecord
 {	
 	/**
 	 * Config maximun rank in a group
 	 */
-	const MAX_RANK=5;	
+	const MAX_RANK=4;	
 	/**
 	 * Config code error when delete category
 	 */
@@ -28,7 +28,10 @@ class Document extends CActiveRecord
 	 * Config code (id) of the main category groups which have parent_id=0
 	 */
 
-	const TYPE_LONG_DOCUMENT = 3;
+	const TYPE_MARKING_UP=1;
+	const TYPE_KNOWLEDGE_SKILL=2;
+	const TYPE_LANGUAGE_SKILL=3;
+	const TYPE_CODING_GUIDE=4;
 
 	/**
 	 * Config special
@@ -68,7 +71,7 @@ class Document extends CActiveRecord
   	 * Get max rank
   	 */
 	public function getMax_rank(){
-		return Document::MAX_RANK;
+		return $this->config_type[$this->type]['max_rank'];
 	}
 	/**
 	 * Get all specials of class Category
@@ -123,7 +126,7 @@ class Document extends CActiveRecord
 		$result=array();
 		$criteria=new CDbCriteria;
 		$criteria->compare('type', $this->type);
-		$criteria->compare('parent_id', $this->id);
+		$criteria->compare('parent_id', 0);
 		$criteria->order='order_view';
 		$list_nodes=self::model()->findAll($criteria);	
 		foreach ($list_nodes as $node){
@@ -131,24 +134,6 @@ class Document extends CActiveRecord
 			$this->tmp_list=array();
 			$this->treeTraversal($node->id, 1, $this->max_rank);
 			$result += $this->tmp_list;
-		}
-		return $result;
-	}
-	
-	public function getNodes($parent_id){			
-		$result=array();
-		if($parent_id != null){
-			$criteria=new CDbCriteria;
-			//$criteria->compare('type', $this->type);
-			$criteria->compare('parent_id', $parent_id);
-			$criteria->order='order_view';
-			$list_nodes=self::model()->findAll($criteria);	
-			foreach ($list_nodes as $node){
-				$result += array($node->id => 1);
-				$this->tmp_list=array();
-				$this->treeTraversal($node->id, 1, $this->max_rank);
-				$result += $this->tmp_list;
-			}
 		}
 		return $result;
 	}
@@ -339,7 +324,7 @@ class Document extends CActiveRecord
 			array('name,parent_id', 'required'),
 			array('parent_id','validatorParent'),
 			array('name', 'length', 'max'=>256),
-			array('description,metadesc,keyword,introimage', 'safe'),
+			array('description,metadesc,keyword,introimage','safe'),
 			array('order_view','numerical'),
 			array('list_special,lang','safe')
 		);
@@ -359,7 +344,7 @@ class Document extends CActiveRecord
 	 * Function validator role
 	 */
 	public function validatorParent($attributes,$params){
-		if($this->type>0 && $this->id>0){
+		if($this->type>0 && $this->id>0 && $this->parent_id !=0){
 			$max_rank=$this->max_rank;
 			$parent=self::model()->findByPk($this->parent_id);
 			if(($parent->level+$this->rank)>=$max_rank){
@@ -630,7 +615,7 @@ class Document extends CActiveRecord
 		*/
 		$class=$this->config_type[$this->type]['class'];
 		$object= new $class;
-		$list=$object->findAll('type = '. $id);
+		$list=$object->findAll('catid = '. $id);
 		if(sizeof($list)>0) 
 			return self::DELETE_HAS_ITEMS;
 		return self::DELETE_OK;

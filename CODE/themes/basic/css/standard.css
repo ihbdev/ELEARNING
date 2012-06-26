@@ -844,6 +844,7 @@ margin:15px 6px 0 0;
 	border-left: 1px solid #CCCCCC;
 	min-height:270px;
 	padding-left:15px;
+	float: right;
 }
 .menu-tree label{
 	width:inherit !important;

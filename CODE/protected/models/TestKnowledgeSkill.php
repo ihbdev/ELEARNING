@@ -267,7 +267,7 @@ class TestKnowledgeSkill extends CActiveRecord
 	 */
 	public function search(){
 		$criteria = new CDbCriteria ();
-		$criteria->compare ( 'type', TestKnowledgeSkill::TYPE_KNOWLEDGE );
+		$criteria->compare ( 'type', ITest::TYPE_KNOWLEDGE );
 		if($this->title != '')
 			$criteria->compare ( 'title', $this->title, true );
 		if($this->group_level === '0')

@@ -166,25 +166,26 @@ class ExamController extends Controller
 				$result->exam_id = $id;
 				$result->user_id = Yii::app ()->user->id;
 				$list_answer = array ();
-				foreach ( $_POST ['Result'] as $question_id => $content ) {
-					$question = Question::model ()->findByPk ( $question_id );
-					$tmp = array ();
-					foreach ( $question->answer as $index => $item ) {
-						if (in_array ( $index, $content ))
-							$tmp [$index] = 1;
-						else
-							$tmp [$index] = 0;
-					}
-					$list_answer [$question_id] = $tmp;
-				}
 				if($model->type == Exam::TYPE_KNOWLEDGE){
 					$result->answer = $_POST['Result'];
-				} else {			
-				$result->answer = $list_answer;
-				}
+				} else {	
+					foreach ( $_POST ['Result'] as $question_id => $content ) {
+						$question = Question::model ()->findByPk ( $question_id );
+						$tmp = array ();
+						foreach ( $question->answer as $index => $item ) {
+							if (in_array ( $index, $content ))
+								$tmp [$index] = 1;
+							else
+								$tmp [$index] = 0;
+						}
+						$list_answer [$question_id] = $tmp;
+					}						
+					$result->answer = $list_answer;
+				}					
 				if ($result->save())
 					{
-						$tmp_result->delete();
+						if(isset($tmp_result))
+							$tmp_result->delete();
 						$this->redirect(array('result/view','id'=>$result->id));
 					}	
 				}
@@ -234,23 +235,27 @@ class ExamController extends Controller
 				$result->user_id = Yii::app ()->user->id;
 			}
 			$list_answer = array ();
-			foreach ( $_POST ['Result'] as $question_id => $content ) {
-				$question = Question::model ()->findByPk ( $question_id );
-				$tmp = array ();
-				foreach ( $question->answer as $index => $item ) {
-					if (in_array ( $index, $content ))
-						$tmp [$index] = 1;
-					else
-						$tmp [$index] = 0;
+			if($model->type == Exam::TYPE_KNOWLEDGE){
+					$result->answer = $_POST['Result'];
+			} else {
+				foreach ( $_POST ['Result'] as $question_id => $content ) {
+					$question = Question::model ()->findByPk ( $question_id );
+					$tmp = array ();
+					foreach ( $question->answer as $index => $item ) {
+						if (in_array ( $index, $content ))
+							$tmp [$index] = 1;
+						else
+							$tmp [$index] = 0;
+					}
+					$list_answer [$question_id]=$tmp;
 				}
-				$list_answer [$question_id]=$tmp;
-					}	
-					$result->answer=$list_answer;
-					if($result->save())
-					{
-						Yii::app()->user->setFlash('success', Language::t('Finish'));
-					}	
-				}
+			}
+			$result->answer=$list_answer;
+			if($result->save())
+			{
+				Yii::app()->user->setFlash('success', Language::t('Finish'));
+			}	
+		}
 	}
 	/**
 	 * Creates a new model.

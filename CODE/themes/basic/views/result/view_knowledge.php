@@ -4,38 +4,59 @@
 			<h1>Administrator</h1>
 			<div class="header-menu">
 				<ul>
-					<li class="ex-show"><a class="activities-icon" href=""><span>Knowledge Skills</span></a></li>
+					<li class="ex-show"><a class="activities-icon" href=""><span>View Detail Test Result</span></a></li>
 				</ul>
 			</div>
 		</div>
 		<!--end title-->
-		<div class="folder-content">
-		<?php $form=$this->beginWidget('CActiveForm', array('method'=>'post','enableAjaxValidation'=>true, 'id'=>'add_test')); ?>
-            <?php
-    			foreach(Yii::app()->user->getFlashes() as $key => $message) {
-        			echo '<div class="flash-' . $key . '">' . $message . "</div>\n";
-    			}
-			?>
-            <div class="testpost-outer">
+		<div class="folder-content">			
+		      	<div class="testpost-box">
+                	<h2>Trainee's Detail:</h2>
+                    <div class="row">
+                        <label>Name:</label>
+                        <span><b><?php echo $user->fullname?></b></span>
+                    </div>
+                    <div class="row">
+                        <label>Title test:</label>
+                        <span><?php echo $test->title;?></span>
+                    </div>
+                    <div class="row">
+                        <label>Office:</label>
+                        <span><?php echo $user->office->name?></span>
+                    </div>
+                    <div class="row">
+                        <label>Type of test:</label>
+                        <span><?php echo Exam::$list_type[$exam->type]?></span>
+                    </div>
+                    <div class="row">
+                        <label>Start:</label>
+                        <span><?php echo date("H:i d/m/Y",$exam->start_time)?></span>
+                    </div>
+                    <div class="row">
+                        <label>Finish:</label>
+                        <span><?php echo date("H:i d/m/Y",$exam->finish_time)?></span>
+                    </div>
+                </div><!--testpost-box-->
+			<h2>Test result detail:</h2> 
+			<div class="testpost-outer">                                               		            
             	<div class="testpost-box">
 					<h2>Language</h2>
-					<?php echo $form->dropDownList($test,'catid',Category::getLanguageOption(),array('style'=>'width:200px;')); ?>
-                    <?php echo $form->error($test, 'catid'); ?>
+					<?php echo $test->cat->name; ?>                    
                 </div><!--testpost-box-->
                 <div class="testpost-box">
 					<h2>Write part</h2>
-                    <input type="text" name="" style="width:155px;" value="Section A">
+                    Section A
                     <br /><br />
-                    <textarea name="section_a[description]" style="width:620px; height:150px;"><?php echo $test->content['section_a']->description;?></textarea>                    
+                    <?php echo $test->content['section_a']->description;?>                    
                 </div><!--testpost-box-->
                 <div class="testpost-box">
-                <?php $question_index=1;?>        	
-            	<?php foreach($test->content['section_a']->questions as $question_id):?>            	
+                <?php $question_index=1;?>                                     	
+            	<?php foreach($model->answer['section_a'] as $question_id=>$result):?>            	
             	<?php $question=Question::model()->findByPk($question_id);?>               	        	            						
                     <div class="markingup-question">
                     	<div class="text-box" style="width:640px;">                            
                             <div class="text-question">                            	              	                                                         
-                                <div class="text-title"><?php echo $question_index.'.'?>&nbsp;&nbsp;<textarea name="section_a[questions][<?php echo $question_index?>][title]" style="width:592px; height:35px;"><?php echo $question->title;?></textarea></div>
+                                <div class="text-title"><?php echo $question_index.'.'?>&nbsp;&nbsp;<?php echo $question->title;?></div>
                                 <?php if($question->type == Question::TYPE_FILL):?>
                                 <div class="table">
                                     <table border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -48,17 +69,17 @@
 			                            	<?php foreach ($answer_tmp as $i=>$answer):?>
 			                            	<?php if ($i==$index):?>                                    
 	                                            <tr align="center" class="table-title">                                                
-	                                                <td width="30%"><p><input type="text" name ="section_a[questions][<?php echo $question_index?>][content][0]" value="<?php echo $content?>"></p></td>                                
-	                                                <td width="70%"><p><input type="text" name ="section_a[questions][<?php echo $question_index?>][answer][0]" value="<?php echo $answer?>"></p></td>
+	                                                <td width="30%"><p><?php echo $content?></p></td>                                
+	                                                <td width="70%"><p><?php echo $answer?></p></td>
 	                                            </tr>
 	                                        <?php endif;?>   
 	                                        <?php endforeach;?>    
                                             <?php else:?>
-			                            	<?php foreach ($answer_tmp as $i=>$answer):?>
+			                            	<?php foreach ($result as $i=>$tmpresult):?>
 			                            	<?php if ($i==$index):?>                                             
 	                                            <tr align="center">
-	                                                <td><input type="text" name="section_a[questions][<?php echo $question_index?>][content][<?php echo $index?>]" style="width:155px;" value="<?php echo $content?>"></td>
-	                                                <td><input type="text" name="section_a[questions][<?php echo $question_index?>][answer][<?php echo $index?>]" style="width:405px;" value="<?php echo $answer?>"></td>
+	                                                <td><?php echo $content?></td>
+	                                                <td><?php echo $tmpresult?></td>
 	                                            </tr>
                                             <?php endif;?>
                                             <?php endforeach;?>
@@ -74,8 +95,8 @@
                                             <?php $Char_index = 65?>                             	                  	
                             				<?php foreach($question->content as $index=>$content):?>
                                             <tr align="center">			                                                                                
-                                                <td width="50%"><?php echo chr($Char_index+$index-1).'.'?>&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][<?php echo $question_index;?>][content][<?php echo $index;?>][A]" style="width:90px;" value="<?php echo $content->A?>"></td>
-                                                <td width="50%"><?php echo $index.'.'?>&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][<?php echo $question_index;?>][content][<?php echo $index;?>][B]" style="width:90px;" value="<?php echo $content->B?>"></td>
+                                                <td width="50%"><?php echo chr($Char_index+$index-1).'.'?>&nbsp;&nbsp;&nbsp;<?php echo $content->A?></td>
+                                                <td width="50%"><?php echo $index.'.'?>&nbsp;&nbsp;&nbsp;<?php echo $content->B?></td>
                                             </tr>
                                             <?php endforeach;?>
                                         </tbody>
@@ -85,10 +106,10 @@
                                 <div class="table">
                                     <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                         <tbody>
-                                            <tr align="center">
-			                                    <?php $Char_index = 65?>
-			                            		<?php foreach($question->content as $index=>$content):?>			                            		
-			                            		<td width="14%"><label><b><?php echo chr($Char_index+$index-1)?></b></label>&nbsp;&nbsp;&nbsp;<input type="text" name="section_a[questions][<?php echo $question_index?>][answer][<?php echo chr($Char_index+$index-1)?>]" style="width:30px;"></td>
+                                            <tr align="center">			                                    
+			                            		<?php foreach($result as $index=>$tmp):?>			                            					                            		
+			                            		<td width="14%" style="width:30px;"><label><b><?php echo $index?></b></label>&nbsp;&nbsp;&nbsp;<?php echo $tmp;?></td>
+			                            		
                                     			<?php endforeach;?>                                                                                                                                          
                                             </tr>
                                         </tbody>
@@ -96,8 +117,10 @@
                                 </div>                                                            
                                 <!--end table data-->
                                 <?php elseif($question->type == Question::TYPE_WRITING):?>                                                                                        	                                
-                                <div class="text-check">                                    
-                                    <div><textarea name="section_a[questions][<?php echo $question_index?>][answer]" style="width:590px; height:50px;"></textarea></div>
+                                <div class="text-check">
+                                	<?php foreach ($result as $key=>$content):?>                                 
+                                    <div><?php echo $content?></div>
+                                    <?php endforeach;?>
                                 </div>
                             	<?php endif;?>
                             </div><!--text-question-->                            
@@ -109,22 +132,22 @@
                 
                 <div class="testpost-box">
 					<h2>Write part</h2>
-                    <input type="text" name="" style="width:155px;" value="Section B">
+                    Section B
                     <br /><br />
                     <?php $qindex =1 ?>
-            		<?php foreach($test->content['section_b']->questions as $question_id):?>
+            		<?php foreach($model->answer['section_b'] as $question_id=>$result):?>
                     <?php $question=Question::model()->findByPk($question_id);?>
                     <?php if($qindex == 1):?>
             		<?php $material = Material::model()->findByPk($question->material_id);?>
-                    <textarea name="materials[B]" style="width:620px; height:150px;"><?php echo $material->content;?>
-                    </textarea>
+                    <div style="width:620px; height:150px;"> <?php echo $material->content;?></div>
+                    <br>                    
                     <?php endif;?>
                 </div><!--testpost-box-->
                 <div class="testpost-box">					
                     <div class="markingup-question">
                     	<div class="text-box" style="width:640px;">
                         	<div class="text-question">                        		
-                                <div class="text-title"><?php echo $qindex?>.&nbsp;&nbsp;<textarea name="section_b[questions][<?php echo $qindex?>][title]" style="width:592px; height:35px;"><?php echo $question->title;?></textarea></div>
+                                <div class="text-title" style="width:592px; height:35px;"><?php echo $qindex?>.&nbsp;&nbsp;<?php echo $question->title;?></div>
                                 <?php if($question->type == Question::TYPE_FILL):?>
                                 <div class="table">
                                     <table border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -132,13 +155,13 @@
                                         	<?php foreach($question->content as $index=>$content):?> 
                                         	<?php if($index == 0):?>
                                             <tr align="center" class="table-title">
-                                            	<td width="30%"><input type="text" name="section_b[questions][<?php echo $qindex?>][content][<?php echo $index?>]" style="width:155px;" value="<?php echo $content?>"></td>
-                                                <td width="70%"><input type="text" name="section_b[questions][<?php echo $qindex?>][answer][<?php echo $index?>]" style="width:405px;" value="<?php echo $question->answer[$index]?>"></td>                                                
+                                            	<td width="30%"><?php echo $content?></td>
+                                                <td width="70%"><?php echo $question->answer[$index]?></td>                                                
                                             </tr>
                                             <?php else:?>
-                                            <tr>	
-                                            	<td><input type="text" name="section_b[questions][<?php echo $qindex?>][content][<?php echo $index?>]" style="width:155px;" value="<?php echo $content?>"></td>
-	                                        	<td><input type="text" name="section_b[questions][<?php echo $qindex?>][answer][<?php echo $index?>]" style="width:405px;" value="<?php echo $question->answer[$index]?>"></td>
+                                            <tr align="center" >	
+                                            	<td><?php echo $content?></td>
+	                                        	<td><?php echo $result[$index]?></td>
                                             </tr>
                                             <?php endif;?>
                                             <?php endforeach;?>                               
@@ -147,7 +170,7 @@
                                 </div><!--end table data-->
                                 <?php elseif($question->type == Question::TYPE_WRITING):?>
                                 <div class="text-check">
-                    				<div><textarea name="section_b[questions][<?php echo $qindex?>]['answer']" style="width:590px; height:100px;"></textarea></div>
+                    				<div style="width:590px; height:100px;"><?php echo $result['answer']?></div>
                     			</div>
                     			<?php endif;?>
                             </div><!--text-question-->                            
@@ -156,24 +179,24 @@
                 <?php $qindex++;?>
 				<?php endforeach;?>				
 
-			<div class="testpost-box">
+                <div class="testpost-box">
 					<h2>Write part</h2>
-                    <input type="text" name="" style="width:155px;" value="Section C">
+                    Section C
                     <br /><br />
                     <?php $qindex =1 ?>
-            		<?php foreach($test->content['section_c']->questions as $question_id):?>
+            		<?php foreach($model->answer['section_c'] as $question_id=>$result):?>
                     <?php $question=Question::model()->findByPk($question_id);?>
                     <?php if($qindex == 1):?>
             		<?php $material = Material::model()->findByPk($question->material_id);?>
-                    <textarea name="materials[C]" style="width:620px; height:150px;"><?php echo $material->content;?>
-                    </textarea>
+                    <div style="width:620px; height:150px;"> <?php echo $material->content;?></div>
+                    <br>                    
                     <?php endif;?>
                 </div><!--testpost-box-->
                 <div class="testpost-box">					
                     <div class="markingup-question">
                     	<div class="text-box" style="width:640px;">
                         	<div class="text-question">                        		
-                                <div class="text-title"><?php echo $qindex?>.&nbsp;&nbsp;<textarea name="section_c[questions][<?php echo $qindex?>][title]" style="width:592px; height:35px;"><?php echo $question->title;?></textarea></div>
+                                <div class="text-title" style="width:592px; height:35px;"><?php echo $qindex?>.&nbsp;&nbsp;<?php echo $question->title;?></div>
                                 <?php if($question->type == Question::TYPE_FILL):?>
                                 <div class="table">
                                     <table border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -181,13 +204,13 @@
                                         	<?php foreach($question->content as $index=>$content):?> 
                                         	<?php if($index == 0):?>
                                             <tr align="center" class="table-title">
-                                            	<td width="30%"><input type="text" name="section_c[questions][<?php echo $qindex?>][content][<?php echo $index?>]" style="width:155px;" value="<?php echo $content?>"></td>
-                                                <td width="70%"><input type="text" name="section_c[questions][<?php echo $qindex?>][answer][<?php echo $index?>]" style="width:405px;" value="<?php echo $question->answer[$index]?>"></td>                                                
+                                            	<td width="30%"><?php echo $content?></td>
+                                                <td width="70%"><?php echo $question->answer[$index]?></td>                                                
                                             </tr>
                                             <?php else:?>
-                                            <tr>	
-                                            	<td><input type="text" name="section_c[questions][<?php echo $qindex?>][content][<?php echo $index?>]" style="width:155px;" value="<?php echo $content?>"></td>
-	                                        	<td><input type="text" name="section_c[questions][<?php echo $qindex?>][answer][<?php echo $index?>]" style="width:405px;" value="<?php echo $question->answer[$index]?>"></td>
+                                            <tr align="center" >	
+                                            	<td><?php echo $content?></td>
+	                                        	<td><?php echo $result[$index]?></td>
                                             </tr>
                                             <?php endif;?>
                                             <?php endforeach;?>                               
@@ -196,21 +219,20 @@
                                 </div><!--end table data-->
                                 <?php elseif($question->type == Question::TYPE_WRITING):?>
                                 <div class="text-check">
-                    				<div><textarea name="section_c[questions][<?php echo $qindex?>][answer]" style="width:590px; height:100px;"></textarea></div>
+                    				<div style="width:590px; height:100px;"><?php echo $result['answer']?></div>
                     			</div>
                     			<?php endif;?>
                             </div><!--text-question-->                            
-                        </div><!--text-box-->
-                    </div><!--markingup-question-->	
-                               
+                        </div><!--text-box-->                    
+                </div><!--testpost-box-->                
                 <?php $qindex++;?>
 				<?php endforeach;?>
-				<div class="line"></div>				             
-                <div class="testpost-button"><label style="width:140px;">Click here to Update test:</label><input type="submit" class="big-button" value="Finish" style="width:100px;" /></div>		
+				<div class="line"></div>				                             		
 			</div>
 			<!--end content testpost outer-->
 			<div class="clear"></div>
-			<!--end pages-->
-			<?php $this->endWidget(); ?>
+			<!--end pages-->			
 		</div>
+	</div>
+	</div>
 	</div>

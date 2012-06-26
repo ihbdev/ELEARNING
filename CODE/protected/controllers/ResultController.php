@@ -156,7 +156,8 @@ class ResultController extends Controller
 		foreach ($model->answer as $index=>$answer){
 			if(sizeof($answer) > $max_num_choices)
 				$max_num_choices=sizeof($answer);
-		}		
+		}
+		//var_dump($model->attributes);exit;
 		$this->render ( $form, array(
 			'model'=>$model,
 			'exam'=>$exam,

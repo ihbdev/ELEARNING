@@ -21,7 +21,7 @@
                     <li>
                         <?php echo $form->labelEx($model,'parent_id'); ?>
                         <?php
-                        	$view_parent_nodes=array('0'=>'Gốc');
+                        	$view_parent_nodes=array('0'=>'Root');
                         	foreach ($model->parent_nodes as $id=>$level){
                         	 	$node=Document::model()->findByPk($id);
 								$view = "";
@@ -54,7 +54,9 @@
                    <div class="row">
 						<li>
                        		<?php echo $form->labelEx($model,'description'); ?>
-                        	<?php echo $form->textArea($model,'description',array('style'=>'width:300px;max-width:300px;','rows'=>6)); ?>
+                       		<?php                       			
+                        		$this->widget('application.extensions.tinymce.ETinyMce',array('model'=>$model,'attribute'=>'description','editorTemplate'=>'full','htmlOptions'=>array('style'=>'width:400px;height:500px'))); 
+                        	?>                        	
                    			<?php echo $form->error($model, 'description'); ?>
                     	</li>
                     </div>

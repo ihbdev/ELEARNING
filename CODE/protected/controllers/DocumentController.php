@@ -10,12 +10,12 @@
  */
 
 /**
- * CategoryController includes actions relevant to Category:
- *** create new Category
- *** update information of a Category
- *** delete Category
- *** validate category
- *** index category
+ * CategoryController includes actions relevant to Document:
+ *** create new Document
+ *** update information of a Document
+ *** delete Document
+ *** validate Document
+ *** index Document
  *** write 
  *** update list order view
  *** load model Banner from banner's id
@@ -41,7 +41,7 @@ class DocumentController extends Controller
 	public function accessRules()
 	{
 		return array(
-			/*
+		/*
 			array('allow',  
 				'actions'=>array('index'),
 				'roles'=>array('category_index'),
@@ -89,7 +89,7 @@ class DocumentController extends Controller
 	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
-	 * @param $type type of category, like below constant
+	 * @param $type type of Document, like below constant
 	 */
 	public function actionCreate($type)
 	{
@@ -121,7 +121,7 @@ class DocumentController extends Controller
 	{
 			$action="update";
 			$model=$this->loadModel($id);
-			//Define type of category
+			//Define type of Document
 			$type=$model->type;	
 			if(isset($model->config_type[$type]['form']))		
 				$form=$model->config_type[$type]['form'];
@@ -146,7 +146,7 @@ class DocumentController extends Controller
 	{
 			$result=array();
 			$model=$this->loadModel($id);
-			//Define type of category
+			//Define type of Document
 			$type=$model->type;
 			if(isset($model->config_type[$type]['form']))		
 				$form=$model->config_type[$type]['form'];
@@ -158,12 +158,12 @@ class DocumentController extends Controller
 						$result['status']=true;
 						if($id!=$current_id && $current_id!=0){
 							$model=$this->loadModel($current_id);
-							//Define type of category
+							//Define type of Document
 							$action="update";
 						}
 						else {
 							$model=new Document();
-							//Define type of category
+							//Define type of Document
 							$model->type=$type;
 							$action="create";
 						}
@@ -199,8 +199,8 @@ class DocumentController extends Controller
 	}
 
 	/**
-	 * Validate category
-	 * @param type $type of category
+	 * Validate Document
+	 * @param type $type of Document
 	 * @return 
 	 */
 	public function actionValidate($type)
@@ -219,41 +219,19 @@ class DocumentController extends Controller
 		}
 	}
 	/**
-	 * Display list of category.
+	 * Display list of Document.
 	 * @param integer $type, id of menu type
 	 * @return
 	 */
-	public function actionIndex()
+	public function actionIndex($type)
 	{
 		$model=new Document();
-		$model->type = Document::TYPE_LONG_DOCUMENT;	
+		$model->type=$type;	
 		$this->render('index',array(
 			'model'=>$model,
-			'type'=>Document::TYPE_LONG_DOCUMENT,
+			'type'=>$type,
 			'action'=>'create'
 		));
-	}
-	
-	public function actionCreatecontent()
-	{
-		$model=new Document();		
-		//$model->type = Document::TYPE_LONG_DOCUMENT;	
-		$this->render('index',array(
-			'model'=>$model,
-			//'type'=>Document::TYPE_LONG_DOCUMENT,
-			'action'=>'create'
-		));
-	}
-	public function actionXcreate()
-	{
-			$action="create";
-			$model=new Document();			
-			
-			Yii::app()->clientScript->scriptMap['jquery.js'] = false;						
-			$html_form = $this->render('create',array(
-					'model'=>$model,'action'=>$action,
-				)); 
-			echo $html_form;	
 	}
 	/**
 	 * Creates and updates a new Document model.
@@ -305,7 +283,7 @@ class DocumentController extends Controller
 	
 	/**
 	 * Updates list order view.
-	 * @param integer $parent_id id of parent category
+	 * @param integer $parent_id id of parent Document
 	 */
 	public function actionUpdateListOrderView($parent_id)
 	{	

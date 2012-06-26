@@ -1,6 +1,6 @@
 <!--begin page content-->
 <div id="shell" class="forShell">
-	<?php $form=$this->beginWidget('CActiveForm', array('method'=>'post','enableAjaxValidation'=>true, 'id'=>'add_exam')); ?>
+	<?php $form=$this->beginWidget('CActiveForm', array('method'=>'post','enableAjaxValidation'=>true, 'id'=>'view_exam')); ?>
 	<div class="fl main-test">
 			<?php
     			foreach(Yii::app()->user->getFlashes() as $key => $message) {
@@ -35,7 +35,7 @@
                                 <?php else:?>
                                 <tr align="center">
                                     <td><p><?php echo $content?></p></td>
-                                    <td><input type="input" name="Result[<?php echo $question_id?>][<?php echo $index?>]" style="width:405px;" value=""></td>
+                                    <td><input type="input" name="Result[section_a][<?php echo $question_id?>][<?php echo $index?>]" style="width:405px;" value=""></td>
                                 </tr>
                                 <?php endif;?>
                                 <?php endforeach;?>                                
@@ -63,7 +63,7 @@
                                 <tr align="center">
                                     <?php $Char_index = 65?>
                             		<?php foreach($question->content as $index=>$content):?>
-                                    <td width="14%"><label><b><?php echo chr($Char_index+$index-1)?></b></label>&nbsp;&nbsp;&nbsp;<input type="input" name="Result[<?php echo $question_id?>][<?php echo chr($Char_index+$index-1)?>]" style="width:30px;"></td>
+                                    <td width="14%"><label><b><?php echo chr($Char_index+$index-1)?></b></label>&nbsp;&nbsp;&nbsp;<input type="input" name="Result[section_a][<?php echo $question_id?>][<?php echo chr($Char_index+$index-1)?>]" style="width:30px;"></td>
                                     <?php endforeach;?>                 
                                 </tr>
                             </tbody>
@@ -72,7 +72,7 @@
                     <!--end table data-->
                     <?php elseif($question->type == Question::TYPE_WRITING):?>
                     <div class="text-check">
-                    	<div><textarea name="Result[<?php echo $question_id?>]['answer']" style="width:590px; height:50px;"></textarea></div>
+                    	<div><textarea name="Result[section_a][<?php echo $question_id?>][answer]" style="width:590px; height:50px;"></textarea></div>
                     </div>                                                   
                     <?php endif;?>
                     <!--end table data-->
@@ -111,7 +111,7 @@
                                 <?php else:?>
                                 <tr align="center">
                                     <td><p><?php echo $content?></p></td>
-                                    <td><input type="input" name="Result[<?php echo $question_id?>][<?php echo $index?>]" style="width:405px;" value=""></td>
+                                    <td><input type="input" name="Result[section_b][<?php echo $question_id?>][<?php echo $index?>]" style="width:405px;" value=""></td>
                                 </tr>
                                 <?php endif;?>
                                 <?php endforeach;?>                                
@@ -120,7 +120,7 @@
                     </div>
                     <?php elseif($question->type == Question::TYPE_WRITING):?>
                     <div class="text-check">
-                    	<div><textarea name="Result[<?php echo $question_id?>]['answer']" style="width:590px; height:100px;"></textarea></div>
+                    	<div><textarea name="Result[section_b][<?php echo $question_id?>][answer]" style="width:590px; height:100px;"></textarea></div>
                     </div>
                     <?php endif;?>                    
                 </div><!--text-question-->                
@@ -157,7 +157,7 @@
                                 <?php else:?>
                                 <tr align="center">
                                     <td><p><?php echo $content?></p></td>
-                                    <td><input type="input" name="Result[<?php echo $question_id?>][<?php echo $index?>]" style="width:405px;" value=""></td>
+                                    <td><input type="input" name="Result[section_c][<?php echo $question_id?>][<?php echo $index?>]" style="width:405px;" value=""></td>
                                 </tr>
                                 <?php endif;?>
                                 <?php endforeach;?>                                
@@ -166,7 +166,7 @@
                     </div>
                     <?php elseif($question->type == Question::TYPE_WRITING):?>
                     <div class="text-check">
-                    	<div><textarea name="Result[<?php echo $question_id?>]['answer']" style="width:590px; height:100px;"></textarea></div>
+                    	<div><textarea name="Result[section_c][<?php echo $question_id?>][answer]" style="width:590px; height:100px;"></textarea></div>
                     </div>
                     <?php endif;?>                     
                 </div><!--text-question-->                
@@ -204,4 +204,24 @@
 	</div><!--sidebar-test-->
 	<?php $this->endWidget(); ?>
 </div>
+
+<?php 
+$cs = Yii::app()->getClientScript(); 
+ // Script hide form update
+$cs->registerScript(
+  'js-store-answer',
+  "jQuery(function($) { $('body').on('change','.answer_input',	
+  		function(){
+  				jQuery.ajax({
+  				'data':$('#view_exam').serialize(),
+  				'dataType':'json',
+  				'success':function(data){},
+        		'type':'POST',
+        		'url':'".Yii::app()->createUrl('exam/store',array('id'=>$model->id))."',
+        		'cache':false});
+        	});
+        })",
+  CClientScript::POS_END
+  );
+  ?>
 		
