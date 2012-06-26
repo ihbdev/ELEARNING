@@ -20,8 +20,8 @@
                             		<a class="i16 i16-statustext"></a>
                             		<a class="i16 i16-trashgray" href="<?php echo Yii::app()->createUrl('codingSkill/removeQuestion',array('question_id'=>$question->id))?>"></a>
                             	</div>
-                            	<div id="<?php echo $css_id.'_form';?>" style="display: none;">
-                            		<input type="text" name ="UpdateQuestion[title]" style="width:600px;" value="<?php echo $question->title;?>">
+                            	<div id="<?php echo $css_id.'_form_';?>" style="display: none;">
+                            		<input type="text" name ="UpdateQuestion[supplement]" style="width:600px;" value="<?php echo $question->title;?>">
                             		<a class="i16 i16-checkblue" href="<?php echo Yii::app()->createUrl('codingSkill/updateQuestion',array('id'=>$question->id))?>"></a>
                             		<a class="i16 i16-removered"></a>
                             	</div>

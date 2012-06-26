@@ -77,6 +77,20 @@
                             		<a class="i16 i16-removered"></a>
                             	</div>
                             </div>
+							<div class="text-title">
+                            	<?php $css_id='question'.$question->id.'_'.'supplement';?>
+                            	<label style="width:70px;"><?php echo Language::t('File')?>:</label>
+                            	<div id="<?php echo $css_id;?>">
+                            		<?php echo $question->supplement?>
+                            		<a class="i16 i16-statustext"></a>
+                            		<a class="i16 i16-trashgray" href="<?php echo Yii::app()->createUrl('codingSkill/removeQuestion',array('question_id'=>$question->id))?>"></a>
+                            	</div>
+                            	<div id="<?php echo $css_id.'_form_';?>" style="display: none;">
+                            		<input type="text" name ="UpdateQuestion[supplement]" style="width:600px;" value="<?php echo $question->title;?>">
+                            		<a class="i16 i16-checkblue" href="<?php echo Yii::app()->createUrl('codingSkill/updateQuestion',array('id'=>$question->id))?>"></a>
+                            		<a class="i16 i16-removered"></a>
+                            	</div>
+                            </div>
                             <div class="text-check">
                             	<?php 
                             	$list_answer=$question->answer;
@@ -192,8 +206,8 @@ $cs->registerScript(
         })",
   CClientScript::POS_END
   );
-   
- $cs->registerScript(
+
+$cs->registerScript(
   'js-update',
   "jQuery(function($) { $('body').on('click','.i16-checkblue',	
   		function(){
@@ -300,7 +314,7 @@ function(){
                			else {
                				$('#list_questions').val(data.id);
                			}
-               		}	
+               		}
 					$('.q-post').find('input[name=Question[title]').each(function(){\$(this).val('')});
 					$('.q-post').find('textarea').each(function(){\$(this).val('')});
 					$('.q-post').find('input[type=text]').each(function(){\$(this).val('')});
@@ -327,7 +341,7 @@ function(){
 		url:'".Yii::app()->createUrl('codingSkill/addQuestion_2')."',
 		data: $(this).parent().parent().find('input[id=btn_upload]').serialize(),
 		success:function(data) {
-			if(data.success){										
+			if(data.success){		
 				var current_list_question=$('#list_questions').val();
 				if (data.id > 0)  
         			{
@@ -363,7 +377,6 @@ $url = 'http://image.mp3.zdn.vn/thumb/94_94/covers/d/9/d97dd3f58734975a9518e499b
 		{
 			$("#material_1").show();
 			$("#material_2").hide();
-			$("#material_2").val('http://');
 			$("#material_3").hide();
 		}
 	);
@@ -371,7 +384,6 @@ $url = 'http://image.mp3.zdn.vn/thumb/94_94/covers/d/9/d97dd3f58734975a9518e499b
 		function()
 		{
 			$("#material_1").hide();
-			$("#material_1").val('');
 			$("#material_2").show();
 			$("#material_3").hide();
 		}
@@ -380,9 +392,7 @@ $url = 'http://image.mp3.zdn.vn/thumb/94_94/covers/d/9/d97dd3f58734975a9518e499b
 		function()
 		{
 			$("#material_1").hide();
-			$("#material_1").val('');
 			$("#material_2").hide();
-			$("#material_2").val('http://');
 			$("#material_3").show();
 		}
 	);
