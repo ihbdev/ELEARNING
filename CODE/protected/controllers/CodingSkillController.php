@@ -287,7 +287,7 @@ class CodingSkillController extends Controller
 				echo implode("\n",$titles);
 		}
 	}
-	
+
 	/**
 	 * Init checkbox selection
 	 * @param string $name_params, name of section to work	 
@@ -522,7 +522,7 @@ class CodingSkillController extends Controller
 				echo json_encode ( $result );
 			}
 	}
-	
+
 	/**
 	 * Remove a question or a choice 
 	 */
