@@ -194,7 +194,8 @@
 							'headerHtmlOptions'=>array('width'=>'15%','class'=>'table-title'),		
 						),
 						array(
-							'name'=>'level',
+							'name'=>'Group',
+							'value'=>'$data->subGroup',
 							'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),		
 						),
 						array(

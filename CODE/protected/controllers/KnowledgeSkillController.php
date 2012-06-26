@@ -102,7 +102,7 @@ class KnowledgeSkillController extends Controller
 		//var_dump($test->section_a['questions']); //exit;
 		if(isset($_POST['section_a']))
 		{		
-			$test->type=TestKnowledgeSkill::TYPE_KNOWLEDGE;	
+			$test->type=ITest::TYPE_KNOWLEDGE;	
 			for($i=1; $i<=17; $i++)
 			{
 				$question = new Question();
@@ -182,7 +182,8 @@ class KnowledgeSkillController extends Controller
 		
 		if($test->save())
 		{
-			Yii::app()->user->setFlash('success', Language::t('Knowledge created successfully'));
+			$this->redirect(array('update','id'=>$test->id));
+			//Yii::app()->user->setFlash('success', Language::t('Knowledge created successfully'));
 		}		
 
 		$this->render ( 'create',array('test'=>$test));		

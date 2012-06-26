@@ -102,6 +102,25 @@ class ITest extends CActiveRecord
  		$url=Yii::app()->createUrl("markingUpSkill/view",array('id'=>$this->id));
 		return $url;
  	}
+ 	/**
+ 	 *Get label sub group
+ 	 */
+ 	public function getSubGroup(){
+ 		switch($this->type){
+ 			case ITest::TYPE_MARKINGUP:
+ 				return ($this->level > 0) ? "Test Level ".$this->level : "Final Test";
+ 				break;
+ 			case ITest::TYPE_LANGUAGE:
+ 				$lang=Category::model()->findByPk($this->catid);
+ 				return $lang->name;
+ 				break;
+ 			case ITest::TYPE_KNOWLEDGE:
+ 				$lang=Category::model()->findByPk($this->catid);
+ 				return $lang->name;
+ 				break;
+ 				
+ 		}
+ 	}
 	/**
 	 * @return string the associated database table name
 	 */
