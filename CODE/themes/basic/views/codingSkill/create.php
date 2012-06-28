@@ -151,7 +151,7 @@
 $cs = Yii::app()->getClientScript(); 
 // Script view form update
 $cs->registerScript(
-  'js-view-update',
+  'js-view-update-title',
   "jQuery(function($) { $('body').on('click','.i16-statustext',	
   		function(){
   			var parent=$(this).parent();
