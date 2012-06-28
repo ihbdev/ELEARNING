@@ -123,18 +123,24 @@ class DocumentController extends Controller
 			$model=$this->loadModel($id);
 			//Define type of Document
 			$type=$model->type;	
-			if(isset($model->config_type[$type]['form']))		
-				$form=$model->config_type[$type]['form'];
+			/*if(isset($model->config_type[$type]['form']))		
+				//$form=$model->config_type[$type]['form'];
+				$form = '_form2';
 			else 
 				$form='_form';
-			Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+			//Yii::app()->clientScript->scriptMap['jquery.js'] = false;
 			$html_tree=$this->renderPartial('_tree',array(
 					'list_nodes'=>$model->list_nodes,
 			),true);
 			$html_form = $this->renderPartial($form,array(
 					'model'=>$model,'action'=>$action
 				),true,true); 
-			echo $html_form.$html_tree;
+			echo $html_form.$html_tree;*/
+			$this->render('index',array(
+			'model'=>$model,
+			'type'=>$type,
+			'action'=>'create'
+		));
 	}
 
 	/**
