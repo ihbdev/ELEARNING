@@ -86,7 +86,7 @@
 	                        </div><!--text-question-->
 						<?php endforeach;?>
 						<?php endif;?>
-	                    <div class="markingup-question">                               
+	                    <div class="markingup-question"> 
 	                    	<div class="q-post_<?php echo $i?>">
 	                        	<div class="row"><h3><?php echo Language::t('Question')?></h3></div>
 	                        	<input id="list_questions_<?php echo $i?>" name="TestLanguageSkill[questions][<?php echo $i?>]" type="hidden" value="<?php echo(isset($test->content[$i])?implode(',', $test->content[$i]):'');?>"/>

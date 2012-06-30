@@ -54,8 +54,8 @@
                    <div class="row">
 						<li>
                        		<?php echo $form->labelEx($model,'description'); ?>
-                       		<?php                       			
-                        		$this->widget('application.extensions.tinymce.ETinyMce',array('model'=>$model,'attribute'=>'description','editorTemplate'=>'full','htmlOptions'=>array('style'=>'width:400px;height:500px'))); 
+                       		<?php
+                        		$this->widget('application.extensions.tinymce.ETinyMce',array('model'=>$model,'attribute'=>'description','editorTemplate'=>'full','htmlOptions'=>array('style'=>'width:400px;height:500px')));
                         	?>                        	
                    			<?php echo $form->error($model, 'description'); ?>
                     	</li>

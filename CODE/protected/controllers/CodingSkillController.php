@@ -98,19 +98,74 @@ class CodingSkillController extends Controller
 		if(isset($_POST['TestCodingSkill']))
 		{
 			$test->attributes=$_POST['TestCodingSkill'];
-			$test->type=TestCodingSkill::TYPE_CODING;
+			$test->type=ITest::TYPE_CODING;
 
-			$list_questions = array_diff ( explode ( ',', $_POST['TestCodingSkill']['questions'] ), array ('') );
-			$test->content=$list_questions;
+			if( isset($_POST['TestCodingSkill']['questions'])) {
+				$list_questions = array_diff ( explode ( ',', $_POST['TestCodingSkill']['questions'] ), array ('') );
+				$test->content=$list_questions;
+			}
+
 			$test->type_coding = $type;
 
+			/*
+			 * Handle Test question sheet upload
+			 */
+			if(isset($_FILES["Question_upload"]))
+			{
+				if ((($_FILES["Question_upload"]["type"] == "image/gif")
+				|| ($_FILES["Question_upload"]["type"] == "image/jpeg")
+				|| ($_FILES["Question_upload"]["type"] == "image/pjpeg"))
+				&& ($_FILES["Question_upload"]["size"] < 20000))
+				{
+					if ($_FILES["Question_upload"]["error"] > 0)
+					{
+						echo "Error: " . $_FILES["Question_upload"]["error"] . "<br />";
+					}
+					else
+					{
+						$question = new Question();
+
+						echo "Upload: " . $_FILES["Question_upload"]["name"] . "<br />";
+						echo "Type: " . $_FILES["Question_upload"]["type"] . "<br />";
+						echo "Size: " . ($_FILES["Question_upload"]["size"] / 1024) . " Kb<br />";
+						echo "Stored in: " . $_FILES["Question_upload"]["tmp_name"];
+						if (file_exists("uploads/" . $_FILES["Question_upload"]["name"]))
+						{
+							echo $_FILES["Question_upload"]["name"] . " already exists. ";
+						}
+				    	else
+						{
+							move_uploaded_file($_FILES["Question_upload"]["tmp_name"],"uploads/" . $_FILES["Question_upload"]["name"]);
+							$question->title = "Upload question sheet";
+							$question->answer = "By trainer";
+							$question->content = Yii::app()->theme->baseUrl.'/../../uploads/'. $_FILES["Question_upload"]["name"];
+							$question->save();
+
+							array_push($list_questions, $question->id);
+							$test->content = $list_questions;
+				      	}
+					}
+				}
+				else{
+					echo "Invalid file";
+				}
+			}
+
+			/*
+			 * Handle material
+			 */
 			if(isset($_POST['TestCodingSkill']['materials'])){
+				$i=1;
 				$material = new Material();
 				$material->catid  = Material::TYPE_CODING;
-				$material->content  = $_POST['TestCodingSkill']['materials'];
+				foreach($_POST['TestCodingSkill']['materials'] as $index){
+					$material_content['index'.$i] = $index;
+					$i++;
+				}
+				$material->content = $material_content;
 				$material->save();
 
-				foreach($list_questions as $question_id){
+				foreach($test->content as $question_id){
 					$question = Question::model()->findByPk($question_id);
 					$question->material_id = $material->id;
 					$question->save();
@@ -120,7 +175,7 @@ class CodingSkillController extends Controller
 			if($test->save())
 			{
 				$this->redirect(array('update','id'=>$test->id));
-			}	
+			}
 		}
 		$this->render ( 'create',array('test'=>$test,'type'=>$type));
 	}
@@ -139,12 +194,44 @@ class CodingSkillController extends Controller
 	public function actionUpdate($id)
 	{
 		$test=TestCodingSkill::model()->findByPk($id);
+
 		if(isset($_POST['TestCodingSkill']))
 		{
 			$test->attributes=$_POST['TestCodingSkill'];
-			$test->type=TestCodingSkill::TYPE_CODING;			
-			$list_questions = array_diff ( explode ( ',', $_POST['TestCodingSkill']['questions'] ), array ('') );
-			$test->content=$list_questions;
+			$test->type=ITest::TYPE_CODING;
+			if(isset($_POST['TestCodingSkill']['questions'])){	
+				$list_questions = array_diff ( explode ( ',', $_POST['TestCodingSkill']['questions'] ), array ('') );
+				$test->content=$list_questions;
+			}
+
+			if(isset($_POST['TestCodingSkill']['materials'])){
+				$i = 1;
+				$question = Question::model()->findByPk($list_questions[0]);
+					if($question->material_id != 0) 
+						$material = Material::model()->findByPk($question->material_id);
+					else
+					{
+						$material = new Material();
+						$material->catid  = Material::TYPE_LANGUAGE;
+					}
+
+				foreach($_POST['TestCodingSkill']['materials'] as $index){
+					$material_content['index'.$i] = $index;
+					$i++;
+				}
+				$material->content = $material_content;
+				$material->save();
+
+				foreach($list_questions as $question_id){
+					$question = Question::model()->findByPk($question_id);
+					$question->material_id = $material->id;
+					$question->save();
+				}
+			}
+
+			//$test->upload = CUploadedFile::getInstance($test,'upload');
+			//$test->upload_url = Yii::app()->basePath.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.$test->upload->name;
+
 			if($test->save())
 			{
 				$test=TestCodingSkill::model()->findByPk($id);
@@ -244,7 +331,7 @@ class CodingSkillController extends Controller
 				echo implode("\n",$titles);
 		}
 	}
-	
+
 	/**
 	 * Init checkbox selection
 	 * @param string $name_params, name of section to work	 
@@ -387,7 +474,56 @@ class CodingSkillController extends Controller
 		}
 	}
 	/**
-	 * Add a new question
+	 * Add a new question for uploading question sheet
+	 */
+	public function actionAddQuestion_2($test_id=null) {
+		if(isset ( $_POST ['Question'] )) {
+			$question = new Question ();
+			$question->attributes=$_POST['Question'];		
+			if (! isset ( $_POST['Question']['answer'] )) {
+				$result = array ('success' => false, 'message' => 'Select answer' );
+				echo json_encode ( $result );
+			} else {
+				$content=array();
+				$answer=array();
+				foreach ($_POST ['Question']['content'] as $index=>$choice){
+					if($choice != '') {
+						$content[]=$choice;
+						if (in_array ( $index, $_POST ['Question']['answer'] ))
+							$answer [] = 1;
+						else
+							$answer [] = 0;
+					}
+				};
+				$question->content = $content;				
+				$question->answer = $answer;
+				$question->type = Question::TYPE_CODING;
+				$question->material_id = 0;
+				
+				if ($question->save ()) {
+					$question = Question::model ()->findByPk ( $question->id );
+					if(isset($test_id) && $test_id>0){
+						$test=TestCodingSkill::model()->findByPk($test_id);
+						$content=$test->content;
+						$content[]=$question->id;
+						$test->content=$content;
+						if($test->save()){
+							$view = $this->renderPartial ( '_update_question', array ('question' => $question, 'test'=>$test ), true );
+							$result = array ('success' => true, 'id' => $question->id, 'view' => $view );
+							echo json_encode ( $result );
+						}
+					}
+					else {
+						$view = $this->renderPartial ( '_create_question', array ('question' => $question), true );
+						$result = array ('success' => true, 'id' => $question->id, 'view' => $view );
+						echo json_encode ( $result );
+					}
+				}
+			}
+		}
+	}
+	/**
+	 * Update an exist question
 	 */
 	public function actionUpdateQuestion($id,$test_id=null) {
 		$question=Question::model()->findByPk($id);
@@ -430,7 +566,7 @@ class CodingSkillController extends Controller
 				echo json_encode ( $result );
 			}
 	}
-	
+
 	/**
 	 * Remove a question or a choice 
 	 */

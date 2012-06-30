@@ -132,13 +132,12 @@ class ExamController extends Controller
 		return true;
 	}
 	public function actionToDo($id) {
-		$model = Exam::model ()->findByPk ( $id );				
+		$model = Exam::model ()->findByPk ( $id );
 		if ($this->actionCheckToDo ( $model->id )) {
 			$criteria = new CDbCriteria ();
 			$criteria->compare ( 'exam_id', $model->id );
 			$criteria->compare ( 'user_id', Yii::app ()->user->id );
 			$tmp_result = TmpResult::model ()->find ( $criteria );
-          	
 			switch ($model->type) {
 				case Exam::TYPE_LANGUAGE :
 					$test = TestLanguageSkill::model ()->findByPk ( $model->test_id );
@@ -160,8 +159,8 @@ class ExamController extends Controller
 					$form = 'todo_coding';
 					break;
 			}
-			
-			if (isset ( $_POST ['Result'] )) {
+
+			if (isset ( $_POST ['Result'] )){
 				$result = new Result ();
 				$result->exam_id = $id;
 				$result->user_id = Yii::app ()->user->id;
@@ -187,11 +186,10 @@ class ExamController extends Controller
 						if(isset($tmp_result))
 							$tmp_result->delete();
 						$this->redirect(array('result/view','id'=>$result->id));
-					}	
-				}
-				
-				$this->render ( $form, array ('tmp_result'=>$tmp_result,'model' => $model, 'test' => $test ) );
-			} 
+					}
+			}
+			$this->render ( $form, array ('tmp_result'=>$tmp_result,'model' => $model, 'test' => $test ) );
+		}
 	}
 	public function actionView($id) {
 		$model = Exam::model ()->findByPk ( $id );
@@ -199,22 +197,22 @@ class ExamController extends Controller
 		switch ($model->type) {
 			case Exam::TYPE_LANGUAGE :
 					$test = TestLanguageSkill::model ()->findByPk ( $model->test_id );
-					$form = 'todo_language';
+					$form = 'view_language';
 					break;
 				case Exam::TYPE_KNOWLEDGE :
 					$test = TestKnowledgeSkill::model ()->findByPk ( $model->test_id );
-					$form = 'todo_knowledge';
+					$form = 'view_knowledge';
 					break;
 				case Exam::TYPE_MARKINGUP :
 					$test = TestMarkingUpSkill::model ()->findByPk ( $model->test_id );
 					if ($test->level > 0)
-						$form = 'todo_marking_up';
+						$form = 'view_marking_up';
 					else
-						$form = 'todo_marking_up';
+						$form = 'view_marking_up';
 					break;
 				case Exam::TYPE_CODING :
 					$test = TestCodingSkill::model ()->findByPk ( $model->test_id );
-					$form = 'todo_coding';
+					$form = 'view_coding';
 					break;
 		}
 		

@@ -93,12 +93,7 @@
 						'name'=>'group_level',
 						'value'=>'$data->level==0?"Final":"Level"',
 						'headerHtmlOptions'=>array('width'=>'10%','class'=>'table-title'),		
-					),
-					array(
-						'name'=>'author',
-						'value'=>'$data->author->username',
-						'headerHtmlOptions'=>array('width'=>'5%','class'=>'table-title'),		
-					), 						
+					),				
 					array(
 						'name'=>'created_date',
 						'value'=>'date("H:i d/m/Y",$data->created_date)',

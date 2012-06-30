@@ -105,8 +105,9 @@ class Material extends CActiveRecord
 	public function afterFind()
 	{
 		//Decode attribute other to set other attributes
-		$this->list_other_attributes=json_decode($this->other,true);	
-			
+		$this->list_other_attributes=(array)json_decode($this->other,true);	
+		$this->content=(array)json_decode($this->content);
+
 		if(isset($this->list_other_attributes['modified']))
 			$this->list_other_attributes['modified']=json_decode($this->list_other_attributes['modified'],true);
 		else 
@@ -139,6 +140,7 @@ class Material extends CActiveRecord
 			}
 			
 			$this->other=json_encode($this->list_other_attributes);
+			$this->content=json_encode($this->content);
 			return true;
 		}
 		else

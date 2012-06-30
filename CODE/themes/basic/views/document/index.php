@@ -1,6 +1,7 @@
 <?php 
 $cs = Yii::app()->getClientScript();
 $cs->registerCssFile(Yii::app()->theme->baseUrl.'/css/sprite.css');
+$cs->registerScriptFile(Yii::app()->theme->baseUrl.'/../../tinymce/tiny_mce/tiny_mce.js');
 ?>
 	<!--begin inside content-->
 	<div class="folder top">
@@ -36,6 +37,13 @@ $cs->registerCssFile(Yii::app()->theme->baseUrl.'/css/sprite.css');
 	</div>
 	<!--end inside content-->
 <div type="hidden" value="" id="popup_value"></div>
+<script>
+tinyMCE.init({
+	//set mode to 'none'
+    mode : "none",
+    theme : "advanced"
+	});
+</script>
 <?php 
 $lang='vi';
 if(isset($_GET['lang'])){
@@ -76,7 +84,6 @@ $cs->registerScript(
         })",
   CClientScript::POS_END
 );
-
 // Script load form update 
 $cs->registerScript(
   'js-update-category',
@@ -92,10 +99,11 @@ $cs->registerScript(
   					'success':function(data){
 						$(\".folder-content\").html(data);
 						$(\".folder-content\").append('<div class=\"clear\"></div>');
+						tinyMCE.execCommand('mceAddControl', false, 'Document_description');
 					},
 					'type':'GET',
 					'url':'".$this->createUrl('document/update')."',
-					'cache':false
+					'cache':true
 				});
 				return false;
 			}
@@ -112,7 +120,7 @@ $cs->registerScript(
   	{ 
   		$('body').on(
   			'click',
-  			'#create-category',	
+  			'#create-category-2',	
   			function(){
   				jQuery.ajax({
   					'success':function(data){
