@@ -101,7 +101,9 @@ class DocumentController extends Controller
 				$form=$model->config_type[$type]['form'];
 			else 
 				$form='_form';
+			
 			Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+			/*
 			$html_tree=$this->renderPartial('_tree',array(
 					'list_nodes'=>$model->list_nodes,
 			),true);
@@ -110,6 +112,17 @@ class DocumentController extends Controller
 					'model'=>$model,'type'=>$type,'action'=>$action
 				),true,true); 
 			echo $html_form.$html_tree;
+			*/
+			if(isset($_POST['Document']))
+			{
+				$model->attributes = $_POST['Document'];
+				$model->save();
+			}			
+			$this->render('index',array(
+				'model'=>$model,
+				'type'=>$type,
+				'action'=>$action
+			));	
 	}
 
 	/**
@@ -121,28 +134,20 @@ class DocumentController extends Controller
 	{
 			$action="update";
 			$model=$this->loadModel($id);
+
 			//Define type of Document
 			$type=$model->type;	
-			/*
-			if(isset($model->config_type[$type]['form']))		
-				$form=$model->config_type[$type]['form'];
-			else 
-				$form='_form';
-			Yii::app()->clientScript->scriptMap['jquery.js'] = false;
-			$html_tree=$this->renderPartial('_tree',array(
-					'list_nodes'=>$model->list_nodes,
-			),true);
-			$html_form = $this->renderPartial($form,array(
-					'model'=>$model,'action'=>$action
-				),true,true); 
-			echo $html_form.$html_tree;
-			*/
+			//Update document content
+			if(isset($_POST['Document']))
+			{
+				$model->attributes = $_POST['Document'];
+				$model->save();
+			}			
 			$this->render('index',array(
 				'model'=>$model,
 				'type'=>$type,
-				'action'=>'create'
-			));			
-			
+				'action'=>'update'
+			));						
 	}
 
 	/**
@@ -175,15 +180,23 @@ class DocumentController extends Controller
 							$model->type=$type;
 							$action="create";
 						}
-						Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+						//Yii::app()->clientScript->scriptMap['jquery.js'] = false;
 						$model->type=$type;
+						/*
 						$html_tree=$this->renderPartial('_tree',array(
 							'list_nodes'=>$model->list_nodes,
 							),true);
 						$html_form = $this->renderPartial($form,array(
 							'model'=>$model,'type'=>$type,'action'=>$action
 							),true,true); 
-						$result['content']=$html_form.$html_tree;	
+						$result['content']=$html_form.$html_tree;
+						*/
+						$this->render('index',array(
+							'model'=>$model,
+							'type'=>$type,
+							'action'=>$action,
+						));
+												
 					}
 					else {
 						$result['status']='false';
@@ -226,14 +239,17 @@ class DocumentController extends Controller
 			Yii::app()->end();
 		}
 	}
+	
 	/**
 	 * Display list of Document.
 	 * @param integer $type, id of menu type
 	 * @return
 	 */
+	/*
 	public function actionIndex($type)
 	{
 		$model=new Document();
+		
 		$model->type=$type;	
 		$this->render('index',array(
 			'model'=>$model,
@@ -241,6 +257,28 @@ class DocumentController extends Controller
 			'action'=>'create'
 		));
 	}
+	*/
+	/**
+	 * Display list of Document.
+	 * @param integer $type, id of menu type
+	 * @return
+	 */
+	public function actionEdit($type)
+	{
+		$criteria = new CDbCriteria ();
+		$criteria->compare ( 'type', $type );
+		$criteria->compare ( 'parent_id', Document::TYPE_ORIGIN );
+		$criteria->compare ( 'order_view', Document::FIRST_DOC );
+		
+		$model=Document::model()->find($criteria);		
+		$model->type=$type;
+		
+		$this->render('index',array(
+			'model'=>$model,
+			'type'=>$type,
+			'action'=>'create'
+		));
+	}	
 	/**
 	 * Creates and updates a new Document model.
 	 * @param integer $type, id of menu type
@@ -323,5 +361,36 @@ class DocumentController extends Controller
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
+	}
+	
+	/**
+	 * action View long training document
+	 */
+	public function actionView($type='',$id='')
+	{
+		$criteria = new CDbCriteria ();
+		if($type!='')
+		{			
+			$criteria->compare ( 'type', $type );
+			$criteria->compare ( 'parent_id', Document::TYPE_ORIGIN );
+			$criteria->compare ( 'order_view', Document::FIRST_DOC );
+		} else 
+			$criteria->compare ( 'id', $id );
+		$model = Document::model ()->find ( $criteria );
+		$type=$model->type;
+				
+		$this->render('view',array(
+			'model'=>$model,
+			'type'=>$type,
+			'action'=>'update'
+		));			
+	}
+	
+	/**
+	 * action view list of document
+	 */
+	public function actionIndex()
+	{					
+		$this->render('index_document');			
 	}
 }

@@ -28,6 +28,8 @@ class Document extends CActiveRecord
 	 * Config code (id) of the main category groups which have parent_id=0
 	 */
 
+	const TYPE_ORIGIN=0;
+	const FIRST_DOC=1;
 	const TYPE_MARKING_UP=1;
 	const TYPE_KNOWLEDGE_SKILL=2;
 	const TYPE_LANGUAGE_SKILL=3;
@@ -615,8 +617,8 @@ class Document extends CActiveRecord
 		*/
 		$class=$this->config_type[$this->type]['class'];
 		$object= new $class;
-		$list=$object->findAll('catid = '. $id);
-		if(sizeof($list)>0) 
+		$list=$object->findAll('parent_id = '. $id);
+		if(sizeof($list)>0)
 			return self::DELETE_HAS_ITEMS;
 		return self::DELETE_OK;
 	}

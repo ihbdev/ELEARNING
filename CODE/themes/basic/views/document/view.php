@@ -7,6 +7,10 @@ $cs->registerCssFile(Yii::app()->theme->baseUrl.'/css/sprite.css');
 		<!--begin title-->
 		<div class="folder-header">
 			<h1><?php echo $model->config_type[$type]['label']?></h1>
+			<div>
+                <input type="button" class="button" value="<?php echo Language::t('List Documents');?>" style="width:180px;" onClick="parent.location='<?php echo Yii::app()->createUrl('Document/index')?>'"/>                
+				<div class="line top bottom"></div>	
+            </div>
 			<div class="header-menu">
 				<ul>
 					<li><a class="header-menu-active new-icon" href=""><span><?php echo $model->config_type[$type]['label']?></span></a></li>					
@@ -14,21 +18,15 @@ $cs->registerCssFile(Yii::app()->theme->baseUrl.'/css/sprite.css');
 			</div>
 		</div>
 		<!--end title-->
-		<div class="folder-content form">
-			<div>
-                <input type="button" class="button" value="<?php echo Language::t('Add new Document');?>" style="width:180px;" onClick="parent.location='<?php echo Yii::app()->createUrl('Document/create',array('type'=>$model->type))?>'"/>                
-				<input type="button" class="button" value="<?php echo Language::t('List Guide Documents');?>" style="width:180px;" onClick="parent.location='<?php echo Yii::app()->createUrl('Document/index')?>'"/>
-				<div class="line top bottom"></div>	
-            </div>
+		<div class="folder-content form">			
 			<!--begin left content-->
-			<?php 
-			$form=$model->config_type[$type]['form'];
-			echo $this->renderPartial($form, array('model'=>$model,'action'=>$action)); 
+			<?php 			
+			echo $this->renderPartial('_view', array('model'=>$model,'action'=>$action)); 
 			?>
 			<!--end left content-->
 			<!--begin right content-->
 			<?php			
-			echo $this->renderPartial('_tree', array('list_nodes'=>$model->list_nodes)); 			
+			echo $this->renderPartial('_view_tree', array('list_nodes'=>$model->list_nodes)); 			
 			?>
 			<!--end right content-->
 			<div class="clear"></div>
@@ -45,7 +43,7 @@ $cs = Yii::app()->getClientScript();
 // Script delete
 $cs->registerScript(
   'js-delete-category',
-  "jQuery(function($) { $('body').on('click','.i16-trashgray-2',	
+  "jQuery(function($) { $('body').on('click','.i16-trashgray',	
   		function(){
   			$('#popup_value').val(this.id);
   			jConfirm(
@@ -94,7 +92,7 @@ $cs->registerScript(
 						$(\".folder-content\").append('<div class=\"clear\"></div>');
 					},
 					'type':'GET',
-					'url':'".$this->createUrl('document/update')."',
+					'url':'".$this->createUrl('document/view')."',
 					'cache':false
 				});
 				return false;

@@ -60,19 +60,20 @@
                    			<?php echo $form->error($model, 'description'); ?>
                     	</li>
                     </div>
+                    
                    	<li>
                     	<?php 
-                    	if($action=="update") 
+                    	if($model->isNewRecord) 
                     	{ 
-                    		$label_button="Cập nhật danh mục";     
+                    		$label_button=Language::t('Add New Document');
                     	}
-                    	else $label_button="Thêm danh mục";
+                    	else $label_button=Language::t('Update Document');
                     	
 						echo '<input type="submit" value="'.$label_button.'" style="margin-left:153px; width:125px;" id="write-category" class="button">';  
-    					if($action=="update") 
-                    	{   
-    						echo '<input type="submit" value="Tạo danh mục mới" style="margin-left:10px; width:125px;" id="create-category" class="button">'; 
-                    	}
+    					//if($action=="update") 
+                    	//{   
+    					//	echo '<input type="submit" value="'.Language::t('Add New Document').'" style="margin-left:10px; width:125px;" id="create-category" class="button">'; 
+                    	//}
     					?>  
                     </li>
 				</ul>
