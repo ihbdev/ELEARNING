@@ -14,7 +14,7 @@
 				$prefix .= "---";
 			}
 			$view =$blank."|".$prefix;
-			echo "<div><label style=".$style.">".$view." ".$node->name."</label><a id='".$id."' class='i16 i16-statustext'></a><a id='".$id."'class='i16 i16-trashgray'></a></div>";
+			echo "<div><label style=".$style.">".$view." ".$node->name."</label><a href=".Yii::app()->createUrl('document/update',array('id'=>$id))." id='".$id."' class='i16 i16-statustext'></a><a id='".$id."'class='i16 i16-trashgray'></a></div>";
 		}
 		?>           
 		</li>

@@ -116,7 +116,7 @@ class Result extends CActiveRecord
 		//Decode attribute other to set other attributes
 		$this->list_other_attributes=json_decode($this->other,true);	
 		//Decode answer		
-		$this->answer=json_decode($this->answer,true);				
+		$this->answer=json_decode($this->answer,true);			
 
 		return parent::afterFind();
 	}

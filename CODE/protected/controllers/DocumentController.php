@@ -123,6 +123,7 @@ class DocumentController extends Controller
 			$model=$this->loadModel($id);
 			//Define type of Document
 			$type=$model->type;	
+			/*
 			if(isset($model->config_type[$type]['form']))		
 				$form=$model->config_type[$type]['form'];
 			else 
@@ -135,6 +136,13 @@ class DocumentController extends Controller
 					'model'=>$model,'action'=>$action
 				),true,true); 
 			echo $html_form.$html_tree;
+			*/
+			$this->render('index',array(
+				'model'=>$model,
+				'type'=>$type,
+				'action'=>'create'
+			));			
+			
 	}
 
 	/**

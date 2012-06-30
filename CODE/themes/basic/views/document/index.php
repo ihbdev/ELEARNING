@@ -80,7 +80,7 @@ $cs->registerScript(
 	{ 
 		$('body').on(
   			'click',
-  			'.i16-statustext',	
+  			'.i16-statustext-2',	
   			function(){
   				jQuery.ajax({
   					'data':{id : this.id},
@@ -133,7 +133,7 @@ $cs->registerScript(
   	function($) { 
   		$('body').on(
   			'click',
-  			'#write-category',	
+  			'#write-category-2',	
   			function(){
   				jQuery.ajax({
   					'success':function(data){
