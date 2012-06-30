@@ -105,11 +105,55 @@ class CodingSkillController extends Controller
 				$test->content=$list_questions;
 			}
 
-			//$test->upload = CUploadedFile::getInstance($test,'upload');
-			//$test->upload_url = Yii::app()->basePath.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.$test->upload->name;
-
 			$test->type_coding = $type;
 
+			/*
+			 * Handle Test question sheet upload
+			 */
+			if(isset($_FILES["Question_upload"]))
+			{
+				if ((($_FILES["Question_upload"]["type"] == "image/gif")
+				|| ($_FILES["Question_upload"]["type"] == "image/jpeg")
+				|| ($_FILES["Question_upload"]["type"] == "image/pjpeg"))
+				&& ($_FILES["Question_upload"]["size"] < 20000))
+				{
+					if ($_FILES["Question_upload"]["error"] > 0)
+					{
+						echo "Error: " . $_FILES["Question_upload"]["error"] . "<br />";
+					}
+					else
+					{
+						$question = new Question();
+
+						echo "Upload: " . $_FILES["Question_upload"]["name"] . "<br />";
+						echo "Type: " . $_FILES["Question_upload"]["type"] . "<br />";
+						echo "Size: " . ($_FILES["Question_upload"]["size"] / 1024) . " Kb<br />";
+						echo "Stored in: " . $_FILES["Question_upload"]["tmp_name"];
+						if (file_exists("uploads/" . $_FILES["Question_upload"]["name"]))
+						{
+							echo $_FILES["Question_upload"]["name"] . " already exists. ";
+						}
+				    	else
+						{
+							move_uploaded_file($_FILES["Question_upload"]["tmp_name"],"uploads/" . $_FILES["Question_upload"]["name"]);
+							$question->title = "Upload question sheet";
+							$question->answer = "By trainer";
+							$question->content = Yii::app()->theme->baseUrl.'/../../uploads/'. $_FILES["Question_upload"]["name"];
+							$question->save();
+
+							array_push($list_questions, $question->id);
+							$test->content = $list_questions;
+				      	}
+					}
+				}
+				else{
+					echo "Invalid file";
+				}
+			}
+
+			/*
+			 * Handle material
+			 */
 			if(isset($_POST['TestCodingSkill']['materials'])){
 				$i=1;
 				$material = new Material();
@@ -121,17 +165,17 @@ class CodingSkillController extends Controller
 				$material->content = $material_content;
 				$material->save();
 
-				foreach($list_questions as $question_id){
+				foreach($test->content as $question_id){
 					$question = Question::model()->findByPk($question_id);
 					$question->material_id = $material->id;
 					$question->save();
 				}
 			}
+
 			if($test->save())
 			{
-				//$test->upload->saveAs(Yii::app()->basePath.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.$test->upload->name, true);
 				$this->redirect(array('update','id'=>$test->id));
-			}	
+			}
 		}
 		$this->render ( 'create',array('test'=>$test,'type'=>$type));
 	}

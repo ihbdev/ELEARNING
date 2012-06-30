@@ -57,13 +57,12 @@
 
                 <div class="testpost-box">
 					<h2><?php echo Language::t('List questions')?></h2>
-					<input type="radio" name="group2" value="Text" checked id="question_editor"> Internal Article &nbsp &nbsp
-					<input type="radio" name="group2" value="Url" id="question_upload"> Upload question sheet &nbsp &nbsp <br /><br />
 
-					<div id="testpost-box-1">
+					<!-- List current questions -->
+					<div class = "testpost-box">
 					<?php foreach ($test->content as $question_id):?>
-                    	<?php $question=Question::model()->findByPk($question_id);?>
-                         <div class="text-question">
+                    	<?php $question = Question::model()->findByPk($question_id);?>
+						<div class="text-question">
                             <div class="text-title">
                             	<?php $css_id='question'.$question_id.'_'.'title';?> 	
                             	<div id="<?php echo $css_id;?>">
@@ -92,8 +91,8 @@
                             	</div>
                             </div>
                             <div class="text-check">
-                            	<?php 
-                            	$list_answer=$question->answer;
+                            	<?php
+                            	$list_answer = $question->answer;
                             	?>
                             	<?php foreach ($question->content as $index=>$option):?>
                             	<?php $css_id='question'.$question_id.'_'.'choice_'.$index;?> 
@@ -112,6 +111,13 @@
                             </div>                            
                         </div><!--text-question-->
                         <?php endforeach;?>
+					</div>
+
+					<!-- Radio box for chosing question type -->
+					<input type="radio" name="group2" value="Text" checked id="question_editor"> Internal Article &nbsp &nbsp
+					<input type="radio" name="group2" value="Url" id="question_upload"> Upload question sheet &nbsp &nbsp <br /><br />
+
+					<div id="testpost-box-1">
                     <div class="markingup-question">                               
                     	<div class="q-post">
                         	<div class="row"><h3><?php echo Language::t('Question')?></h3></div>
@@ -132,9 +138,8 @@
                     <div id="testpost-box-2" style="display:none">
                     	<div class="q-post">
                     		<div class="row"><h3>Upload Question sheet</h3></div>
-							<input type="file" name="Question[upload]" id="btn_upload">
+							<input type="file" name="Question_upload" id="btn_upload">
                             <label style="width:70px;">&nbsp;</label>
-                            <input id="add_question_2" type="submit" class="button" value="<?php echo Language::t('Add question')?>" style="width:100px;" />
 						</div>
                     </div>
                 </div><!--testpost-box-->

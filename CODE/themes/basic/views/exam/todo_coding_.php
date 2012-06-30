@@ -18,10 +18,7 @@
         <div class="text-content" id="text-content">
             <!-- <h4>Allianz, Swiss Re post strong profits</h4> -->
             <div class="text-intro">
-				<?php 
-					if(Question::model()->findByPk($test->content[0])->material_id != 0) $materials = Question::model()->findByPk($test->content[0])->material->content;
-					foreach($materials as $material) echo $material;
-				?>
+				<?php echo (Question::model()->findByPk($test->content[0])->material_id != 0)?Question::model()->findByPk($test->content[0])->material->content:'Have not any material';?>
             </div><!--text-intro-->
             <div class="text-box">
 				<?php $question_index=1;?>
@@ -30,13 +27,6 @@
             	<div class="text-question">
                 	<div class="text-title">Q<?php echo $question_index?>) <?php echo $question->title?></div>
                     <div class="text-check">
-                    	<?php
-                    		$supplement = $question->supplement;
-                    		if(getimagesize($supplement)) echo '<img src="'.$supplement.'"/>';
-                    		else echo '<a target="_blank" href="'.$supplement.'">'.$supplement.'</a>';
-                    	?>
-                    	<br />
-                    	<br />
                     	<?php $list_choices=Question::interChange($question->content);?>
                     	<?php $choice_index=1;?>
                     	<?php foreach($list_choices as $index=>$choice):?>
@@ -53,10 +43,10 @@
     </div><!--main-test-->
 	<div class="fr sidebar-test">
     	<ul class="employee-ul">
-        	<li><label>ID Test:</label><span>---</span></li>
-            <li><label>Employee:</label><span><b>--------------</b></span></li>
-			<li><label>Email:</label><span><b>----------------</b></span></li>
-            <li><label>Test Local:</label><span>---------------</span></li>
+        	<li><label>ID Test:</label><span>352VN</span></li>
+            <li><label>Employee:</label><span><b>Truong Van Hieu</b></span></li>
+			<li><label>Email:</label><span><b>hieutv101@gmail.com</b></span></li>
+            <li><label>Test Local:</label><span>Officer - Viet Nam</span></li>
         </ul>
         <div class="text-info">
         	<h5>Final test English skills infomation</h5>
@@ -80,7 +70,7 @@
         </div><!--text-note-->
         <div class="text-finish">
         	<h5>Click to finish test.</h5>
-        	<input disabled="disabled" name="" type="submit" class="btn-submit" value="Finish" />
+        	<input name="" type="submit" class="btn-submit" value="Finish" />
         </div><!--text-finish-->
 	</div><!--sidebar-test-->
 	<?php $this->endWidget(); ?>

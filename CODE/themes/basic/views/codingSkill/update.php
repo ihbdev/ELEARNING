@@ -67,11 +67,15 @@
                 <br /><br />
                 <div class="testpost-box">
 					<h2><?php echo Language::t('List questions')?></h2>
-					<input type="radio" name="group2" value="Text" checked id="question_editor"> Internal Article &nbsp &nbsp
-					<input type="radio" name="group2" value="Url" id="question_upload"> Upload question sheet &nbsp &nbsp <br /><br />
-					<div id="testpost-box-1">
+
+					<!-- List the current questions -->
+					<div class = "testpost-box">
 					<?php foreach ($test->content as $question_id):?>
                     	<?php $question=Question::model()->findByPk($question_id);?>
+                    	<?php 
+                    	// Check question is normal or upload question
+                    	if($question->answer != 'By trainer'):
+                    	?>
                          <div class="text-question">
                             <div class="text-title">
                             	<?php $css_id='question'.$question_id.'_'.'title';?> 	
@@ -120,7 +124,23 @@
                             	<div class="row"><a class="i16 i16-addgreen add_choice_form" id="<?php echo $question_id?>" href="<?php echo Yii::app()->createUrl('codingSkill/updateQuestion',array('id'=>$question_id,'test_id'=>$test->id))?>"></a></div>
                             </div>                            
                         </div><!--text-question-->
+						<?php else:?>
+						<div class="text-question">
+                            <div class="text-title">
+                            	<?php echo $question->title;?><br />
+                            	<a href="<?php echo $question->content;?>"><?php echo $question->content;?></a>
+                            </div>
+						</div>
+						<?php endif;?>
                         <?php endforeach;?>
+					</div>
+
+					<!-- Radio box for chosing question type -->
+					<input type="radio" name="group2" value="Text" checked id="question_editor"> Internal Article &nbsp &nbsp
+					<input type="radio" name="group2" value="Url" id="question_upload"> Upload question sheet &nbsp &nbsp <br /><br />
+
+					<!-- Multiple choice question -->
+					<div id="testpost-box-1">
                     <div class="markingup-question">                               
                     	<div class="q-post">
                         	<div class="row"><h3><?php echo Language::t('Question')?></h3></div>
