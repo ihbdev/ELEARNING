@@ -8,7 +8,7 @@ $cs->registerCssFile(Yii::app()->theme->baseUrl.'/css/sprite.css');
 		<div class="folder-header">
 			<h1><?php echo $model->config_type[$type]['label']?></h1>
 			<div>
-                <input type="button" class="button" value="<?php echo Language::t('List Documents');?>" style="width:180px;" onClick="parent.location='<?php echo Yii::app()->createUrl('Document/index')?>'"/>                
+                <input type="button" class="button" value="<?php echo Language::t('List Documents');?>" style="width:180px;margin-left: 15px;" onClick="parent.location='<?php echo Yii::app()->createUrl('Document/index')?>'"/>                
 				<div class="line top bottom"></div>	
             </div>
 			<div class="header-menu">
@@ -19,8 +19,8 @@ $cs->registerCssFile(Yii::app()->theme->baseUrl.'/css/sprite.css');
 		</div>
 		<!--end title-->
 		<div class="folder-content form">			
-			<!--begin left content-->
-			<?php 			
+			<!--begin left content-->			
+			<?php	
 			echo $this->renderPartial('_view', array('model'=>$model,'action'=>$action)); 
 			?>
 			<!--end left content-->
